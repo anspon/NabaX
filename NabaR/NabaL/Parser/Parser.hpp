@@ -41,7 +41,7 @@ extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
 /* Line 2058 of yacc.c  */
-#line 20 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 38 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
 
 #ifndef YY_TYPEDEF_YY_SCANNER_T
@@ -91,7 +91,7 @@ typedef void* yyscan_t;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 35 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 53 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
     Ast::CNode* m_node;
     Ast::CBlock* block;
@@ -101,14 +101,14 @@ typedef union YYSTYPE
     Ast::CIdentifier* ident;
     Ast::CVariableDeclaration* var_decl;
     Ast::CFunctionParameter* func_param;
-    Ast::VariableList* varvec;
-    Ast::FunctionParameterList* funcParList;
-    Ast::ExpressionList* exprvec;
+    Tk::SpList<const Ast::CVariableDeclaration>* varvec;
+    Tk::SpList<const Ast::CFunctionParameter>* funcParList;
+    Tk::SpList<const Ast::CExpression>* exprvec;
     std::string *string;
     int token;
 
     Ast::CStructPart*     structPart;
-    Ast::StructPartList* structParts;
+    Tk::SpList<const Ast::CStructPart>* structParts;
 
 
 /* Line 2058 of yacc.c  */

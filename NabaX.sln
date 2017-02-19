@@ -4,6 +4,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NabaL", "NabaR\NabaL\NabaL.vcxproj", "{2D4CD176-EF1B-454B-8CBC-558F120DDDAC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532} = {BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tk", "Tk\Tk.vcxproj", "{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NabaC", "NabaR\NabaC\NabaC.vcxproj", "{43C2EC71-8623-45FE-8F47-A9B1800F0A6F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532} = {BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}
+		{2D4CD176-EF1B-454B-8CBC-558F120DDDAC} = {2D4CD176-EF1B-454B-8CBC-558F120DDDAC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +32,22 @@ Global
 		{2D4CD176-EF1B-454B-8CBC-558F120DDDAC}.Release|x64.Build.0 = Release|x64
 		{2D4CD176-EF1B-454B-8CBC-558F120DDDAC}.Release|x86.ActiveCfg = Release|Win32
 		{2D4CD176-EF1B-454B-8CBC-558F120DDDAC}.Release|x86.Build.0 = Release|Win32
+		{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}.Debug|x64.ActiveCfg = Debug|x64
+		{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}.Debug|x64.Build.0 = Debug|x64
+		{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}.Debug|x86.ActiveCfg = Debug|Win32
+		{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}.Debug|x86.Build.0 = Debug|Win32
+		{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}.Release|x64.ActiveCfg = Release|x64
+		{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}.Release|x64.Build.0 = Release|x64
+		{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}.Release|x86.ActiveCfg = Release|Win32
+		{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}.Release|x86.Build.0 = Release|Win32
+		{43C2EC71-8623-45FE-8F47-A9B1800F0A6F}.Debug|x64.ActiveCfg = Debug|x64
+		{43C2EC71-8623-45FE-8F47-A9B1800F0A6F}.Debug|x64.Build.0 = Debug|x64
+		{43C2EC71-8623-45FE-8F47-A9B1800F0A6F}.Debug|x86.ActiveCfg = Debug|Win32
+		{43C2EC71-8623-45FE-8F47-A9B1800F0A6F}.Debug|x86.Build.0 = Debug|Win32
+		{43C2EC71-8623-45FE-8F47-A9B1800F0A6F}.Release|x64.ActiveCfg = Release|x64
+		{43C2EC71-8623-45FE-8F47-A9B1800F0A6F}.Release|x64.Build.0 = Release|x64
+		{43C2EC71-8623-45FE-8F47-A9B1800F0A6F}.Release|x86.ActiveCfg = Release|Win32
+		{43C2EC71-8623-45FE-8F47-A9B1800F0A6F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

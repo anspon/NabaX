@@ -522,19 +522,32 @@ static const flex_int16_t yy_chk[95] =
 #define YY_RESTORE_YY_MORE_OFFSET
 #line 1 "Parser/Tokens.l"
 #line 3 "Parser/Tokens.l"
-#include "stdafx.h"
-#include <string>
-#include "Node.h"
-#include "parser.hpp"
+#define YY_NO_UNISTD_H 1
+#include "Ast/Node.h"
+#include "Ast/Block.h"
+#include "Ast/Identifier.h"
+#include "Ast/Struct.h"
+#include "Ast/StructVariable.h"
+#include "Ast/ExpressionStatement.h"
+#include "Ast/Function.h"
+#include "Ast/FunctionParameter.h"
+#include "Ast/Integer32.h"
+#include "Ast/Integer64.h"
+#include "Ast/Double.h"
+#include "Ast/VariableDeclaration.h"
+#include "Ast/MethodCall.h"
+#include "Ast/Assignment.h"
+#include "Ast/BinaryOperator.h"
+#include "Parser/Parser.hpp"
 extern void SaveToken( YYSTYPE* yylval, const char* text , int len );
 #define SAVE_TOKEN SaveToken( yylval, yytext, yyleng)
 #define TOKEN(t) (yylval->token = t)
 //extern "C" int yywrap() { }
-#line 533 "Parser/Tokens.cpp"
+#line 546 "Parser/Tokens.cpp"
 /*%option outfile="Lexer.c" header-file="Lexer.h"
 */
 #define YY_NO_UNISTD_H 1
-#line 537 "Parser/Tokens.cpp"
+#line 550 "Parser/Tokens.cpp"
 
 #define INITIAL 0
 
@@ -808,10 +821,10 @@ YY_DECL
 		}
 
 	{
-#line 20 "Parser/Tokens.l"
+#line 33 "Parser/Tokens.l"
 
 
-#line 814 "Parser/Tokens.cpp"
+#line 827 "Parser/Tokens.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -867,140 +880,140 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 22 "Parser/Tokens.l"
+#line 35 "Parser/Tokens.l"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 23 "Parser/Tokens.l"
+#line 36 "Parser/Tokens.l"
 return TOKEN(TSTRUCT);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 24 "Parser/Tokens.l"
+#line 37 "Parser/Tokens.l"
 SAVE_TOKEN; return TIDENTIFIER;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 25 "Parser/Tokens.l"
+#line 38 "Parser/Tokens.l"
 SAVE_TOKEN; return TDOUBLE;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 26 "Parser/Tokens.l"
+#line 39 "Parser/Tokens.l"
 SAVE_TOKEN; return T_I32;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 27 "Parser/Tokens.l"
+#line 40 "Parser/Tokens.l"
 SAVE_TOKEN; return T_I64;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 28 "Parser/Tokens.l"
+#line 41 "Parser/Tokens.l"
 SAVE_TOKEN; return T_I32;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 29 "Parser/Tokens.l"
+#line 42 "Parser/Tokens.l"
 return TOKEN(TSEMICOLON);
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 30 "Parser/Tokens.l"
+#line 43 "Parser/Tokens.l"
 return TOKEN(TEQUAL);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 31 "Parser/Tokens.l"
+#line 44 "Parser/Tokens.l"
 return TOKEN(TCEQ);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 32 "Parser/Tokens.l"
+#line 45 "Parser/Tokens.l"
 return TOKEN(TCNE);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 33 "Parser/Tokens.l"
+#line 46 "Parser/Tokens.l"
 return TOKEN(TCLT);
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 34 "Parser/Tokens.l"
+#line 47 "Parser/Tokens.l"
 return TOKEN(TCLE);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 35 "Parser/Tokens.l"
+#line 48 "Parser/Tokens.l"
 return TOKEN(TCGT);
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 36 "Parser/Tokens.l"
+#line 49 "Parser/Tokens.l"
 return TOKEN(TCGE);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 37 "Parser/Tokens.l"
+#line 50 "Parser/Tokens.l"
 return TOKEN(TLPAREN);
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 38 "Parser/Tokens.l"
+#line 51 "Parser/Tokens.l"
 return TOKEN(TRPAREN);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 39 "Parser/Tokens.l"
+#line 52 "Parser/Tokens.l"
 return TOKEN(TLBRACE);
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 40 "Parser/Tokens.l"
+#line 53 "Parser/Tokens.l"
 return TOKEN(TRBRACE);
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 41 "Parser/Tokens.l"
+#line 54 "Parser/Tokens.l"
 return TOKEN(TDOT);
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 42 "Parser/Tokens.l"
+#line 55 "Parser/Tokens.l"
 return TOKEN(TCOMMA);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 43 "Parser/Tokens.l"
+#line 56 "Parser/Tokens.l"
 return TOKEN(TPLUS);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 44 "Parser/Tokens.l"
+#line 57 "Parser/Tokens.l"
 return TOKEN(TMINUS);
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 45 "Parser/Tokens.l"
+#line 58 "Parser/Tokens.l"
 return TOKEN(TMUL);
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 46 "Parser/Tokens.l"
+#line 59 "Parser/Tokens.l"
 return TOKEN(TDIV);
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 47 "Parser/Tokens.l"
+#line 60 "Parser/Tokens.l"
 printf("Unknown token!n"); yyterminate();
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 49 "Parser/Tokens.l"
+#line 62 "Parser/Tokens.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 1003 "Parser/Tokens.cpp"
+#line 1016 "Parser/Tokens.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2178,5 +2191,5 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 49 "Parser/Tokens.l"
+#line 62 "Parser/Tokens.l"
 

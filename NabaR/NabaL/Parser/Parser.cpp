@@ -69,8 +69,26 @@
 #define YYERROR_VERBOSE 1
 
 #include "Ast/Node.h"
+#include "Ast/Block.h"
+#include "Ast/Identifier.h"
+#include "Ast/Struct.h"
+#include "Ast/StructVariable.h"
+#include "Ast/ExpressionStatement.h"
+#include "Ast/Function.h"
+#include "Ast/FunctionParameter.h"
+#include "Ast/Integer32.h"
+#include "Ast/Integer64.h"
+#include "Ast/Double.h"
+#include "Ast/VariableDeclaration.h"
+#include "Ast/MethodCall.h"
+#include "Ast/Assignment.h"
+#include "Ast/BinaryOperator.h"
 #include "Parser/Parser.hpp"
 #include "Parser/Tokens.h"
+
+#include "Tk/SharedPtr.h"
+
+
 //NBlock *programBlock; /* the top level root node of our final AST */
 
 extern void ReportError(const char* msg );
@@ -83,7 +101,7 @@ int yyerror(Ast::CNode **expression, yyscan_t scanner, const char *msg)
 
 
 /* Line 371 of yacc.c  */
-#line 87 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
+#line 105 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -114,7 +132,7 @@ extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
 /* Line 387 of yacc.c  */
-#line 20 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 38 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
 
 #ifndef YY_TYPEDEF_YY_SCANNER_T
@@ -125,7 +143,7 @@ typedef void* yyscan_t;
 
 
 /* Line 387 of yacc.c  */
-#line 129 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
+#line 147 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -164,7 +182,7 @@ typedef void* yyscan_t;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 35 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 53 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
     Ast::CNode* m_node;
     Ast::CBlock* block;
@@ -174,18 +192,18 @@ typedef union YYSTYPE
     Ast::CIdentifier* ident;
     Ast::CVariableDeclaration* var_decl;
     Ast::CFunctionParameter* func_param;
-    Ast::VariableList* varvec;
-    Ast::FunctionParameterList* funcParList;
-    Ast::ExpressionList* exprvec;
+    Tk::SpList<const Ast::CVariableDeclaration>* varvec;
+    Tk::SpList<const Ast::CFunctionParameter>* funcParList;
+    Tk::SpList<const Ast::CExpression>* exprvec;
     std::string *string;
     int token;
 
     Ast::CStructPart*     structPart;
-    Ast::StructPartList* structParts;
+    Tk::SpList<const Ast::CStructPart>* structParts;
 
 
 /* Line 387 of yacc.c  */
-#line 189 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
+#line 207 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -212,7 +230,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 216 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
+#line 234 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
 
 #ifdef short
 # undef short
@@ -518,11 +536,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    88,    88,    92,    93,    97,    98,    99,   100,   101,
-     105,   106,   110,   114,   115,   119,   120,   124,   125,   129,
-     133,   134,   135,   139,   144,   145,   151,   155,   156,   160,
-     161,   162,   163,   164,   165,   169,   170,   171,   175,   176,
-     177,   178,   179,   180,   181,   182,   183,   184
+       0,   106,   106,   110,   111,   115,   116,   117,   118,   119,
+     123,   124,   128,   132,   133,   137,   138,   142,   143,   147,
+     151,   152,   153,   157,   162,   163,   169,   173,   174,   178,
+     179,   180,   181,   182,   183,   187,   188,   189,   193,   194,
+     195,   196,   197,   198,   199,   200,   201,   202
 };
 #endif
 
@@ -1501,187 +1519,187 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 88 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 106 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { *expression = (yyvsp[(1) - (1)].blockParts); }
     break;
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 92 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 110 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockParts) = new Ast::CBlock(); (yyval.blockParts)->AddBlockPart((yyvsp[(1) - (1)].blockPart)); }
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 93 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 111 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyvsp[(1) - (2)].blockParts)->AddBlockPart((yyvsp[(2) - (2)].blockPart)); }
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 100 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 118 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CExpressionStatement((yyvsp[(1) - (1)].expr)); }
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 105 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 123 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = (yyvsp[(2) - (3)].blockParts); }
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 106 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 124 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CBlock(); }
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 114 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.blockPart) = new Ast::CStructDeclaration((yyvsp[(2) - (6)].ident), (yyvsp[(4) - (6)].structParts)); }
+#line 132 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.blockPart) = new Ast::CStruct((yyvsp[(2) - (6)].ident), (yyvsp[(4) - (6)].structParts)); }
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 115 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.blockPart) = new Ast::CStructDeclaration((yyvsp[(2) - (5)].ident), nullptr); }
+#line 133 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.blockPart) = new Ast::CStruct((yyvsp[(2) - (5)].ident), nullptr); }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 119 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.structPart) = new Ast::CStructVariableDeclaration((yyvsp[(1) - (3)].ident), (yyvsp[(2) - (3)].ident), nullptr); }
+#line 137 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.structPart) = new Ast::CStructVariable((yyvsp[(1) - (3)].ident), (yyvsp[(2) - (3)].ident), nullptr); }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 120 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.structPart) = new Ast::CStructVariableDeclaration((yyvsp[(1) - (5)].ident), (yyvsp[(2) - (5)].ident), (yyvsp[(4) - (5)].expr)); }
+#line 138 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.structPart) = new Ast::CStructVariable((yyvsp[(1) - (5)].ident), (yyvsp[(2) - (5)].ident), (yyvsp[(4) - (5)].expr)); }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 124 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.structParts) = new Ast::StructPartList; (yyval.structParts)->push_back(attach_sp((yyvsp[(1) - (1)].structPart))); }
+#line 142 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.structParts) = new Tk::SpList<const Ast::CStructPart>; (yyval.structParts)->push_back(Tk::AttachSp((yyvsp[(1) - (1)].structPart))); }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 125 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyvsp[(1) - (2)].structParts)->push_back(attach_sp((yyvsp[(2) - (2)].structPart))); }
+#line 143 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyvsp[(1) - (2)].structParts)->push_back(Tk::AttachSp((yyvsp[(2) - (2)].structPart))); }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 129 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.blockPart) = new Ast::CFunctionDeclaration((yyvsp[(1) - (6)].ident), (yyvsp[(2) - (6)].ident), (yyvsp[(4) - (6)].funcParList), (yyvsp[(6) - (6)].blockPart)); }
+#line 147 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.blockPart) = new Ast::CFunction((yyvsp[(1) - (6)].ident), (yyvsp[(2) - (6)].ident), (yyvsp[(4) - (6)].funcParList), (yyvsp[(6) - (6)].blockPart)); }
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 133 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.funcParList) = new Ast::FunctionParameterList; }
+#line 151 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.funcParList) = new Tk::SpList<const Ast::CFunctionParameter>; }
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 134 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.funcParList) = new Ast::FunctionParameterList; (yyval.funcParList)->push_back(attach_sp((yyvsp[(1) - (1)].func_param))); }
+#line 152 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.funcParList) = new Tk::SpList<const Ast::CFunctionParameter>; (yyval.funcParList)->push_back(Tk::AttachSp((yyvsp[(1) - (1)].func_param))); }
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 135 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyvsp[(1) - (3)].funcParList)->push_back(attach_sp((yyvsp[(3) - (3)].func_param))); }
+#line 153 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyvsp[(1) - (3)].funcParList)->push_back(Tk::AttachSp((yyvsp[(3) - (3)].func_param))); }
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 139 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 157 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.func_param) = new Ast::CFunctionParameter((yyvsp[(1) - (2)].ident), (yyvsp[(2) - (2)].ident), nullptr); }
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 144 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 162 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CVariableDeclaration((yyvsp[(1) - (3)].ident), (yyvsp[(2) - (3)].ident), nullptr); }
     break;
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 145 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 163 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CVariableDeclaration((yyvsp[(1) - (5)].ident), (yyvsp[(2) - (5)].ident), (yyvsp[(4) - (5)].expr)); }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 151 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 169 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.ident) = new Ast::CIdentifier((yyvsp[(1) - (1)].string)); }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 155 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 173 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CInteger32((yyvsp[(1) - (1)].string));}
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 156 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 174 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CDouble((yyvsp[(1) - (1)].string));}
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 160 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 178 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CAssignment((yyvsp[(1) - (3)].ident), (yyvsp[(3) - (3)].expr)); }
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 161 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 179 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CMethodCall((yyvsp[(1) - (4)].ident), (yyvsp[(3) - (4)].exprvec)); }
     break;
 
   case 31:
 /* Line 1792 of yacc.c  */
-#line 162 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 180 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.ident) = (yyvsp[(1) - (1)].ident); }
     break;
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 164 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 182 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CBinaryOperator((yyvsp[(1) - (3)].expr), (yyvsp[(2) - (3)].token), (yyvsp[(3) - (3)].expr)); }
     break;
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 165 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 183 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = (yyvsp[(2) - (3)].expr); }
     break;
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 169 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.exprvec) = new Ast::ExpressionList; }
+#line 187 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.exprvec) = new Tk::SpList<const Ast::CExpression>; }
     break;
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 170 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.exprvec) = new Ast::ExpressionList; (yyval.exprvec)->push_back(attach_sp((yyvsp[(1) - (1)].expr))); }
+#line 188 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.exprvec) = new Tk::SpList<const Ast::CExpression>; (yyval.exprvec)->push_back(Tk::AttachSp((yyvsp[(1) - (1)].expr))); }
     break;
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 171 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyvsp[(1) - (3)].exprvec)->push_back(attach_sp((yyvsp[(3) - (3)].expr)) ); }
+#line 189 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyvsp[(1) - (3)].exprvec)->push_back(Tk::AttachSp((yyvsp[(3) - (3)].expr)) ); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1685 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
+#line 1703 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1913,4 +1931,4 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 187 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 205 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"

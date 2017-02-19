@@ -1,9 +1,22 @@
 
 %{
-#include "stdafx.h"
-#include <string>
-#include "Node.h"
-#include "parser.hpp"
+#define YY_NO_UNISTD_H 1
+#include "Ast/Node.h"
+#include "Ast/Block.h"
+#include "Ast/Identifier.h"
+#include "Ast/Struct.h"
+#include "Ast/StructVariable.h"
+#include "Ast/ExpressionStatement.h"
+#include "Ast/Function.h"
+#include "Ast/FunctionParameter.h"
+#include "Ast/Integer32.h"
+#include "Ast/Integer64.h"
+#include "Ast/Double.h"
+#include "Ast/VariableDeclaration.h"
+#include "Ast/MethodCall.h"
+#include "Ast/Assignment.h"
+#include "Ast/BinaryOperator.h"
+#include "Parser/Parser.hpp"
 extern void SaveToken( YYSTYPE* yylval, const char* text , int len );
 #define SAVE_TOKEN SaveToken( yylval, yytext, yyleng)
 #define TOKEN(t) (yylval->token = t)

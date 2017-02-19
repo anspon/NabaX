@@ -19,89 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Ast\Assignment.cpp" />
-    <ClCompile Include="Ast\BinaryOperator.cpp" />
-    <ClCompile Include="Ast\Block.cpp" />
-    <ClCompile Include="Ast\BlockPart.cpp" />
-    <ClCompile Include="Ast\Double.cpp" />
-    <ClCompile Include="Ast\Expression.cpp" />
-    <ClCompile Include="Ast\ExpressionStatement.cpp" />
-    <ClCompile Include="Ast\FileScope.cpp" />
-    <ClCompile Include="Ast\Function.cpp" />
-    <ClCompile Include="Ast\FunctionParameter.cpp" />
-    <ClCompile Include="Ast\Identifier.cpp" />
-    <ClCompile Include="Ast\Integer32.cpp" />
-    <ClCompile Include="Ast\Integer64.cpp" />
-    <ClCompile Include="Ast\Literal.cpp" />
-    <ClCompile Include="Ast\MethodCall.cpp" />
-    <ClCompile Include="Ast\Node.cpp" />
-    <ClCompile Include="Ast\Scope.cpp" />
-    <ClCompile Include="Ast\Statement.cpp" />
-    <ClCompile Include="Ast\Struct.cpp" />
-    <ClCompile Include="Ast\StructPart.cpp" />
-    <ClCompile Include="Ast\StructVariable.cpp" />
-    <ClCompile Include="Ast\VariableDeclaration.cpp" />
-    <ClCompile Include="Module.cpp" />
-    <ClCompile Include="NabaLPch.cpp">
+    <ClInclude Include="Exception.h" />
+    <ClInclude Include="SharedPtr.h" />
+    <ClInclude Include="TkPch.h" />
+    <ClInclude Include="TkPchHeaders.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="TkPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ParseModule.cpp" />
-    <ClCompile Include="Parser\ParserPchWrapper.cpp" />
-    <ClCompile Include="Parser\TokensPchWrapper.cpp" />
-    <ClCompile Include="TranslationUnit.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Ast\Assignment.h" />
-    <ClInclude Include="Ast\BinaryOperator.h" />
-    <ClInclude Include="Ast\Block.h" />
-    <ClInclude Include="Ast\BlockPart.h" />
-    <ClInclude Include="Ast\Double.h" />
-    <ClInclude Include="Ast\Expression.h" />
-    <ClInclude Include="Ast\ExpressionStatement.h" />
-    <ClInclude Include="Ast\FileScope.h" />
-    <ClInclude Include="Ast\Function.h" />
-    <ClInclude Include="Ast\FunctionParameter.h" />
-    <ClInclude Include="Ast\Identifier.h" />
-    <ClInclude Include="Ast\Integer32.h" />
-    <ClInclude Include="Ast\Integer64.h" />
-    <ClInclude Include="Ast\Literal.h" />
-    <ClInclude Include="Ast\MethodCall.h" />
-    <ClInclude Include="Ast\Node.h" />
-    <ClInclude Include="Ast\Scope.h" />
-    <ClInclude Include="Ast\Statement.h" />
-    <ClInclude Include="Ast\Struct.h" />
-    <ClInclude Include="Ast\StructPart.h" />
-    <ClInclude Include="Ast\StructVariable.h" />
-    <ClInclude Include="Ast\VariableDeclaration.h" />
-    <ClInclude Include="Module.h" />
-    <ClInclude Include="NabaLPch.h" />
-    <ClInclude Include="NabalPchHeaders.h" />
-    <ClInclude Include="ParseModule.h" />
-    <ClInclude Include="TranslationUnit.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="Parser\parser.y">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">c:\apps\winflexbison\win_bison.exe -d -o C:\dev\NabaX\NabaR\NabaL\Parser\Parser.cpp C:\dev\NabaX\NabaR\NabaL\Parser\Parser.y</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Parser.cpp</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="Parser\tokens.l">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\apps\winflexbison\win_flex.exe    --outfile=Parser/Tokens.cpp --header-file=Parser/Tokens.h Parser/Tokens.l</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Parser/Tokens.cpp;Parser/Tokens.h</Outputs>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Tk\Tk.vcxproj">
-      <Project>{bd70c313-fbe0-4d8b-bf5e-e7c2eb037532}</Project>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{2D4CD176-EF1B-454B-8CBC-558F120DDDAC}</ProjectGuid>
+    <ProjectGuid>{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>NabaL</RootNamespace>
+    <RootNamespace>Tk</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -157,8 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <PrecompiledHeaderFile>NabaLPch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.;../../</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>TkPch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -3,8 +3,26 @@
 #define YYERROR_VERBOSE 1
 
 #include "Ast/Node.h"
+#include "Ast/Block.h"
+#include "Ast/Identifier.h"
+#include "Ast/Struct.h"
+#include "Ast/StructVariable.h"
+#include "Ast/ExpressionStatement.h"
+#include "Ast/Function.h"
+#include "Ast/FunctionParameter.h"
+#include "Ast/Integer32.h"
+#include "Ast/Integer64.h"
+#include "Ast/Double.h"
+#include "Ast/VariableDeclaration.h"
+#include "Ast/MethodCall.h"
+#include "Ast/Assignment.h"
+#include "Ast/BinaryOperator.h"
 #include "Parser/Parser.hpp"
 #include "Parser/Tokens.h"
+
+#include "Tk/SharedPtr.h"
+
+
 //NBlock *programBlock; /* the top level root node of our final AST */
 
 extern void ReportError(const char* msg );
@@ -41,14 +59,14 @@ typedef void* yyscan_t;
     Ast::CIdentifier* ident;
     Ast::CVariableDeclaration* var_decl;
     Ast::CFunctionParameter* func_param;
-    Ast::VariableList* varvec;
-    Ast::FunctionParameterList* funcParList;
-    Ast::ExpressionList* exprvec;
+    Tk::SpList<const Ast::CVariableDeclaration>* varvec;
+    Tk::SpList<const Ast::CFunctionParameter>* funcParList;
+    Tk::SpList<const Ast::CExpression>* exprvec;
     std::string *string;
     int token;
 
     Ast::CStructPart*     structPart;
-    Ast::StructPartList* structParts;
+    Tk::SpList<const Ast::CStructPart>* structParts;
 }
 
 /* Define our terminal symbols (tokens). This should
@@ -111,28 +129,28 @@ lparen:
     ;
 
 struct :  
-    TSTRUCT ident TLBRACE structParts TRBRACE TSEMICOLON { $$ = new Ast::CStructDeclaration($2, $4); } |
-    TSTRUCT ident TLBRACE TRBRACE TSEMICOLON { $$ = new Ast::CStructDeclaration($2, nullptr); }
+    TSTRUCT ident TLBRACE structParts TRBRACE TSEMICOLON { $$ = new Ast::CStruct($2, $4); } |
+    TSTRUCT ident TLBRACE TRBRACE TSEMICOLON { $$ = new Ast::CStruct($2, nullptr); }
     ;
 
 structPart : 
-    ident ident TSEMICOLON { $$ = new Ast::CStructVariableDeclaration($1, $2, nullptr); } |
-    ident ident TEQUAL expr TSEMICOLON { $$ = new Ast::CStructVariableDeclaration($1, $2, $4); }
+    ident ident TSEMICOLON { $$ = new Ast::CStructVariable($1, $2, nullptr); } |
+    ident ident TEQUAL expr TSEMICOLON { $$ = new Ast::CStructVariable($1, $2, $4); }
     ;
 
 structParts: 
-    structPart { $$ = new Ast::StructPartList; $$->push_back(attach_sp($<structPart>1)); } | 
-    structParts structPart { $1->push_back(attach_sp($<structPart>2)); }
+    structPart { $$ = new Tk::SpList<const Ast::CStructPart>; $$->push_back(Tk::AttachSp($<structPart>1)); } | 
+    structParts structPart { $1->push_back(Tk::AttachSp($<structPart>2)); }
     ;
 
 func_decl : 
-    ident ident lparen func_decl_args TRPAREN block { $$ = new Ast::CFunctionDeclaration($1, $2, $4, $6); }
+    ident ident lparen func_decl_args TRPAREN block { $$ = new Ast::CFunction($1, $2, $4, $6); }
     ;
     
 func_decl_args : 
-    /*blank*/  { $$ = new Ast::FunctionParameterList; } | 
-    func_param { $$ = new Ast::FunctionParameterList; $$->push_back(attach_sp($<func_param>1)); } | 
-    func_decl_args TCOMMA func_param { $1->push_back(attach_sp($<func_param>3)); }
+    /*blank*/  { $$ = new Tk::SpList<const Ast::CFunctionParameter>; } | 
+    func_param { $$ = new Tk::SpList<const Ast::CFunctionParameter>; $$->push_back(Tk::AttachSp($<func_param>1)); } | 
+    func_decl_args TCOMMA func_param { $1->push_back(Tk::AttachSp($<func_param>3)); }
     ;
 
 func_param:
@@ -166,9 +184,9 @@ expr :
     ;
     
 call_args : 
-    /*blank*/  { $$ = new Ast::ExpressionList; } | 
-    expr { $$ = new Ast::ExpressionList; $$->push_back(attach_sp($1)); } | 
-    call_args TCOMMA expr  { $1->push_back(attach_sp($3) ); }
+    /*blank*/  { $$ = new Tk::SpList<const Ast::CExpression>; } | 
+    expr { $$ = new Tk::SpList<const Ast::CExpression>; $$->push_back(Tk::AttachSp($1)); } | 
+    call_args TCOMMA expr  { $1->push_back(Tk::AttachSp($3) ); }
     ;
 
 comparison : 
