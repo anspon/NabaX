@@ -11,15 +11,15 @@ class CNode;
 namespace NabaL
 {
 
-class TranslationUnit
+class CTranslationUnit
 {
 public:
-    TranslationUnit(
+    CTranslationUnit(
         const std::list<std::string>& nameSpace,
         Tk::Sp<const Ast::CNode> ast
         );
     
-    ~TranslationUnit(
+    ~CTranslationUnit(
         );
 
 private:

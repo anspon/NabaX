@@ -23,6 +23,7 @@
 #include "Parser/Parser.hpp"
 #include "Parser/Tokens.h"
 
+#include "TranslationUnit.h"
 
 void  SaveToken(YYSTYPE* yylval, const char* text, int len)
 {
@@ -76,10 +77,10 @@ Tk::Sp<const CModule>
         const std::string& sourceFolder
         )
 {
-    Tk::Sp<const CModule> module = Tk::MakeSp<CModule>();
+    Tk::SpList<const CTranslationUnit> translationUnits;
 
-    const filesystem::path sourcePath(sourceFolder);
-
+    const filesystem::path sourcePath(sourceFolder.c_str() );
+    std::string libraryNamespace = sourcePath.stem().string();
 
     filesystem::directory_iterator sourceIterator(sourceFolder);
     TK_ASSERT( filesystem::directory_iterator() != sourceIterator, "Invalid source directory '" << sourceFolder << "' ");
@@ -87,7 +88,10 @@ Tk::Sp<const CModule>
     for( const filesystem::directory_entry& entry : sourceIterator )
     {
         const filesystem::path& path = entry.path();
-        
+        const filesystem::path fileName = path.stem().string();
+
+        std::list<std::string> nameSpacePath = {libraryNamespace, fileName.string() };
+
         if( std::string(".aspp") == path.extension() )
         {
             int i=0;i++;
@@ -103,12 +107,12 @@ Tk::Sp<const CModule>
             }
             if( Tk::Sp<const Ast::CNode> node = getAST(completeText.c_str() ) )
             {
-                int i=0;
-                i++;
+                Tk::Sp<const CTranslationUnit> unit = Tk::MakeSp<CTranslationUnit>(nameSpacePath, node );
+                translationUnits.push_back(unit);
             }
         }        
     }
-    return module;
+    return Tk::MakeSp<CModule>(translationUnits);
 }
 
 }
