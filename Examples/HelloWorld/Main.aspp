@@ -1,0 +1,29 @@
+
+int s_j=1_000_000i32;
+int s_k_1=1i32;
+int s_k_2=1i32;
+double s_k = 1.76878d;
+
+struct Apa
+{
+    int a = 7;
+    int j;
+};
+
+struct Apa2
+{
+
+};
+
+void Banana(int k)
+{
+    Apa2 apa2;
+    Apa2 apa2_1 = apa2;
+}
+
+
+void Main()
+{
+    Apa apa;
+}
+
