@@ -50,7 +50,7 @@
 #define YYSKELETON_NAME "yacc.c"
 
 /* Pure parsers.  */
-#define YYPURE 1
+#define YYPURE 2
 
 /* Push parsers.  */
 #define YYPUSH 0
@@ -68,7 +68,8 @@
 #define YY_NO_UNISTD_H 1
 #define YYERROR_VERBOSE 1
 
-#include "Ast/Node.h"
+
+
 #include "Ast/Block.h"
 #include "Ast/Identifier.h"
 #include "Ast/Struct.h"
@@ -83,25 +84,40 @@
 #include "Ast/MethodCall.h"
 #include "Ast/Assignment.h"
 #include "Ast/BinaryOperator.h"
+#include "Tk/SharedPtr.h"
+#include "Ast/Node.h"
+#include "CompileError.h"
+
 #include "Parser/Parser.hpp"
 #include "Parser/Tokens.h"
 
-#include "Tk/SharedPtr.h"
 
+extern void 
+    ReportError(
+        YYLTYPE* location,
+        const filesystem::path& pathFile, 
+        Tk::Sp<const NabaL::CCompileError>& errorOut, 
+        Tk::Sp<const Ast::CNode>& expressionOut,
+        const char* msg
+        );
 
-//NBlock *programBlock; /* the top level root node of our final AST */
-
-extern void ReportError(const char* msg );
-
-int yyerror(Ast::CNode **expression, yyscan_t scanner, const char *msg) 
+int yyerror (
+    YYLTYPE* location,
+    yyscan_t scanner, 
+    const filesystem::path& pathFile, 
+    Tk::Sp<const NabaL::CCompileError>& errorOut, 
+    Tk::Sp<const Ast::CNode>& expressionOut,
+    const char* msg
+    )
 {
-    ReportError( msg );
+    ReportError( location, pathFile, errorOut, expressionOut, msg );
     return 0;
 }
 
 
+
 /* Line 371 of yacc.c  */
-#line 105 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
+#line 121 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -132,7 +148,7 @@ extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
 /* Line 387 of yacc.c  */
-#line 38 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 54 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
 
 #ifndef YY_TYPEDEF_YY_SCANNER_T
@@ -143,7 +159,7 @@ typedef void* yyscan_t;
 
 
 /* Line 387 of yacc.c  */
-#line 147 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
+#line 163 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -182,7 +198,7 @@ typedef void* yyscan_t;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 53 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 72 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
     Ast::CNode* m_node;
     Ast::CBlock* block;
@@ -203,11 +219,24 @@ typedef union YYSTYPE
 
 
 /* Line 387 of yacc.c  */
-#line 207 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
+#line 223 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
+#endif
+
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
+typedef struct YYLTYPE
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+} YYLTYPE;
+# define yyltype YYLTYPE /* obsolescent; will be withdrawn */
+# define YYLTYPE_IS_DECLARED 1
+# define YYLTYPE_IS_TRIVIAL 1
 #endif
 
 
@@ -219,7 +248,7 @@ int yyparse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int yyparse (Ast::CNode **expression, yyscan_t scanner);
+int yyparse (yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const NabaL::CCompileError>& errorOut, Tk::Sp<const Ast::CNode>& expressionOut);
 #else
 int yyparse ();
 #endif
@@ -230,7 +259,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 234 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
+#line 263 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
 
 #ifdef short
 # undef short
@@ -389,13 +418,15 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-	 || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+	 || (defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL \
+	     && defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
 {
   yytype_int16 yyss_alloc;
   YYSTYPE yyvs_alloc;
+  YYLTYPE yyls_alloc;
 };
 
 /* The size of the maximum gap between one aligned stack and the next.  */
@@ -404,8 +435,8 @@ union yyalloc
 /* The size of an array large to enough to hold all stacks, each with
    N elements.  */
 # define YYSTACK_BYTES(N) \
-     ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE)) \
-      + YYSTACK_GAP_MAXIMUM)
+     ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE) + sizeof (YYLTYPE)) \
+      + 2 * YYSTACK_GAP_MAXIMUM)
 
 # define YYCOPY_NEEDED 1
 
@@ -536,11 +567,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   106,   106,   110,   111,   115,   116,   117,   118,   119,
-     123,   124,   128,   132,   133,   137,   138,   142,   143,   147,
-     151,   152,   153,   157,   162,   163,   169,   173,   174,   178,
-     179,   180,   181,   182,   183,   187,   188,   189,   193,   194,
-     195,   196,   197,   198,   199,   200,   201,   202
+       0,   125,   125,   129,   130,   134,   135,   136,   137,   138,
+     142,   143,   147,   151,   152,   156,   157,   161,   162,   166,
+     170,   171,   172,   176,   181,   182,   188,   192,   193,   197,
+     198,   199,   200,   201,   202,   206,   207,   208,   212,   213,
+     214,   215,   216,   217,   218,   219,   220,   221
 };
 #endif
 
@@ -733,7 +764,7 @@ do                                                              \
     }                                                           \
   else                                                          \
     {                                                           \
-      yyerror (expression, scanner, YY_("syntax error: cannot back up")); \
+      yyerror (&yylloc, scanner, pathFile, errorOut, expressionOut, YY_("syntax error: cannot back up")); \
       YYERROR;							\
     }								\
 while (YYID (0))
@@ -743,17 +774,98 @@ while (YYID (0))
 #define YYERRCODE	256
 
 
-/* This macro is provided for backward compatibility. */
+/* YYLLOC_DEFAULT -- Set CURRENT to span from RHS[1] to RHS[N].
+   If N is 0, then set CURRENT to the empty location which ends
+   the previous symbol: RHS[0] (always defined).  */
+
+#ifndef YYLLOC_DEFAULT
+# define YYLLOC_DEFAULT(Current, Rhs, N)                                \
+    do                                                                  \
+      if (YYID (N))                                                     \
+        {                                                               \
+          (Current).first_line   = YYRHSLOC (Rhs, 1).first_line;        \
+          (Current).first_column = YYRHSLOC (Rhs, 1).first_column;      \
+          (Current).last_line    = YYRHSLOC (Rhs, N).last_line;         \
+          (Current).last_column  = YYRHSLOC (Rhs, N).last_column;       \
+        }                                                               \
+      else                                                              \
+        {                                                               \
+          (Current).first_line   = (Current).last_line   =              \
+            YYRHSLOC (Rhs, 0).last_line;                                \
+          (Current).first_column = (Current).last_column =              \
+            YYRHSLOC (Rhs, 0).last_column;                              \
+        }                                                               \
+    while (YYID (0))
+#endif
+
+#define YYRHSLOC(Rhs, K) ((Rhs)[K])
+
+
+/* YY_LOCATION_PRINT -- Print the location on the stream.
+   This macro was not mandated originally: define only if we know
+   we won't break user code: when these are the locations we know.  */
+
+#ifndef __attribute__
+/* This feature is available in gcc versions 2.5 and later.  */
+# if (! defined __GNUC__ || __GNUC__ < 2 \
+      || (__GNUC__ == 2 && __GNUC_MINOR__ < 5))
+#  define __attribute__(Spec) /* empty */
+# endif
+#endif
+
 #ifndef YY_LOCATION_PRINT
-# define YY_LOCATION_PRINT(File, Loc) ((void) 0)
+# if defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL
+
+/* Print *YYLOCP on YYO.  Private, do not rely on its existence. */
+
+__attribute__((__unused__))
+#if (defined __STDC__ || defined __C99__FUNC__ \
+     || defined __cplusplus || defined _MSC_VER)
+static unsigned
+yy_location_print_ (FILE *yyo, YYLTYPE const * const yylocp)
+#else
+static unsigned
+yy_location_print_ (yyo, yylocp)
+    FILE *yyo;
+    YYLTYPE const * const yylocp;
+#endif
+{
+  unsigned res = 0;
+  int end_col = 0 != yylocp->last_column ? yylocp->last_column - 1 : 0;
+  if (0 <= yylocp->first_line)
+    {
+      res += fprintf (yyo, "%d", yylocp->first_line);
+      if (0 <= yylocp->first_column)
+        res += fprintf (yyo, ".%d", yylocp->first_column);
+    }
+  if (0 <= yylocp->last_line)
+    {
+      if (yylocp->first_line < yylocp->last_line)
+        {
+          res += fprintf (yyo, "-%d", yylocp->last_line);
+          if (0 <= end_col)
+            res += fprintf (yyo, ".%d", end_col);
+        }
+      else if (0 <= end_col && yylocp->first_column < end_col)
+        res += fprintf (yyo, "-%d", end_col);
+    }
+  return res;
+ }
+
+#  define YY_LOCATION_PRINT(File, Loc)          \
+  yy_location_print_ (File, &(Loc))
+
+# else
+#  define YY_LOCATION_PRINT(File, Loc) ((void) 0)
+# endif
 #endif
 
 
 /* YYLEX -- calling `yylex' with the right arguments.  */
 #ifdef YYLEX_PARAM
-# define YYLEX yylex (&yylval, YYLEX_PARAM)
+# define YYLEX yylex (&yylval, &yylloc, YYLEX_PARAM)
 #else
-# define YYLEX yylex (&yylval, scanner)
+# define YYLEX yylex (&yylval, &yylloc, scanner)
 #endif
 
 /* Enable debugging if requested.  */
@@ -776,7 +888,7 @@ do {									  \
     {									  \
       YYFPRINTF (stderr, "%s ", Title);					  \
       yy_symbol_print (stderr,						  \
-		  Type, Value, expression, scanner); \
+		  Type, Value, Location, scanner, pathFile, errorOut, expressionOut); \
       YYFPRINTF (stderr, "\n");						  \
     }									  \
 } while (YYID (0))
@@ -790,23 +902,29 @@ do {									  \
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, Ast::CNode **expression, yyscan_t scanner)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const NabaL::CCompileError>& errorOut, Tk::Sp<const Ast::CNode>& expressionOut)
 #else
 static void
-yy_symbol_value_print (yyoutput, yytype, yyvaluep, expression, scanner)
+yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp, scanner, pathFile, errorOut, expressionOut)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
-    Ast::CNode **expression;
+    YYLTYPE const * const yylocationp;
     yyscan_t scanner;
+    const filesystem::path& pathFile;
+    Tk::Sp<const NabaL::CCompileError>& errorOut;
+    Tk::Sp<const Ast::CNode>& expressionOut;
 #endif
 {
   FILE *yyo = yyoutput;
   YYUSE (yyo);
   if (!yyvaluep)
     return;
-  YYUSE (expression);
+  YYUSE (yylocationp);
   YYUSE (scanner);
+  YYUSE (pathFile);
+  YYUSE (errorOut);
+  YYUSE (expressionOut);
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
     YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
@@ -828,15 +946,18 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep, expression, scanner)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, Ast::CNode **expression, yyscan_t scanner)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp, yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const NabaL::CCompileError>& errorOut, Tk::Sp<const Ast::CNode>& expressionOut)
 #else
 static void
-yy_symbol_print (yyoutput, yytype, yyvaluep, expression, scanner)
+yy_symbol_print (yyoutput, yytype, yyvaluep, yylocationp, scanner, pathFile, errorOut, expressionOut)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
-    Ast::CNode **expression;
+    YYLTYPE const * const yylocationp;
     yyscan_t scanner;
+    const filesystem::path& pathFile;
+    Tk::Sp<const NabaL::CCompileError>& errorOut;
+    Tk::Sp<const Ast::CNode>& expressionOut;
 #endif
 {
   if (yytype < YYNTOKENS)
@@ -844,7 +965,9 @@ yy_symbol_print (yyoutput, yytype, yyvaluep, expression, scanner)
   else
     YYFPRINTF (yyoutput, "nterm %s (", yytname[yytype]);
 
-  yy_symbol_value_print (yyoutput, yytype, yyvaluep, expression, scanner);
+  YY_LOCATION_PRINT (yyoutput, *yylocationp);
+  YYFPRINTF (yyoutput, ": ");
+  yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp, scanner, pathFile, errorOut, expressionOut);
   YYFPRINTF (yyoutput, ")");
 }
 
@@ -887,14 +1010,17 @@ do {								\
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, int yyrule, Ast::CNode **expression, yyscan_t scanner)
+yy_reduce_print (YYSTYPE *yyvsp, YYLTYPE *yylsp, int yyrule, yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const NabaL::CCompileError>& errorOut, Tk::Sp<const Ast::CNode>& expressionOut)
 #else
 static void
-yy_reduce_print (yyvsp, yyrule, expression, scanner)
+yy_reduce_print (yyvsp, yylsp, yyrule, scanner, pathFile, errorOut, expressionOut)
     YYSTYPE *yyvsp;
+    YYLTYPE *yylsp;
     int yyrule;
-    Ast::CNode **expression;
     yyscan_t scanner;
+    const filesystem::path& pathFile;
+    Tk::Sp<const NabaL::CCompileError>& errorOut;
+    Tk::Sp<const Ast::CNode>& expressionOut;
 #endif
 {
   int yynrhs = yyr2[yyrule];
@@ -908,7 +1034,7 @@ yy_reduce_print (yyvsp, yyrule, expression, scanner)
       YYFPRINTF (stderr, "   $%d = ", yyi + 1);
       yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
 		       &(yyvsp[(yyi + 1) - (yynrhs)])
-		       		       , expression, scanner);
+		       , &(yylsp[(yyi + 1) - (yynrhs)])		       , scanner, pathFile, errorOut, expressionOut);
       YYFPRINTF (stderr, "\n");
     }
 }
@@ -916,7 +1042,7 @@ yy_reduce_print (yyvsp, yyrule, expression, scanner)
 # define YY_REDUCE_PRINT(Rule)		\
 do {					\
   if (yydebug)				\
-    yy_reduce_print (yyvsp, Rule, expression, scanner); \
+    yy_reduce_print (yyvsp, yylsp, Rule, scanner, pathFile, errorOut, expressionOut); \
 } while (YYID (0))
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
@@ -1196,20 +1322,26 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, Ast::CNode **expression, yyscan_t scanner)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocationp, yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const NabaL::CCompileError>& errorOut, Tk::Sp<const Ast::CNode>& expressionOut)
 #else
 static void
-yydestruct (yymsg, yytype, yyvaluep, expression, scanner)
+yydestruct (yymsg, yytype, yyvaluep, yylocationp, scanner, pathFile, errorOut, expressionOut)
     const char *yymsg;
     int yytype;
     YYSTYPE *yyvaluep;
-    Ast::CNode **expression;
+    YYLTYPE *yylocationp;
     yyscan_t scanner;
+    const filesystem::path& pathFile;
+    Tk::Sp<const NabaL::CCompileError>& errorOut;
+    Tk::Sp<const Ast::CNode>& expressionOut;
 #endif
 {
   YYUSE (yyvaluep);
-  YYUSE (expression);
+  YYUSE (yylocationp);
   YYUSE (scanner);
+  YYUSE (pathFile);
+  YYUSE (errorOut);
+  YYUSE (expressionOut);
 
   if (!yymsg)
     yymsg = "Deleting";
@@ -1244,12 +1376,14 @@ yyparse (YYPARSE_PARAM)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 int
-yyparse (Ast::CNode **expression, yyscan_t scanner)
+yyparse (yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const NabaL::CCompileError>& errorOut, Tk::Sp<const Ast::CNode>& expressionOut)
 #else
 int
-yyparse (expression, scanner)
-    Ast::CNode **expression;
+yyparse (scanner, pathFile, errorOut, expressionOut)
     yyscan_t scanner;
+    const filesystem::path& pathFile;
+    Tk::Sp<const NabaL::CCompileError>& errorOut;
+    Tk::Sp<const Ast::CNode>& expressionOut;
 #endif
 #endif
 {
@@ -1271,6 +1405,11 @@ int yychar;
 static YYSTYPE yyval_default;
 # define YY_INITIAL_VALUE(Value) = Value
 #endif
+static YYLTYPE yyloc_default
+# if defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL
+  = { 1, 1, 1, 1 }
+# endif
+;
 #ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
 # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
 # define YY_IGNORE_MAYBE_UNINITIALIZED_END
@@ -1282,6 +1421,10 @@ static YYSTYPE yyval_default;
 /* The semantic value of the lookahead symbol.  */
 YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
 
+/* Location data for the lookahead symbol.  */
+YYLTYPE yylloc = yyloc_default;
+
+
     /* Number of syntax errors so far.  */
     int yynerrs;
 
@@ -1292,6 +1435,7 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
     /* The stacks and their tools:
        `yyss': related to states.
        `yyvs': related to semantic values.
+       `yyls': related to locations.
 
        Refer to the stacks through separate pointers, to allow yyoverflow
        to reallocate them elsewhere.  */
@@ -1306,6 +1450,14 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
     YYSTYPE *yyvs;
     YYSTYPE *yyvsp;
 
+    /* The location stack.  */
+    YYLTYPE yylsa[YYINITDEPTH];
+    YYLTYPE *yyls;
+    YYLTYPE *yylsp;
+
+    /* The locations where the error started and ended.  */
+    YYLTYPE yyerror_range[3];
+
     YYSIZE_T yystacksize;
 
   int yyn;
@@ -1315,6 +1467,7 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
   /* The variables used to return semantic value and location from the
      action routines.  */
   YYSTYPE yyval;
+  YYLTYPE yyloc;
 
 #if YYERROR_VERBOSE
   /* Buffer for error messages, and its allocated size.  */
@@ -1323,7 +1476,7 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
   YYSIZE_T yymsg_alloc = sizeof yymsgbuf;
 #endif
 
-#define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
+#define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N), yylsp -= (N))
 
   /* The number of symbols on the RHS of the reduced rule.
      Keep to zero when no symbol should be popped.  */
@@ -1331,6 +1484,7 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
 
   yyssp = yyss = yyssa;
   yyvsp = yyvs = yyvsa;
+  yylsp = yyls = yylsa;
   yystacksize = YYINITDEPTH;
 
   YYDPRINTF ((stderr, "Starting parse\n"));
@@ -1339,6 +1493,7 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
   yyerrstatus = 0;
   yynerrs = 0;
   yychar = YYEMPTY; /* Cause a token to be read.  */
+  yylsp[0] = yylloc;
   goto yysetstate;
 
 /*------------------------------------------------------------.
@@ -1364,6 +1519,7 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
 	   memory.  */
 	YYSTYPE *yyvs1 = yyvs;
 	yytype_int16 *yyss1 = yyss;
+	YYLTYPE *yyls1 = yyls;
 
 	/* Each stack pointer address is followed by the size of the
 	   data in use in that stack, in bytes.  This used to be a
@@ -1372,8 +1528,10 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
 	yyoverflow (YY_("memory exhausted"),
 		    &yyss1, yysize * sizeof (*yyssp),
 		    &yyvs1, yysize * sizeof (*yyvsp),
+		    &yyls1, yysize * sizeof (*yylsp),
 		    &yystacksize);
 
+	yyls = yyls1;
 	yyss = yyss1;
 	yyvs = yyvs1;
       }
@@ -1396,6 +1554,7 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
 	  goto yyexhaustedlab;
 	YYSTACK_RELOCATE (yyss_alloc, yyss);
 	YYSTACK_RELOCATE (yyvs_alloc, yyvs);
+	YYSTACK_RELOCATE (yyls_alloc, yyls);
 #  undef YYSTACK_RELOCATE
 	if (yyss1 != yyssa)
 	  YYSTACK_FREE (yyss1);
@@ -1405,6 +1564,7 @@ YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
 
       yyssp = yyss + yysize - 1;
       yyvsp = yyvs + yysize - 1;
+      yylsp = yyls + yysize - 1;
 
       YYDPRINTF ((stderr, "Stack size increased to %lu\n",
 		  (unsigned long int) yystacksize));
@@ -1482,7 +1642,7 @@ yybackup:
   YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
   YY_IGNORE_MAYBE_UNINITIALIZED_END
-
+  *++yylsp = yylloc;
   goto yynewstate;
 
 
@@ -1513,193 +1673,194 @@ yyreduce:
      GCC warning that YYVAL may be used uninitialized.  */
   yyval = yyvsp[1-yylen];
 
-
+  /* Default location.  */
+  YYLLOC_DEFAULT (yyloc, (yylsp - yylen), yylen);
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 106 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { *expression = (yyvsp[(1) - (1)].blockParts); }
+#line 125 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { expressionOut = Tk::AttachSp((yyvsp[(1) - (1)].blockParts)); }
     break;
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 110 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 129 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockParts) = new Ast::CBlock(); (yyval.blockParts)->AddBlockPart((yyvsp[(1) - (1)].blockPart)); }
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 111 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 130 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyvsp[(1) - (2)].blockParts)->AddBlockPart((yyvsp[(2) - (2)].blockPart)); }
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 118 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 137 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CExpressionStatement((yyvsp[(1) - (1)].expr)); }
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 123 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 142 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = (yyvsp[(2) - (3)].blockParts); }
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 124 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 143 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CBlock(); }
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 132 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 151 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CStruct((yyvsp[(2) - (6)].ident), (yyvsp[(4) - (6)].structParts)); }
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 133 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 152 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CStruct((yyvsp[(2) - (5)].ident), nullptr); }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 137 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 156 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.structPart) = new Ast::CStructVariable((yyvsp[(1) - (3)].ident), (yyvsp[(2) - (3)].ident), nullptr); }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 138 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 157 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.structPart) = new Ast::CStructVariable((yyvsp[(1) - (5)].ident), (yyvsp[(2) - (5)].ident), (yyvsp[(4) - (5)].expr)); }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 142 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 161 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.structParts) = new Tk::SpList<const Ast::CStructPart>; (yyval.structParts)->push_back(Tk::AttachSp((yyvsp[(1) - (1)].structPart))); }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 143 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 162 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyvsp[(1) - (2)].structParts)->push_back(Tk::AttachSp((yyvsp[(2) - (2)].structPart))); }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 147 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 166 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CFunction((yyvsp[(1) - (6)].ident), (yyvsp[(2) - (6)].ident), (yyvsp[(4) - (6)].funcParList), (yyvsp[(6) - (6)].blockPart)); }
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 151 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 170 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.funcParList) = new Tk::SpList<const Ast::CFunctionParameter>; }
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 152 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 171 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.funcParList) = new Tk::SpList<const Ast::CFunctionParameter>; (yyval.funcParList)->push_back(Tk::AttachSp((yyvsp[(1) - (1)].func_param))); }
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 153 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 172 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyvsp[(1) - (3)].funcParList)->push_back(Tk::AttachSp((yyvsp[(3) - (3)].func_param))); }
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 157 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 176 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.func_param) = new Ast::CFunctionParameter((yyvsp[(1) - (2)].ident), (yyvsp[(2) - (2)].ident), nullptr); }
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 162 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 181 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CVariableDeclaration((yyvsp[(1) - (3)].ident), (yyvsp[(2) - (3)].ident), nullptr); }
     break;
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 163 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 182 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.blockPart) = new Ast::CVariableDeclaration((yyvsp[(1) - (5)].ident), (yyvsp[(2) - (5)].ident), (yyvsp[(4) - (5)].expr)); }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 169 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 188 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.ident) = new Ast::CIdentifier((yyvsp[(1) - (1)].string)); }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 173 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 192 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CInteger32((yyvsp[(1) - (1)].string));}
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 174 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 193 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CDouble((yyvsp[(1) - (1)].string));}
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 178 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 197 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CAssignment((yyvsp[(1) - (3)].ident), (yyvsp[(3) - (3)].expr)); }
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 179 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 198 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CMethodCall((yyvsp[(1) - (4)].ident), (yyvsp[(3) - (4)].exprvec)); }
     break;
 
   case 31:
 /* Line 1792 of yacc.c  */
-#line 180 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 199 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.ident) = (yyvsp[(1) - (1)].ident); }
     break;
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 182 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 201 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CBinaryOperator((yyvsp[(1) - (3)].expr), (yyvsp[(2) - (3)].token), (yyvsp[(3) - (3)].expr)); }
     break;
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 183 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 202 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = (yyvsp[(2) - (3)].expr); }
     break;
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 187 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 206 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.exprvec) = new Tk::SpList<const Ast::CExpression>; }
     break;
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 188 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 207 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.exprvec) = new Tk::SpList<const Ast::CExpression>; (yyval.exprvec)->push_back(Tk::AttachSp((yyvsp[(1) - (1)].expr))); }
     break;
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 189 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 208 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyvsp[(1) - (3)].exprvec)->push_back(Tk::AttachSp((yyvsp[(3) - (3)].expr)) ); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1703 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
+#line 1864 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1720,6 +1881,7 @@ yyreduce:
   YY_STACK_PRINT (yyss, yyssp);
 
   *++yyvsp = yyval;
+  *++yylsp = yyloc;
 
   /* Now `shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
@@ -1749,7 +1911,7 @@ yyerrlab:
     {
       ++yynerrs;
 #if ! YYERROR_VERBOSE
-      yyerror (expression, scanner, YY_("syntax error"));
+      yyerror (&yylloc, scanner, pathFile, errorOut, expressionOut, YY_("syntax error"));
 #else
 # define YYSYNTAX_ERROR yysyntax_error (&yymsg_alloc, &yymsg, \
                                         yyssp, yytoken)
@@ -1776,7 +1938,7 @@ yyerrlab:
                 yymsgp = yymsg;
               }
           }
-        yyerror (expression, scanner, yymsgp);
+        yyerror (&yylloc, scanner, pathFile, errorOut, expressionOut, yymsgp);
         if (yysyntax_error_status == 2)
           goto yyexhaustedlab;
       }
@@ -1784,7 +1946,7 @@ yyerrlab:
 #endif
     }
 
-
+  yyerror_range[1] = yylloc;
 
   if (yyerrstatus == 3)
     {
@@ -1800,7 +1962,7 @@ yyerrlab:
       else
 	{
 	  yydestruct ("Error: discarding",
-		      yytoken, &yylval, expression, scanner);
+		      yytoken, &yylval, &yylloc, scanner, pathFile, errorOut, expressionOut);
 	  yychar = YYEMPTY;
 	}
     }
@@ -1821,6 +1983,7 @@ yyerrorlab:
   if (/*CONSTCOND*/ 0)
      goto yyerrorlab;
 
+  yyerror_range[1] = yylsp[1-yylen];
   /* Do not reclaim the symbols of the rule which action triggered
      this YYERROR.  */
   YYPOPSTACK (yylen);
@@ -1854,9 +2017,9 @@ yyerrlab1:
       if (yyssp == yyss)
 	YYABORT;
 
-
+      yyerror_range[1] = *yylsp;
       yydestruct ("Error: popping",
-		  yystos[yystate], yyvsp, expression, scanner);
+		  yystos[yystate], yyvsp, yylsp, scanner, pathFile, errorOut, expressionOut);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
@@ -1866,6 +2029,11 @@ yyerrlab1:
   *++yyvsp = yylval;
   YY_IGNORE_MAYBE_UNINITIALIZED_END
 
+  yyerror_range[2] = yylloc;
+  /* Using YYLLOC is tempting, but would change the location of
+     the lookahead.  YYLOC is available though.  */
+  YYLLOC_DEFAULT (yyloc, yyerror_range, 2);
+  *++yylsp = yyloc;
 
   /* Shift the error token.  */
   YY_SYMBOL_PRINT ("Shifting", yystos[yyn], yyvsp, yylsp);
@@ -1893,7 +2061,7 @@ yyabortlab:
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
 yyexhaustedlab:
-  yyerror (expression, scanner, YY_("memory exhausted"));
+  yyerror (&yylloc, scanner, pathFile, errorOut, expressionOut, YY_("memory exhausted"));
   yyresult = 2;
   /* Fall through.  */
 #endif
@@ -1905,7 +2073,7 @@ yyreturn:
          user semantic actions for why this is necessary.  */
       yytoken = YYTRANSLATE (yychar);
       yydestruct ("Cleanup: discarding lookahead",
-                  yytoken, &yylval, expression, scanner);
+                  yytoken, &yylval, &yylloc, scanner, pathFile, errorOut, expressionOut);
     }
   /* Do not reclaim the symbols of the rule which action triggered
      this YYABORT or YYACCEPT.  */
@@ -1914,7 +2082,7 @@ yyreturn:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-		  yystos[*yyssp], yyvsp, expression, scanner);
+		  yystos[*yyssp], yyvsp, yylsp, scanner, pathFile, errorOut, expressionOut);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -1931,4 +2099,4 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 205 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 224 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"

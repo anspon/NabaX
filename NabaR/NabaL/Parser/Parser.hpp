@@ -41,7 +41,7 @@ extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
 /* Line 2058 of yacc.c  */
-#line 38 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 54 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
 
 #ifndef YY_TYPEDEF_YY_SCANNER_T
@@ -91,7 +91,7 @@ typedef void* yyscan_t;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 53 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 72 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
     Ast::CNode* m_node;
     Ast::CBlock* block;
@@ -119,6 +119,19 @@ typedef union YYSTYPE
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
+typedef struct YYLTYPE
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+} YYLTYPE;
+# define yyltype YYLTYPE /* obsolescent; will be withdrawn */
+# define YYLTYPE_IS_DECLARED 1
+# define YYLTYPE_IS_TRIVIAL 1
+#endif
+
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
@@ -128,7 +141,7 @@ int yyparse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int yyparse (Ast::CNode **expression, yyscan_t scanner);
+int yyparse (yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const NabaL::CCompileError>& errorOut, Tk::Sp<const Ast::CNode>& expressionOut);
 #else
 int yyparse ();
 #endif

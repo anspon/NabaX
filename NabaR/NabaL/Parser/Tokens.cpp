@@ -82,6 +82,10 @@
 
     #define yyset_lval yyset_lval
 
+    #define yyget_lloc yyget_lloc
+
+    #define yyset_lloc yyset_lloc
+
     #define yyalloc yyalloc
 
     #define yyrealloc yyrealloc
@@ -244,8 +248,27 @@ typedef size_t yy_size_t;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
     
-    #define YY_LESS_LINENO(n)
-    #define YY_LINENO_REWIND_TO(ptr)
+    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
+     *       access to the local variable yy_act. Since yyless() is a macro, it would break
+     *       existing scanners that call yyless() from OUTSIDE yylex.
+     *       One obvious solution it to make yy_act a global. I tried that, and saw
+     *       a 5% performance hit in a non-yylineno scanner, because yy_act is
+     *       normally declared as a register variable-- so it is not worth it.
+     */
+    #define  YY_LESS_LINENO(n) \
+            do { \
+                int yyl;\
+                for ( yyl = n; yyl < yyleng; ++yyl )\
+                    if ( yytext[yyl] == '\n' )\
+                        --yylineno;\
+            }while(0)
+    #define YY_LINENO_REWIND_TO(dst) \
+            do {\
+                const char *p;\
+                for ( p = yy_cp-1; p >= (dst); --p)\
+                    if ( *p == '\n' )\
+                        --yylineno;\
+            }while(0)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -407,8 +430,8 @@ static void yynoreturn yy_fatal_error ( const char* msg , yyscan_t yyscanner );
 	yyg->yy_hold_char = *yy_cp; \
 	*yy_cp = '\0'; \
 	yyg->yy_c_buf_p = yy_cp;
-#define YY_NUM_RULES 27
-#define YY_END_OF_BUFFER 28
+#define YY_NUM_RULES 28
+#define YY_END_OF_BUFFER 29
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -418,11 +441,11 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[45] =
     {   0,
-        0,    0,   28,   26,    1,    1,   26,   16,   17,   24,
-       22,   21,   23,   20,   25,    7,    8,   12,    9,   14,
-        3,    3,   18,   19,   11,    0,    7,    4,    0,   13,
-       10,   15,    3,    3,    0,    0,    0,    3,    5,    6,
-        3,    3,    2,    0
+        0,    0,   29,   27,    2,    1,   27,   17,   18,   25,
+       23,   22,   24,   21,   26,    8,    9,   13,   10,   15,
+        4,    4,   19,   20,   12,    0,    8,    5,    0,   14,
+       11,   16,    4,    4,    0,    0,    0,    4,    6,    7,
+        4,    4,    3,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -513,6 +536,12 @@ static const flex_int16_t yy_chk[95] =
 
     } ;
 
+/* Table of booleans, true if rule could match eol. */
+static const flex_int32_t yy_rule_can_match_eol[29] =
+    {   0,
+1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0,     };
+
 /* The intent behind this definition is that it'll catch
  * any uses of REJECT which flex missed.
  */
@@ -523,6 +552,7 @@ static const flex_int16_t yy_chk[95] =
 #line 1 "Parser/Tokens.l"
 #line 3 "Parser/Tokens.l"
 #define YY_NO_UNISTD_H 1
+#include "CompileError.h"
 #include "Ast/Node.h"
 #include "Ast/Block.h"
 #include "Ast/Identifier.h"
@@ -539,15 +569,26 @@ static const flex_int16_t yy_chk[95] =
 #include "Ast/Assignment.h"
 #include "Ast/BinaryOperator.h"
 #include "Parser/Parser.hpp"
+extern void NewLine( YYSTYPE* yylval, unsigned int line , int col );
 extern void SaveToken( YYSTYPE* yylval, const char* text , int len );
 #define SAVE_TOKEN SaveToken( yylval, yytext, yyleng)
+#define NEW_LINE NewLine( yylval, yylineno, yycolumn)
 #define TOKEN(t) (yylval->token = t)
 //extern "C" int yywrap() { }
-#line 546 "Parser/Tokens.cpp"
+
+#define YY_USER_ACTION \
+    {\
+        yylloc->first_line = yylineno; \
+        yylloc->first_column = yycolumn;\
+        yylloc->last_column=yycolumn;\
+        yylloc->last_line = yylineno;\
+    }
+
+#line 587 "Parser/Tokens.cpp"
 /*%option outfile="Lexer.c" header-file="Lexer.h"
 */
 #define YY_NO_UNISTD_H 1
-#line 550 "Parser/Tokens.cpp"
+#line 591 "Parser/Tokens.cpp"
 
 #define INITIAL 0
 
@@ -597,6 +638,8 @@ struct yyguts_t
 
     YYSTYPE * yylval_r;
 
+    YYLTYPE * yylloc_r;
+
     }; /* end struct yyguts_t */
 
 static int yy_init_globals ( yyscan_t yyscanner );
@@ -604,6 +647,8 @@ static int yy_init_globals ( yyscan_t yyscanner );
     /* This must go here because YYSTYPE and YYLTYPE are included
      * from bison output in section 1.*/
     #    define yylval yyg->yylval_r
+    
+    #    define yylloc yyg->yylloc_r
     
 int yylex_init (yyscan_t* scanner);
 
@@ -646,6 +691,10 @@ YYSTYPE * yyget_lval ( yyscan_t yyscanner );
 
 void yyset_lval ( YYSTYPE * yylval_param , yyscan_t yyscanner );
 
+       YYLTYPE *yyget_lloc ( yyscan_t yyscanner );
+    
+        void yyset_lloc ( YYLTYPE * yylloc_param , yyscan_t yyscanner );
+    
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
  */
@@ -762,10 +811,10 @@ static int input ( yyscan_t yyscanner );
 #define YY_DECL_IS_OURS 1
 
 extern int yylex \
-               (YYSTYPE * yylval_param , yyscan_t yyscanner);
+               (YYSTYPE * yylval_param, YYLTYPE * yylloc_param , yyscan_t yyscanner);
 
 #define YY_DECL int yylex \
-               (YYSTYPE * yylval_param , yyscan_t yyscanner)
+               (YYSTYPE * yylval_param, YYLTYPE * yylloc_param , yyscan_t yyscanner)
 #endif /* !YY_DECL */
 
 /* Code executed at the beginning of each rule, after yytext and yyleng
@@ -794,6 +843,8 @@ YY_DECL
 
     yylval = yylval_param;
 
+    yylloc = yylloc_param;
+
 	if ( !yyg->yy_init )
 		{
 		yyg->yy_init = 1;
@@ -821,10 +872,10 @@ YY_DECL
 		}
 
 	{
-#line 33 "Parser/Tokens.l"
+#line 46 "Parser/Tokens.l"
 
 
-#line 827 "Parser/Tokens.cpp"
+#line 878 "Parser/Tokens.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -866,6 +917,18 @@ yy_find_action:
 
 		YY_DO_BEFORE_ACTION;
 
+		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
+			{
+			int yyl;
+			for ( yyl = 0; yyl < yyleng; ++yyl )
+				if ( yytext[yyl] == '\n' )
+					
+    do{ yylineno++;
+        yycolumn=0;
+    }while(0)
+;
+			}
+
 do_action:	/* This label is used only to access EOF actions. */
 
 		switch ( yy_act )
@@ -880,140 +943,145 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 35 "Parser/Tokens.l"
-;
+#line 48 "Parser/Tokens.l"
+NEW_LINE;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 36 "Parser/Tokens.l"
-return TOKEN(TSTRUCT);
+#line 49 "Parser/Tokens.l"
+;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 37 "Parser/Tokens.l"
-SAVE_TOKEN; return TIDENTIFIER;
+#line 50 "Parser/Tokens.l"
+return TOKEN(TSTRUCT);
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 38 "Parser/Tokens.l"
-SAVE_TOKEN; return TDOUBLE;
+#line 51 "Parser/Tokens.l"
+SAVE_TOKEN; return TIDENTIFIER;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 39 "Parser/Tokens.l"
-SAVE_TOKEN; return T_I32;
+#line 52 "Parser/Tokens.l"
+SAVE_TOKEN; return TDOUBLE;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 40 "Parser/Tokens.l"
-SAVE_TOKEN; return T_I64;
+#line 53 "Parser/Tokens.l"
+SAVE_TOKEN; return T_I32;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 41 "Parser/Tokens.l"
-SAVE_TOKEN; return T_I32;
+#line 54 "Parser/Tokens.l"
+SAVE_TOKEN; return T_I64;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 42 "Parser/Tokens.l"
-return TOKEN(TSEMICOLON);
+#line 55 "Parser/Tokens.l"
+SAVE_TOKEN; return T_I32;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 43 "Parser/Tokens.l"
-return TOKEN(TEQUAL);
+#line 56 "Parser/Tokens.l"
+return TOKEN(TSEMICOLON);
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 44 "Parser/Tokens.l"
-return TOKEN(TCEQ);
+#line 57 "Parser/Tokens.l"
+return TOKEN(TEQUAL);
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 45 "Parser/Tokens.l"
-return TOKEN(TCNE);
+#line 58 "Parser/Tokens.l"
+return TOKEN(TCEQ);
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 46 "Parser/Tokens.l"
-return TOKEN(TCLT);
+#line 59 "Parser/Tokens.l"
+return TOKEN(TCNE);
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 47 "Parser/Tokens.l"
-return TOKEN(TCLE);
+#line 60 "Parser/Tokens.l"
+return TOKEN(TCLT);
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 48 "Parser/Tokens.l"
-return TOKEN(TCGT);
+#line 61 "Parser/Tokens.l"
+return TOKEN(TCLE);
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 49 "Parser/Tokens.l"
-return TOKEN(TCGE);
+#line 62 "Parser/Tokens.l"
+return TOKEN(TCGT);
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 50 "Parser/Tokens.l"
-return TOKEN(TLPAREN);
+#line 63 "Parser/Tokens.l"
+return TOKEN(TCGE);
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 51 "Parser/Tokens.l"
-return TOKEN(TRPAREN);
+#line 64 "Parser/Tokens.l"
+return TOKEN(TLPAREN);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 52 "Parser/Tokens.l"
-return TOKEN(TLBRACE);
+#line 65 "Parser/Tokens.l"
+return TOKEN(TRPAREN);
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 53 "Parser/Tokens.l"
-return TOKEN(TRBRACE);
+#line 66 "Parser/Tokens.l"
+return TOKEN(TLBRACE);
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 54 "Parser/Tokens.l"
-return TOKEN(TDOT);
+#line 67 "Parser/Tokens.l"
+return TOKEN(TRBRACE);
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 55 "Parser/Tokens.l"
-return TOKEN(TCOMMA);
+#line 68 "Parser/Tokens.l"
+return TOKEN(TDOT);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 56 "Parser/Tokens.l"
-return TOKEN(TPLUS);
+#line 69 "Parser/Tokens.l"
+return TOKEN(TCOMMA);
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 57 "Parser/Tokens.l"
-return TOKEN(TMINUS);
+#line 70 "Parser/Tokens.l"
+return TOKEN(TPLUS);
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 58 "Parser/Tokens.l"
-return TOKEN(TMUL);
+#line 71 "Parser/Tokens.l"
+return TOKEN(TMINUS);
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 59 "Parser/Tokens.l"
-return TOKEN(TDIV);
+#line 72 "Parser/Tokens.l"
+return TOKEN(TMUL);
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 60 "Parser/Tokens.l"
-printf("Unknown token!n"); yyterminate();
+#line 73 "Parser/Tokens.l"
+return TOKEN(TDIV);
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 62 "Parser/Tokens.l"
+#line 74 "Parser/Tokens.l"
+printf("Unknown token!n"); yyterminate();
+	YY_BREAK
+case 28:
+YY_RULE_SETUP
+#line 76 "Parser/Tokens.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
-#line 1016 "Parser/Tokens.cpp"
+#line 1084 "Parser/Tokens.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1383,6 +1451,10 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 
 	*--yy_cp = (char) c;
 
+    if ( c == '\n' ){
+        --yylineno;
+    }
+
 	yyg->yytext_ptr = yy_bp;
 	yyg->yy_hold_char = *yy_cp;
 	yyg->yy_c_buf_p = yy_cp;
@@ -1460,6 +1532,13 @@ static int yy_get_next_buffer (yyscan_t yyscanner)
 	c = *(unsigned char *) yyg->yy_c_buf_p;	/* cast for 8-bit char's */
 	*yyg->yy_c_buf_p = '\0';	/* preserve yytext */
 	yyg->yy_hold_char = *++yyg->yy_c_buf_p;
+
+	if ( c == '\n' )
+		
+    do{ yylineno++;
+        yycolumn=0;
+    }while(0)
+;
 
 	return c;
 }
@@ -2010,6 +2089,18 @@ void yyset_lval (YYSTYPE *  yylval_param , yyscan_t yyscanner)
     yylval = yylval_param;
 }
 
+YYLTYPE *yyget_lloc  (yyscan_t yyscanner)
+{
+    struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
+    return yylloc;
+}
+    
+void yyset_lloc (YYLTYPE *  yylloc_param , yyscan_t yyscanner)
+{
+    struct yyguts_t * yyg = (struct yyguts_t*)yyscanner;
+    yylloc = yylloc_param;
+}
+    
 /* User-visible API */
 
 /* yylex_init is special because it creates the scanner itself, so it is
@@ -2191,5 +2282,6 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 62 "Parser/Tokens.l"
+#line 76 "Parser/Tokens.l"
+
 

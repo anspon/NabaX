@@ -1,4 +1,3 @@
-
 int s_j=1_000_000i32;
 int s_k_1=1i32;
 int s_k_2=1i32;
@@ -12,6 +11,11 @@ struct Apa
 
 struct Apa2
 {
+
+    Apa3 m_apa3;
+
+    Apa m_apa1;
+    Apa m_apa2;
 
 };
 

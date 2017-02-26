@@ -1,20 +1,82 @@
-
+{
+    
+}
 #include "NabaCPch.h"
 
 #include "NabaL/ParseModule.h"
+#include "NabaL/TranslationUnit.h"
+#include "NabaL/Module.h"
+#include "NabaL/CompileError.h"
 
 #include "Tk/Exception.h"
+#include "Tk/FilePosition.h"
 
+static void PrintError(
+    Tk::Sp<const NabaL::CCompileError> error
+    )
+{
+    if( error->FilePosition() )
+    {
+        std::cout << error->FilePosition()->CompletePathFile() << "(" << error->FilePosition()->Line() << ")" << ": ";
+    }
+
+    std::cout << "Error " << (int)error->Code() << ": " << error->Text() << std::endl;
+}
+//--------------------------------------------------------------------------------------------------
+void ErrorCheckModuleThrow(Tk::Sp<const NabaL::CModule> astModule )
+{
+    bool hasErrors = false;
+    for( Tk::Sp<const NabaL::CTranslationUnit> translationUnit : astModule->TranslationUnits() )
+    {
+            
+        for( Tk::Sp<const NabaL::CCompileError> error : translationUnit->Errors() )
+        {
+            PrintError( error );
+            hasErrors = true;
+        }
+    }
+    if( hasErrors )
+    {
+        TK_ASSERT( !hasErrors, "Errors found during compilation, aborting" );
+    }
+}
+
+class CType
+{
+public:
+    CType(        
+        const std::string& name,
+        const std::string& fullyQualifiedName
+        ):
+        m_name(name),
+        m_fullyQualifiedName(fullyQualifiedName)
+    {
+        
+    }
+
+private:
+    const std::string
+        m_name;
+    const std::string
+        m_fullyQualifiedName;
+};
+
+
+//--------------------------------------------------------------------------------------------------
 int main(int argv, char** argc)
 {
     
     try
     {
-        TK_ASSERT( 3 == argv, "invalid number of arguments provided" );
+        TK_ASSERT( 2 == argv, "invalid number of arguments provided" );
 
         std::string sourceDirectory = argc[1];
 
         Tk::Sp<const NabaL::CModule> astModule = NabaL::ParseModule(sourceDirectory);
+        ErrorCheckModuleThrow(astModule);
+
+//        BuildAllTypes(astModule);
+
 
 
 /*
@@ -69,7 +131,6 @@ int main(int argv, char** argc)
         std::cout << e.Message() << std::endl;
         std::cin.get();
     }
-    return 0;
     return 0;
 }
 

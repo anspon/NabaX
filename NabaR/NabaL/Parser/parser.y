@@ -2,7 +2,8 @@
 #define YY_NO_UNISTD_H 1
 #define YYERROR_VERBOSE 1
 
-#include "Ast/Node.h"
+
+
 #include "Ast/Block.h"
 #include "Ast/Identifier.h"
 #include "Ast/Struct.h"
@@ -17,21 +18,36 @@
 #include "Ast/MethodCall.h"
 #include "Ast/Assignment.h"
 #include "Ast/BinaryOperator.h"
+#include "Tk/SharedPtr.h"
+#include "Ast/Node.h"
+#include "CompileError.h"
+
 #include "Parser/Parser.hpp"
 #include "Parser/Tokens.h"
 
-#include "Tk/SharedPtr.h"
 
+extern void 
+    ReportError(
+        YYLTYPE* location,
+        const filesystem::path& pathFile, 
+        Tk::Sp<const NabaL::CCompileError>& errorOut, 
+        Tk::Sp<const Ast::CNode>& expressionOut,
+        const char* msg
+        );
 
-//NBlock *programBlock; /* the top level root node of our final AST */
-
-extern void ReportError(const char* msg );
-
-int yyerror(Ast::CNode **expression, yyscan_t scanner, const char *msg) 
+int yyerror (
+    YYLTYPE* location,
+    yyscan_t scanner, 
+    const filesystem::path& pathFile, 
+    Tk::Sp<const NabaL::CCompileError>& errorOut, 
+    Tk::Sp<const Ast::CNode>& expressionOut,
+    const char* msg
+    )
 {
-    ReportError( msg );
+    ReportError( location, pathFile, errorOut, expressionOut, msg );
     return 0;
 }
+
 
 %}
 
@@ -43,11 +59,14 @@ typedef void* yyscan_t;
 #endif
 
 }
- 
-%define api.pure
+
+%locations
+%define api.pure full
 %lex-param   { yyscan_t scanner }
-%parse-param { Ast::CNode **expression }
 %parse-param { yyscan_t scanner }
+%parse-param { const filesystem::path& pathFile }
+%parse-param { Tk::Sp<const NabaL::CCompileError>& errorOut }
+%parse-param { Tk::Sp<const Ast::CNode>& expressionOut }
 
 /* Represents the many different ways we can access our data */
 %union {
@@ -103,7 +122,7 @@ typedef void* yyscan_t;
 %%
 
 fileScope : 
-    blockParts { *expression = $1; }
+    blockParts { expressionOut = Tk::AttachSp($1); }
     ;
       
 blockParts : 

@@ -20,12 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="FilePosition.h" />
     <ClInclude Include="SharedPtr.h" />
     <ClInclude Include="TkPch.h" />
     <ClInclude Include="TkPchHeaders.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="FilePosition.cpp" />
     <ClCompile Include="TkPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>

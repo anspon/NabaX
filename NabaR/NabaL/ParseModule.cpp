@@ -4,6 +4,7 @@
 
 #define YY_NO_UNISTD_H 1
 
+#include "CompileError.h"
 #include "Ast/Node.h"
 #include "Ast/Block.h"
 #include "Ast/Identifier.h"
@@ -24,24 +25,42 @@
 #include "Parser/Tokens.h"
 
 #include "TranslationUnit.h"
+#include "CompileError.h"
+#include "Tk/FilePosition.h"
 
 void  SaveToken(YYSTYPE* yylval, const char* text, int len)
 {
     yylval->string = new std::string(text, len);
 }
-
-void ReportError(const char* error)
+void  NewLine(YYSTYPE* yylval, unsigned int line, int col)
 {
-    std::cout << error << std::endl;
+    int i=0;i++;
 }
 
-namespace 
+void ReportError(
+    YYLTYPE* location,
+    const filesystem::path& pathFile, 
+    Tk::Sp<const NabaL::CCompileError>& errorOut, 
+    Tk::Sp<const Ast::CNode>& expressionOut,
+    const char* msg
+    )
+{
+    Tk::Sp<const Tk::CFilePosition>  filePosition = Tk::MakeSp<Tk::CFilePosition>(pathFile, location->first_line+1, location->first_column );
+    errorOut = Tk::MakeSp<NabaL::CCompileError>( NabaL::eCompileError::CE_NONE, msg, filePosition );
+//    errorOut = error;
+}
+
+namespace NabaL
 {
 
-
-Tk::Sp<const Ast::CNode> getAST(const std::string& expression)
+Tk::Sp<const Ast::CNode> getAST(
+    const filesystem::path& pathFile,
+    const std::string& expression
+    )
 {
-    Ast::CNode* rootNode = 0;
+    Tk::Sp<const Ast::CNode> rootNode;
+    Tk::Sp<const CCompileError> errorOut;
+
     yyscan_t scanner = 0;
     YY_BUFFER_STATE state = 0;
 
@@ -50,27 +69,22 @@ Tk::Sp<const Ast::CNode> getAST(const std::string& expression)
         // couldn't initialize
         return NULL;
     }
+   // yylineno = 0;
 
     state = yy_scan_string(expression.c_str(), scanner);
+    state->yy_bs_lineno =0;
+    state->yy_bs_column =0;
 
-    if( yyparse(&rootNode, scanner) )
-    {
-        // error parsing
-        return NULL;
-    }
-
+    yyparse(scanner, pathFile, errorOut, rootNode);
     yy_delete_buffer(state, scanner);
-
     yylex_destroy(scanner);
 
-    return Tk::AttachSp(rootNode);
+    if( nullptr != errorOut)
+    {
+        throw errorOut;
+    }
+    return rootNode;
 }
-
-
-}
-namespace NabaL
-{
-
 
 Tk::Sp<const CModule>
     ParseModule(
@@ -80,39 +94,48 @@ Tk::Sp<const CModule>
     Tk::SpList<const CTranslationUnit> translationUnits;
 
     const filesystem::path sourcePath(sourceFolder.c_str() );
-    std::string libraryNamespace = sourcePath.stem().string();
+    std::string moduleName = sourcePath.stem().string();
 
     filesystem::directory_iterator sourceIterator(sourceFolder);
     TK_ASSERT( filesystem::directory_iterator() != sourceIterator, "Invalid source directory '" << sourceFolder << "' ");
 
     for( const filesystem::directory_entry& entry : sourceIterator )
     {
-        const filesystem::path& path = entry.path();
-        const filesystem::path fileName = path.stem().string();
+        const filesystem::path& pathFile = entry.path();
+        const filesystem::path fileName = pathFile.stem().string();
 
-        std::list<std::string> nameSpacePath = {libraryNamespace, fileName.string() };
+        std::list<std::string> nameSpacePath = {};
 
-        if( std::string(".aspp") == path.extension() )
+        if( std::string(".aspp") == pathFile.extension() )
         {
             int i=0;i++;
             std::string completeText;
             {            
-                std::ifstream inFile( path );
-                TK_ASSERT( !inFile.bad(), "Unable to open file '" << path << "'" );
+                std::ifstream inFile( pathFile );
+                TK_ASSERT( !inFile.bad(), "Unable to open file '" << pathFile << "'" );
                 char line[1000] = {0};
                 while( inFile.getline(line, 999) )
                 {
                     completeText += line + std::string("\n");
                 }
             }
-            if( Tk::Sp<const Ast::CNode> node = getAST(completeText.c_str() ) )
+
+            Tk::SpList<const CCompileError> errors;
+
+            Tk::Sp<const Ast::CNode> node;
+            try
             {
-                Tk::Sp<const CTranslationUnit> unit = Tk::MakeSp<CTranslationUnit>(nameSpacePath, node );
-                translationUnits.push_back(unit);
+                 node = getAST(pathFile, completeText.c_str() );
             }
+            catch( Tk::Sp<const CCompileError> error )
+            {
+                errors.push_back(error);
+            }
+            Tk::Sp<const CTranslationUnit> unit = Tk::MakeSp<CTranslationUnit>(nameSpacePath, node, pathFile, errors );
+            translationUnits.push_back(unit);
         }        
     }
-    return Tk::MakeSp<CModule>(translationUnits);
+    return Tk::MakeSp<CModule>(moduleName, translationUnits);
 }
 
 }

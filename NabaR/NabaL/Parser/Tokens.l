@@ -1,6 +1,7 @@
 
 %{
 #define YY_NO_UNISTD_H 1
+#include "CompileError.h"
 #include "Ast/Node.h"
 #include "Ast/Block.h"
 #include "Ast/Identifier.h"
@@ -17,22 +18,35 @@
 #include "Ast/Assignment.h"
 #include "Ast/BinaryOperator.h"
 #include "Parser/Parser.hpp"
+extern void NewLine( YYSTYPE* yylval, unsigned int line , int col );
 extern void SaveToken( YYSTYPE* yylval, const char* text , int len );
 #define SAVE_TOKEN SaveToken( yylval, yytext, yyleng)
+#define NEW_LINE NewLine( yylval, yylineno, yycolumn)
 #define TOKEN(t) (yylval->token = t)
 //extern "C" int yywrap() { }
+
+#define YY_USER_ACTION \
+    {\
+        yylloc->first_line = yylineno; \
+        yylloc->first_column = yycolumn;\
+        yylloc->last_column=yycolumn;\
+        yylloc->last_line = yylineno;\
+    }
+
 %}
 
 
 /*%option outfile="Lexer.c" header-file="Lexer.h"
 */
 %option warn nodefault
- 
+%option yylineno
 %option reentrant noyywrap never-interactive nounistd
 %option bison-bridge
+%option bison-locations 
 %%
 
-[ \t\n]                 ;
+[\n]                 NEW_LINE;
+[ \t]                 ;
 "struct"                return TOKEN(TSTRUCT);
 [a-zA-Z_][a-zA-Z0-9\_]*  SAVE_TOKEN; return TIDENTIFIER;
 [0-9][0-9\_]*(\.)?[0-9\_]*d      SAVE_TOKEN; return TDOUBLE;
