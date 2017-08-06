@@ -10,8 +10,10 @@ class CLiteral : public CExpression
 {
 public:
         CLiteral(
+            const CPosition& position
             );
 
+private:
 };
 
 }

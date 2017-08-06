@@ -8,9 +8,10 @@ namespace Ast
 
 class CInteger32 : public CLiteral 
 {
+    using BaseClass = CLiteral;
 public:
     CInteger32(
-        const std::string* value
+        const StringToken* value
         );
 
     int32_t 

@@ -9,6 +9,11 @@ struct Apa
     int j;
 };
 
+struct Apa
+{
+    int b = 7;
+    int c;
+};
 struct Apa2
 {
 
@@ -18,7 +23,6 @@ struct Apa2
     Apa m_apa2;
 
 };
-
 
 
 void Banana(int k)

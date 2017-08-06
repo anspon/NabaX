@@ -7,15 +7,15 @@ namespace Ast
 {
 class CInteger64 : public CLiteral 
 {
+using BaseClass = CLiteral;
 public:
     CInteger64(
-        const std::string* value
+        const StringToken* stringToken
         );
 
     int64_t 
         m_value;
 
-    
     std::string
         m_originalText;
 };}

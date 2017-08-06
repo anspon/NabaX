@@ -16,8 +16,6 @@ class CCompileError;
 class CTranslationUnit
 {
 public:
-    
-
 
     CTranslationUnit(
         const std::list<std::string>& nameSpace,
@@ -25,7 +23,11 @@ public:
         const filesystem::path& completePathFile,
         const Tk::SpList<const CCompileError>& errors
         );
-    
+
+    Tk::Sp<const Ast::CNode> 
+        Ast(
+            )const;
+            
     ~CTranslationUnit(
         );
 

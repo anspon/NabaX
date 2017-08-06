@@ -18,6 +18,9 @@ Sp<T> MakeSp(_Types&&... _Args)
 template<typename T>
 using SpList = std::list< Sp<T> >;
 
+template<typename TKey, typename TValue>
+using SpMap = std::map< TKey, Sp<TValue> >;
+
 template<class T>
 Sp<T> AttachSp( T* naked )
 {

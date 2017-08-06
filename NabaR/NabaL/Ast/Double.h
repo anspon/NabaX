@@ -5,11 +5,12 @@
 
 namespace Ast
 {
-class CDouble : public CLiteral 
+class CDouble : public CLiteral
 {
+using BaseClass = CLiteral;
 public:
     CDouble(
-        const std::string* value
+        const StringToken* stringToken
         );
     
        

@@ -28,9 +28,9 @@
 #include "CompileError.h"
 #include "Tk/FilePosition.h"
 
-void  SaveToken(YYSTYPE* yylval, const char* text, int len)
+void  SaveStringToken(YYSTYPE* yylval, const char* text, int len, unsigned int lineNbr)
 {
-    yylval->string = new std::string(text, len);
+    yylval->stringToken = new StringToken{std::string(text, len), CPosition(lineNbr) };
 }
 void  NewLine(YYSTYPE* yylval, unsigned int line, int col)
 {
@@ -46,7 +46,7 @@ void ReportError(
     )
 {
     Tk::Sp<const Tk::CFilePosition>  filePosition = Tk::MakeSp<Tk::CFilePosition>(pathFile, location->first_line+1, location->first_column );
-    errorOut = Tk::MakeSp<NabaL::CCompileError>( NabaL::eCompileError::CE_NONE, msg, filePosition );
+    errorOut = Tk::MakeSp<NabaL::CCompileError>( NabaL::eCompileError::SyntaxError, msg, filePosition );
 //    errorOut = error;
 }
 

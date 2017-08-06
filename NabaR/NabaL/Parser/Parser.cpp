@@ -211,7 +211,7 @@ typedef union YYSTYPE
     Tk::SpList<const Ast::CVariableDeclaration>* varvec;
     Tk::SpList<const Ast::CFunctionParameter>* funcParList;
     Tk::SpList<const Ast::CExpression>* exprvec;
-    std::string *string;
+    StringToken* stringToken;
     int token;
 
     Ast::CStructPart*     structPart;
@@ -569,9 +569,9 @@ static const yytype_uint8 yyrline[] =
 {
        0,   125,   125,   129,   130,   134,   135,   136,   137,   138,
      142,   143,   147,   151,   152,   156,   157,   161,   162,   166,
-     170,   171,   172,   176,   181,   182,   188,   192,   193,   197,
-     198,   199,   200,   201,   202,   206,   207,   208,   212,   213,
-     214,   215,   216,   217,   218,   219,   220,   221
+     170,   171,   172,   176,   181,   182,   186,   190,   191,   195,
+     196,   197,   198,   199,   200,   204,   205,   206,   210,   211,
+     212,   213,   214,   215,   216,   217,   218,   219
 };
 #endif
 
@@ -1794,67 +1794,67 @@ yyreduce:
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 188 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.ident) = new Ast::CIdentifier((yyvsp[(1) - (1)].string)); }
+#line 186 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.ident) = new Ast::CIdentifier((yyvsp[(1) - (1)].stringToken)); }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 192 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.expr) = new Ast::CInteger32((yyvsp[(1) - (1)].string));}
+#line 190 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.expr) = new Ast::CInteger32((yyvsp[(1) - (1)].stringToken));}
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 193 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
-    { (yyval.expr) = new Ast::CDouble((yyvsp[(1) - (1)].string));}
+#line 191 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+    { (yyval.expr) = new Ast::CDouble((yyvsp[(1) - (1)].stringToken));}
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 197 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 195 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CAssignment((yyvsp[(1) - (3)].ident), (yyvsp[(3) - (3)].expr)); }
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 198 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 196 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CMethodCall((yyvsp[(1) - (4)].ident), (yyvsp[(3) - (4)].exprvec)); }
     break;
 
   case 31:
 /* Line 1792 of yacc.c  */
-#line 199 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 197 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.ident) = (yyvsp[(1) - (1)].ident); }
     break;
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 201 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 199 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = new Ast::CBinaryOperator((yyvsp[(1) - (3)].expr), (yyvsp[(2) - (3)].token), (yyvsp[(3) - (3)].expr)); }
     break;
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 202 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 200 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.expr) = (yyvsp[(2) - (3)].expr); }
     break;
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 206 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 204 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.exprvec) = new Tk::SpList<const Ast::CExpression>; }
     break;
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 207 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 205 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyval.exprvec) = new Tk::SpList<const Ast::CExpression>; (yyval.exprvec)->push_back(Tk::AttachSp((yyvsp[(1) - (1)].expr))); }
     break;
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 208 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 206 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
     { (yyvsp[(1) - (3)].exprvec)->push_back(Tk::AttachSp((yyvsp[(3) - (3)].expr)) ); }
     break;
 
@@ -2099,4 +2099,4 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 224 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 222 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"

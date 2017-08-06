@@ -1,18 +1,31 @@
-#ifndef CModule_H
-#define CModule_H
+#ifndef NabaIr_CModule_H
+#define NabaIr_CModule_H
 
-#include "TranslationUnitFwd.h"
+#include "NabaIrPchHeaders.h"
 
-namespace Module
+namespace NabaIr
 {
+class CTranslationUnit;
+
 class CModule
 {
 public:
-    CModule();
+    CModule(
+        const std::string& name,
+        const Tk::SpList<const CTranslationUnit>& translationUnits
+    );
     ~CModule();
+
+    const Tk::SpList<const CTranslationUnit>&
+        TranslationUnits(
+            )const;
 private:
-    TranslationUnit::ListT
-        m_translationUnitList;
+    
+    const std::string 
+        m_name;
+
+    Tk::SpList<const CTranslationUnit>
+        m_translationUnits;
 };
 
 }

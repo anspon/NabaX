@@ -569,12 +569,12 @@ static const flex_int32_t yy_rule_can_match_eol[29] =
 #include "Ast/Assignment.h"
 #include "Ast/BinaryOperator.h"
 #include "Parser/Parser.hpp"
+
 extern void NewLine( YYSTYPE* yylval, unsigned int line , int col );
-extern void SaveToken( YYSTYPE* yylval, const char* text , int len );
-#define SAVE_TOKEN SaveToken( yylval, yytext, yyleng)
+extern void SaveStringToken( YYSTYPE* yylval, const char* text , int len, unsigned int lineNbr );
+#define SAVE_STRING_TOKEN SaveStringToken( yylval, yytext, yyleng, yylineno)
 #define NEW_LINE NewLine( yylval, yylineno, yycolumn)
 #define TOKEN(t) (yylval->token = t)
-//extern "C" int yywrap() { }
 
 #define YY_USER_ACTION \
     {\
@@ -959,27 +959,27 @@ return TOKEN(TSTRUCT);
 case 4:
 YY_RULE_SETUP
 #line 51 "Parser/Tokens.l"
-SAVE_TOKEN; return TIDENTIFIER;
+SAVE_STRING_TOKEN; return TIDENTIFIER;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 52 "Parser/Tokens.l"
-SAVE_TOKEN; return TDOUBLE;
+SAVE_STRING_TOKEN; return TDOUBLE;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 53 "Parser/Tokens.l"
-SAVE_TOKEN; return T_I32;
+SAVE_STRING_TOKEN; return T_I32;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 54 "Parser/Tokens.l"
-SAVE_TOKEN; return T_I64;
+SAVE_STRING_TOKEN; return T_I64;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 55 "Parser/Tokens.l"
-SAVE_TOKEN; return T_I32;
+SAVE_STRING_TOKEN; return T_I32;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP

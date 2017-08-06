@@ -18,12 +18,12 @@
 #include "Ast/Assignment.h"
 #include "Ast/BinaryOperator.h"
 #include "Parser/Parser.hpp"
+
 extern void NewLine( YYSTYPE* yylval, unsigned int line , int col );
-extern void SaveToken( YYSTYPE* yylval, const char* text , int len );
-#define SAVE_TOKEN SaveToken( yylval, yytext, yyleng)
+extern void SaveStringToken( YYSTYPE* yylval, const char* text , int len, unsigned int lineNbr );
+#define SAVE_STRING_TOKEN SaveStringToken( yylval, yytext, yyleng, yylineno)
 #define NEW_LINE NewLine( yylval, yylineno, yycolumn)
 #define TOKEN(t) (yylval->token = t)
-//extern "C" int yywrap() { }
 
 #define YY_USER_ACTION \
     {\
@@ -48,11 +48,11 @@ extern void SaveToken( YYSTYPE* yylval, const char* text , int len );
 [\n]                 NEW_LINE;
 [ \t]                 ;
 "struct"                return TOKEN(TSTRUCT);
-[a-zA-Z_][a-zA-Z0-9\_]*  SAVE_TOKEN; return TIDENTIFIER;
-[0-9][0-9\_]*(\.)?[0-9\_]*d      SAVE_TOKEN; return TDOUBLE;
-[0-9][0-9\_]*i32             SAVE_TOKEN; return T_I32;
-[0-9][0-9\_]*i64               SAVE_TOKEN; return T_I64;
-[0-9][0-9\_]*               SAVE_TOKEN; return T_I32;
+[a-zA-Z_][a-zA-Z0-9\_]*  SAVE_STRING_TOKEN; return TIDENTIFIER;
+[0-9][0-9\_]*(\.)?[0-9\_]*d      SAVE_STRING_TOKEN; return TDOUBLE;
+[0-9][0-9\_]*i32             SAVE_STRING_TOKEN; return T_I32;
+[0-9][0-9\_]*i64               SAVE_STRING_TOKEN; return T_I64;
+[0-9][0-9\_]*               SAVE_STRING_TOKEN; return T_I32;
 ";"                     return TOKEN(TSEMICOLON);
 "="                     return TOKEN(TEQUAL);
 "=="                    return TOKEN(TCEQ);

@@ -10,7 +10,8 @@ namespace NabaL
 {
 enum class eCompileError
 {
-    CE_NONE = 0
+    None = 0,
+    SyntaxError = 1,
 };
 
 class CCompileError

@@ -7,12 +7,13 @@ namespace Ast
 
 //--------------------------------------------------------------------------------------------------
 CDouble::CDouble(
-    const std::string* value
-    )
+    const StringToken* stringToken
+    ):
+    BaseClass(stringToken->m_position)
 {
-    m_value = atof((*value).c_str());
-    m_originalText = *value;
-    delete value;
+    m_value = atof(stringToken->m_string.c_str());
+    m_originalText = stringToken->m_string;
+    delete stringToken;
 }
 
 }

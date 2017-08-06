@@ -7,11 +7,12 @@ namespace Ast
 
 //--------------------------------------------------------------------------------------------------
 CInteger32::CInteger32( 
-    const std::string* value
-    )
+    const StringToken* stringToken
+    ):
+    BaseClass(stringToken->m_position)
 {
-    m_value = std::atoi((*value).c_str()); 
-    delete value;
+    m_value = std::atoi(stringToken->m_string.c_str()); 
+    delete stringToken;
 }
 
 

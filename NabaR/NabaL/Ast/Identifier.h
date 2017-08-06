@@ -7,13 +7,14 @@ namespace Ast
 {
 class CIdentifier : public CExpression 
 {
+using BaseClass = CExpression;
+
 public:
         CIdentifier(
-            const std::string* name
+            const StringToken* stringToken
             );
     
-
-    std::string 
+    const std::string 
         m_name;
 };
 

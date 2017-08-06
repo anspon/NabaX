@@ -1,17 +1,28 @@
-#include "stdafx.h"
+#include "NabaIrPch.h"
 #include "Module.h"
 
 
-namespace Module
+namespace NabaIr
 {
 
-CModule::CModule()
+CModule::CModule(
+    const std::string& name,
+    const Tk::SpList<const CTranslationUnit>& translationUnits
+    ):
+    m_name(name),
+    m_translationUnits(translationUnits)
 {
 }
-
-
+//--------------------------------------------------------------------------------------------------
 CModule::~CModule()
 {
 }
+//--------------------------------------------------------------------------------------------------
+const Tk::SpList<const CTranslationUnit>& CModule::TranslationUnits(
+    )const
+{
+    return m_translationUnits;
+}
+//--------------------------------------------------------------------------------------------------
 
 }

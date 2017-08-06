@@ -5,10 +5,12 @@
 namespace Ast
 {
 CIdentifier::CIdentifier(
-    const std::string* name
-    ) : m_name(*name) 
+    const StringToken* stringToken
+    ):
+    m_name(stringToken->m_string) 
 {
-    delete name; 
+    m_position = stringToken->m_position;
+    delete stringToken; 
 }
 
 }

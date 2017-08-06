@@ -4,8 +4,11 @@
 
 namespace Ast
 {
-CLiteral::CLiteral()
+CLiteral::CLiteral(
+    const CPosition& position
+    )
 {
+    m_position = position;
 }
 }
 

@@ -172,7 +172,8 @@ class CIndenter
 public:
    CIndenter(
         CStream& stream,
-        unsigned int units):
+        unsigned int units
+        ):
         m_units(units),
         m_stream(stream)
     {

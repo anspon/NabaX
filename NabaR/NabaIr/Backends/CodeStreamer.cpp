@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "NabaIrPch.h"
 #include "CodeStreamer.h"
 
 CStream::CEndLine CStream::endl;

@@ -104,7 +104,7 @@ typedef union YYSTYPE
     Tk::SpList<const Ast::CVariableDeclaration>* varvec;
     Tk::SpList<const Ast::CFunctionParameter>* funcParList;
     Tk::SpList<const Ast::CExpression>* exprvec;
-    std::string *string;
+    StringToken* stringToken;
     int token;
 
     Ast::CStructPart*     structPart;

@@ -81,7 +81,7 @@ typedef void* yyscan_t;
     Tk::SpList<const Ast::CVariableDeclaration>* varvec;
     Tk::SpList<const Ast::CFunctionParameter>* funcParList;
     Tk::SpList<const Ast::CExpression>* exprvec;
-    std::string *string;
+    StringToken* stringToken;
     int token;
 
     Ast::CStructPart*     structPart;
@@ -92,7 +92,7 @@ typedef void* yyscan_t;
    match our tokens.l lex file. We also define the node type
    they represent.
  */
-%token <string> TIDENTIFIER T_I32 T_I64 TDOUBLE TSTRUCT
+%token <stringToken> TIDENTIFIER T_I32 T_I64 TDOUBLE TSTRUCT
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE TCOMMA TDOT 
 %token <token> TPLUS TMINUS TMUL TDIV TSEMICOLON
@@ -181,8 +181,6 @@ var_decl :
     ident ident TSEMICOLON { $$ = new Ast::CVariableDeclaration($1, $2, nullptr); } | 
     ident ident TEQUAL expr TSEMICOLON { $$ = new Ast::CVariableDeclaration($1, $2, $4); }
     ;
-
-        
 
 ident : 
     TIDENTIFIER { $$ = new Ast::CIdentifier($1); }
