@@ -8,29 +8,25 @@ struct Apa
     int a = 7;
     int j;
 };
-
 struct Apa
 {
     int b = 7;
     int c;
 };
+
 struct Apa2
 {
-
     Apa3 m_apa3;
 
     Apa m_apa1;
     Apa m_apa2;
 
 };
-
-
 void Banana(int k)
 {
     Apa2 apa2;
     Apa2 apa2_1 = apa2;
 }
-
 
 void Main()
 {

@@ -45,10 +45,11 @@ Tk::Sp<const CStandardType> CTypeManager::StandardType(
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CParameter> CTypeManager::MakeStandardParameter(
     eStandardType type,
-    const std::string& name
+    const std::string& name,
+    eParameterType parameterType
     )const
 {
-    return Tk::MakeSp<const CParameter>(name, StandardType(type) );
+    return Tk::MakeSp<const CParameter>(name, StandardType(type), parameterType );
 }
 
 }

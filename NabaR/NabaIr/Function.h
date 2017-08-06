@@ -4,15 +4,21 @@
 namespace NabaIr
 {
 class CParameter;
+class CBlock;
 
 class CFunction
 {
 public:
     CFunction(
         const std::string& name,
-        const Tk::SpList<const CParameter>& parameters
+        const Tk::SpList<const CParameter>& parameters,
+        Tk::Sp<const CBlock> block
         );
     ~CFunction();
+
+    Tk::Sp<const CBlock> 
+        Block(
+            )const;
 
     const std::string& 
        Name(
@@ -28,6 +34,9 @@ private:
 
     const Tk::SpList<const CParameter> 
         m_parameters;
+
+    const Tk::Sp<const CBlock> 
+        m_block;
 };
 
 

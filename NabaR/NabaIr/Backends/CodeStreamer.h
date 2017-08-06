@@ -1,5 +1,5 @@
-#ifndef CCodeStreamer_H
-#define CCodeStreamer_H
+#ifndef CStream_H
+#define CStream_H
 
 
 class CStream
@@ -27,6 +27,20 @@ public:
     {
         Flush();
         Stream() << item;
+    }
+    void Append(
+        int32_t value
+        )
+    {
+        Flush();
+        Stream() << value;
+    }
+    void Append(
+        int64_t value
+        )
+    {
+        Flush();
+        Stream() << value;
     }
     virtual std::ostream&
         Stream(
@@ -133,38 +147,12 @@ CStream& operator<<( CStream& stream, const std::string& item );
 //--------------------------------------------------------------------------------------------------
 CStream& operator<<( CStream& stream, const CStream::CEndLine& item );
 //--------------------------------------------------------------------------------------------------
+CStream& operator<<( CStream& stream, int32_t item );
+//--------------------------------------------------------------------------------------------------
+CStream& operator<<( CStream& stream, int64_t item );
 
 
-class CCodeStreamer
-{
-public:
-    CCodeStreamer(
-        CStream& stream
-        );
-    
 
-    std::ostream&
-        CoreStream(
-            )
-    {
-        return Stream().Stream();
-    }
-    CStream&
-        Stream();
-
-    void 
-        BeginStruct(
-            const std::string& name
-            );
-   
-    void 
-        EndStruct(
-            );
-
-    CStream& 
-        m_stream;
-
-};
 
 
 class CIndenter
@@ -191,14 +179,6 @@ private:
         m_stream;
 };
 
-
-//--------------------------------------------------------------------------------------------------
-CCodeStreamer& operator<<( CCodeStreamer& stream, const char* item );
-//--------------------------------------------------------------------------------------------------
-CCodeStreamer& operator<<( CCodeStreamer& stream, const std::string& item );
-//--------------------------------------------------------------------------------------------------
-CCodeStreamer& operator<<( CCodeStreamer& stream, const CStream::CEndLine& item );
-//--------------------------------------------------------------------------------------------------
 
 #endif
 

@@ -21,10 +21,15 @@
   <ItemGroup>
     <ClInclude Include="Backends\CodeStreamer.h" />
     <ClInclude Include="Backends\Cpp\CppGen.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="BlockBuilder.h" />
+    <ClInclude Include="eInstructionType.h" />
     <ClInclude Include="eNativeType.h" />
     <ClInclude Include="eParameterType.h" />
     <ClInclude Include="eStandardType.h" />
     <ClInclude Include="Function.h" />
+    <ClInclude Include="Instruction.h" />
+    <ClInclude Include="Literal.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="NabaIrPch.h" />
     <ClInclude Include="NabaIrPchHeaders.h" />
@@ -33,11 +38,16 @@
     <ClInclude Include="TranslationUnit.h" />
     <ClInclude Include="Type.h" />
     <ClInclude Include="TypeManager.h" />
+    <ClInclude Include="Variable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Backends\CodeStreamer.cpp" />
     <ClCompile Include="Backends\Cpp\CppGen.cpp" />
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BlockBuilder.cpp" />
     <ClCompile Include="Function.cpp" />
+    <ClCompile Include="Instruction.cpp" />
+    <ClCompile Include="Literal.cpp" />
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="NabaIrPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -47,6 +57,7 @@
     <ClCompile Include="TranslationUnit.cpp" />
     <ClCompile Include="Type.cpp" />
     <ClCompile Include="TypeManager.cpp" />
+    <ClCompile Include="Variable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Tk\Tk.vcxproj">

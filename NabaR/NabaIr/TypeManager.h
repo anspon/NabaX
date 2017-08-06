@@ -2,6 +2,7 @@
 #define NabaIr_CTypeManager_H
 
 #include "eStandardType.h"
+#include "eParameterType.h"
 
 namespace NabaIr
 {
@@ -21,7 +22,8 @@ public:
     Tk::Sp<const CParameter>
         MakeStandardParameter(
             eStandardType type,
-            const std::string& name
+            const std::string& name,
+            eParameterType parameterType
             )const;
 
 

@@ -14,6 +14,10 @@
 #include "NabaIr/StandardType.h"
 #include "NabaIr/TypeManager.h"
 #include "NabaIr/Parameter.h"
+#include "NabaIr/Variable.h"
+#include "NabaIr/Block.h"
+#include "NabaIr/Literal.h"
+#include "NabaIr/Instruction.h"
 
 #include "NabaIr/Backends/Cpp/CppGen.h"
 
@@ -162,20 +166,52 @@ int main(int argv, char** argc)
         filesystem::path buildPath(sourceDirectory);
         filesystem::path filePath = buildPath /= "HelloWorld.cpp";
         CStreamT<std::ofstream> targetFile( filePath );
-        CCodeStreamer streamer(targetFile);
 
-        
         Tk::Sp<const NabaIr::CTypeManager> irTypeManager = NabaIr::CTypeManager::Construct();
+
+        Tk::Sp<const NabaIr::CVariable> irVariableI = 
+            Tk::MakeSp<NabaIr::CVariable>(
+                irTypeManager->StandardType(NabaIr::stInt32),
+                "i"
+                );
+        Tk::Sp<const NabaIr::CVariable> irVariableJ = 
+            Tk::MakeSp<NabaIr::CVariable>(
+                irTypeManager->StandardType(NabaIr::stInt64),
+                "j"
+                );
+        Tk::Sp<const NabaIr::CLiteral> irLiteralInt32Zero = 
+            NabaIr::CLiteral::MakeInt32(0);
+
+        Tk::Sp<const NabaIr::CLiteral> irLiteralInt6455 = 
+            NabaIr::CLiteral::MakeInt64(55);
+        
+
+        Tk::SpList<const NabaIr::CInstruction> irInstructions = 
+        {
+            NabaIr::CInstruction::MakeAssignLiteral(irVariableI, irLiteralInt32Zero ),
+            NabaIr::CInstruction::MakeAssignLiteral(irVariableJ, irLiteralInt6455 ),
+            NabaIr::CInstruction::MakeZeroVariable(irVariableI )
+        };
+            
+
+
+        Tk::Sp<const NabaIr::CBlock> block = 
+            Tk::MakeSp<NabaIr::CBlock>(
+                Tk::SpList<const NabaIr::CVariable>{irVariableI, irVariableJ},
+                irInstructions
+            );
+        
 
         Tk::Sp<NabaIr::CFunction> irFunctionMain = 
             Tk::MakeSp<NabaIr::CFunction>(
                 "MyFirstFunction",
                 Tk::SpList<const NabaIr::CParameter>
-                    {
-                        irTypeManager->MakeStandardParameter(NabaIr::stInt32, "parameter1"),
-                        irTypeManager->MakeStandardParameter(NabaIr::stInt64, "parameter2"),
-                        irTypeManager->MakeStandardParameter(NabaIr::stInt64, "parameter3")
-                    }
+                {
+                    irTypeManager->MakeStandardParameter(NabaIr::stInt32, "parameter1", NabaIr::ptIn ),
+                    irTypeManager->MakeStandardParameter(NabaIr::stInt64, "parameter2", NabaIr::ptOut),
+                    irTypeManager->MakeStandardParameter(NabaIr::stInt64, "parameter3", NabaIr::ptInOut )
+                },
+                block
                 );
 
         Tk::SpList<const NabaIr::CFunction> irFunctions = { irFunctionMain };
@@ -185,9 +221,9 @@ int main(int argv, char** argc)
 
         Tk::Sp<NabaIr::CModule> irModule = Tk::MakeSp<NabaIr::CModule>("HelloWorld", irUnits);
         
-        NabaIr::Backends::CppGen::Stream(irModule, streamer );
+        NabaIr::Backends::CppGen::Stream(irModule, targetFile );
 
-        streamer << "int main(int argv, const char** argc ){return 0;}";
+        targetFile << "int main(int argv, const char** argc ){return 0;}";
 
 //        node->MakeCpp(streamer);
     }

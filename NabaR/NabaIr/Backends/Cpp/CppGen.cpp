@@ -5,6 +5,10 @@
 #include "TranslationUnit.h"
 #include "Parameter.h"
 #include "Type.h"
+#include "Block.h"
+#include "Variable.h"
+#include "Instruction.h"
+#include "Literal.h"
 
 namespace NabaIr
 {
@@ -13,10 +17,56 @@ namespace Backends
 
 namespace CppGen
 {
+
+//--------------------------------------------------------------------------------------------------
+static void StreamLiteral(
+    Tk::Sp<const CLiteral> literal,
+    CStream& stream
+    )
+{
+    switch( literal->NativeType() )
+    {
+        case ntInt32:
+        {
+            stream.Stream() << "int32_t(" << literal->Int32() << ")";
+            break;
+        }
+        case ntInt64:
+        {
+            stream.Stream() << "int64_t(" << literal->Int64() << ")";
+            break;
+        }
+    }
+}
+//--------------------------------------------------------------------------------------------------
+static void StreamInstruction(
+    Tk::Sp<const CInstruction> instruction,
+    CStream& stream
+    )
+{
+
+
+    switch(instruction->InstructionType() )
+    {
+        case itAssignLiteral:
+        {
+            stream << instruction->LhsVariable()->Name() << " = ";
+            StreamLiteral(instruction->RhsLiteral(), stream );
+            stream << ";";
+            break;
+        }
+        case itZeroVariable:
+        {
+            stream << instruction->LhsVariable()->Name() << " = 0";
+            stream << ";";
+            break;
+        }
+    }
+}
 //--------------------------------------------------------------------------------------------------
 static void StreamNativeType(
     eNativeType nativeType,
-    CCodeStreamer& stream
+    CStream& stream
     )
 {
     switch(nativeType)
@@ -38,24 +88,61 @@ static void StreamNativeType(
         }
     }
 }
-static void StreamParameter(
-    Tk::Sp<const CParameter> parameter,
-    CCodeStreamer& stream
+//--------------------------------------------------------------------------------------------------
+static void StreamBlock(
+    Tk::Sp<const CBlock> block,
+    CStream& stream
     )
 {
-    StreamNativeType(parameter->Type()->NativeType(), stream);
-    stream << " " << parameter->Name();
+    stream << "{" << CStream::CEndLine();
+    {
+        CIndenter indent(stream, 1);
+
+        for( Tk::Sp<const CVariable> variable : block->Variables() )
+        {
+            StreamNativeType(variable->DataType()->NativeType(), stream);
+            stream << " " << variable->Name() << ";" << CStream::CEndLine();
+        }
+        for( Tk::Sp<const CInstruction> instruction : block->Instructions() )
+        {
+            StreamInstruction(instruction, stream);
+            stream << CStream::CEndLine();
+        }
+    }
+    stream << "}" << CStream::CEndLine();
+}
+//--------------------------------------------------------------------------------------------------
+static void StreamParameter(
+    Tk::Sp<const CParameter> parameter,
+    CStream& stream
+    )
+{
+    switch( parameter->ParameterType() )
+    {
+        case ptIn : 
+        {
+            stream << "const ";
+            break;
+        }
+        case ptOut:
+        case ptInOut:
+        {
+            break;
+        }
+    }
+    StreamNativeType(parameter->DataType()->NativeType(), stream);
+    stream << "& " << parameter->Name();
 }
 //--------------------------------------------------------------------------------------------------
 static void StreamFunction(
     Tk::Sp<const CFunction> function,
-    CCodeStreamer& stream
+    CStream& stream
     )
 {
     stream << "void " << function->Name() << "(" << CStream::CEndLine();
 
     {
-        CIndenter indent(stream.Stream(), 1);
+        CIndenter indent(stream, 1);
         for( auto it = function->Parameters().begin(); it != function->Parameters().end(); it++ )
         {
             if( it != function->Parameters().begin() )
@@ -67,19 +154,12 @@ static void StreamFunction(
 
         stream << CStream::CEndLine() << ")" << CStream::CEndLine();
     }
-
-    stream << "{";
-    {
-        CIndenter indent(stream.Stream(), 1);
-    }
-    stream << "}" << CStream::CEndLine();
-
-
+    StreamBlock(function->Block(), stream);
 }
-
+//--------------------------------------------------------------------------------------------------
 void Stream(
     Tk::Sp<const CModule> module, 
-    CCodeStreamer& stream
+    CStream& stream
     )
 {
     stream << "#include <stdint.h>" << CStream::CEndLine();
@@ -99,7 +179,7 @@ void Stream(
 /*
 //--------------------------------------------------------------------------------------------------
 void CVariableDeclaration::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
     ) const
 {
     streamer << m_type << " " << m_id;
@@ -114,7 +194,7 @@ void CVariableDeclaration::MakeCpp(
 
 //--------------------------------------------------------------------------------------------------
 void CBlock::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
     )const
 {
     for( Tk::Sp<const CBlockPart> block : m_blockParts )
@@ -124,7 +204,7 @@ void CBlock::MakeCpp(
 }
 //--------------------------------------------------------------------------------------------------
 void CDouble::MakeCpp(
-    CCodeStreamer & streamer
+    CStream & streamer
     ) const
 {
     streamer.CoreStream() << m_value;
@@ -132,7 +212,7 @@ void CDouble::MakeCpp(
 
 //--------------------------------------------------------------------------------------------------
 void CFunctionDeclaration::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
     )const
 {
     streamer << m_type << " " << m_id << "(" << StreamCollection(streamer, m_arguments, "," )  << ")" << CStream::endl;
@@ -146,25 +226,25 @@ void CFunctionDeclaration::MakeCpp(
 }
 //--------------------------------------------------------------------------------------------------
 void CFunctionParameter::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
     ) const
 {
     streamer << m_type << " " << m_id;
 }
     void 
         MakeCpp(
-            CCodeStreamer& streamer
+            CStream& streamer
             )const override;
 
 
                 void 
         MakeCpp(
-            CCodeStreamer& streamer
+            CStream& streamer
             )const;
 
 //--------------------------------------------------------------------------------------------------
 void CInteger64::MakeCpp( 
-    CCodeStreamer& streamer 
+    CStream& streamer 
     )const
 {
     streamer.CoreStream() << m_value;
@@ -172,35 +252,35 @@ void CInteger64::MakeCpp(
 
 //--------------------------------------------------------------------------------------------------
 void CNode::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
     )const
 {
 }
 
 //--------------------------------------------------------------------------------------------------
 void CIdentifier::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
     )const
 {
     streamer << m_name;
 }
 
 //--------------------------------------------------------------------------------------------------
-CCodeStreamer& operator<<(CCodeStreamer& streamer, Tk::Sp<const CNode> node )
+CStream& operator<<(CStream& streamer, Tk::Sp<const CNode> node )
 {
     node->MakeCpp(streamer);
     return streamer;
 }
 //--------------------------------------------------------------------------------------------------
 void CAssignment::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
     ) const
 {
     streamer << m_lhs << "=" << m_rhs << ";" << CStream::endl;
 }
 //--------------------------------------------------------------------------------------------------
 void CStruct::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
     )const
 {
     streamer.BeginStruct(m_name->m_name);
@@ -218,7 +298,7 @@ void CStruct::MakeCpp(
 }
 //--------------------------------------------------------------------------------------------------
 void CStructVariable::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
         ) const
 {
     streamer << m_type << CStream::endl;
@@ -234,17 +314,17 @@ void CStructVariable::MakeCpp(
     }
     streamer.Stream() << CStream::endl;
 }
-CCodeStreamer& operator<<(CCodeStreamer& streamer, Tk::Sp<const CNode> node );
+CStream& operator<<(CStream& streamer, Tk::Sp<const CNode> node );
 //--------------------------------------------------------------------------------------------------
 void CInteger32::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
     ) const
 {
     streamer.CoreStream() << m_value;
 }
 //--------------------------------------------------------------------------------------------------
 void CExpressionStatement::MakeCpp(
-    CCodeStreamer& streamer
+    CStream& streamer
     ) const
 {
     m_expression->MakeCpp(streamer);

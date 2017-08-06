@@ -12,7 +12,7 @@ namespace CppGen
 void 
     Stream(
         Tk::Sp<const CModule> module, 
-        CCodeStreamer& stream
+        CStream& stream
         );
 }
 }

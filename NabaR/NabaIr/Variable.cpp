@@ -1,40 +1,34 @@
 #include "NabaIrPch.h"
-#include "Function.h"
+#include "Variable.h"
 
 namespace NabaIr
 {
 
-CFunction::CFunction(
-    const std::string& name,
-    const Tk::SpList<const CParameter>& parameters,
-    Tk::Sp<const CBlock> block
+//--------------------------------------------------------------------------------------------------
+CVariable::CVariable(
+    Tk::Sp<const CType> dataType,
+    const std::string& name
     ):
-    m_name(name),
-    m_parameters(parameters),
-    m_block(block)
+    m_dataType(dataType),
+    m_name(name)
 {
 }
 //--------------------------------------------------------------------------------------------------
-CFunction::~CFunction()
+CVariable::~CVariable()
 {
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const CBlock> CFunction::Block(
+Tk::Sp<const CType> CVariable::DataType(
     )const
 {
-    return m_block;
+    return m_dataType;
 }
 //--------------------------------------------------------------------------------------------------
-const std::string& CFunction::Name(
+const std::string& CVariable::Name(
     )const
 {
     return m_name;
 }
 //--------------------------------------------------------------------------------------------------
-const Tk::SpList<const CParameter>& CFunction::Parameters(
-    )const
-{
-    return m_parameters;
-}
 
 }
