@@ -6,12 +6,10 @@ namespace NabaIr
 
 //--------------------------------------------------------------------------------------------------
 CParameter::CParameter(
-    const std::string& name,
-    Tk::Sp<const CType> dataType,
+    Tk::Sp<const CVariable> variable,
     eParameterType parameterType
     ):
-    m_name(name),
-    m_dataType(dataType),
+    m_variable(variable),
     m_parameterType(parameterType)
 {
 }
@@ -20,16 +18,10 @@ CParameter::~CParameter()
 {
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const CType> CParameter::DataType(
+Tk::Sp<const CVariable>  CParameter::Variable(
     )const
 {
-    return m_dataType;
-}
-//--------------------------------------------------------------------------------------------------
-const std::string CParameter::Name(
-    )const
-{
-    return m_name;
+    return m_variable;
 }
 //--------------------------------------------------------------------------------------------------
 eParameterType CParameter::ParameterType(

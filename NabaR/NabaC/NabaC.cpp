@@ -18,6 +18,8 @@
 #include "NabaIr/Block.h"
 #include "NabaIr/Literal.h"
 #include "NabaIr/Instruction.h"
+#include "NabaIr/BlockBuilder.h"
+#include "NabaIr/FunctionBuilder.h"
 
 #include "NabaIr/Backends/Cpp/CppGen.h"
 
@@ -168,54 +170,58 @@ int main(int argv, char** argc)
         CStreamT<std::ofstream> targetFile( filePath );
 
         Tk::Sp<const NabaIr::CTypeManager> irTypeManager = NabaIr::CTypeManager::Construct();
-
-        Tk::Sp<const NabaIr::CVariable> irVariableI = 
-            Tk::MakeSp<NabaIr::CVariable>(
-                irTypeManager->StandardType(NabaIr::stInt32),
-                "i"
-                );
-        Tk::Sp<const NabaIr::CVariable> irVariableJ = 
-            Tk::MakeSp<NabaIr::CVariable>(
-                irTypeManager->StandardType(NabaIr::stInt64),
-                "j"
-                );
-        Tk::Sp<const NabaIr::CLiteral> irLiteralInt32Zero = 
-            NabaIr::CLiteral::MakeInt32(0);
-
-        Tk::Sp<const NabaIr::CLiteral> irLiteralInt6455 = 
-            NabaIr::CLiteral::MakeInt64(55);
         
-
-        Tk::SpList<const NabaIr::CInstruction> irInstructions = 
+        Tk::SpList<const NabaIr::CFunction> irFunctions;
+        Tk::Sp<const NabaIr::CFunction> myFirstFunction;
         {
-            NabaIr::CInstruction::MakeAssignLiteral(irVariableI, irLiteralInt32Zero ),
-            NabaIr::CInstruction::MakeAssignLiteral(irVariableJ, irLiteralInt6455 ),
-            NabaIr::CInstruction::MakeZeroVariable(irVariableI )
-        };
-            
+            NabaIr::CFunctionBuilder functionBuilder(irTypeManager);
 
+            auto i = functionBuilder.AddInt32("i");
+            auto j = functionBuilder.AddInt64("j");
 
-        Tk::Sp<const NabaIr::CBlock> block = 
-            Tk::MakeSp<NabaIr::CBlock>(
-                Tk::SpList<const NabaIr::CVariable>{irVariableI, irVariableJ},
-                irInstructions
-            );
+            auto in1 = functionBuilder.AddParameterInt32("in1", NabaIr::ptIn);
+
+            Tk::Sp<const NabaIr::CLiteral> irLiteralInt32Zero = 
+                NabaIr::CLiteral::MakeInt32(0);
+
+            Tk::Sp<const NabaIr::CLiteral> irLiteralInt6455 = 
+                NabaIr::CLiteral::MakeInt64(55);
         
+            functionBuilder.ZeroVariable(i);
+            functionBuilder.ZeroVariable(j);
+            functionBuilder.AssignVariable(i, in1);
+            myFirstFunction = functionBuilder.Flush("MyFirstFunction");
+            
+            irFunctions.push_back(myFirstFunction);
+        }
+        {
+            NabaIr::CFunctionBuilder functionBuilder(irTypeManager);
 
-        Tk::Sp<NabaIr::CFunction> irFunctionMain = 
-            Tk::MakeSp<NabaIr::CFunction>(
-                "MyFirstFunction",
-                Tk::SpList<const NabaIr::CParameter>
-                {
-                    irTypeManager->MakeStandardParameter(NabaIr::stInt32, "parameter1", NabaIr::ptIn ),
-                    irTypeManager->MakeStandardParameter(NabaIr::stInt64, "parameter2", NabaIr::ptOut),
-                    irTypeManager->MakeStandardParameter(NabaIr::stInt64, "parameter3", NabaIr::ptInOut )
-                },
-                block
-                );
+            auto i = functionBuilder.AddInt32("i");
+            auto j = functionBuilder.AddInt64("j");
+            auto k = functionBuilder.AddInt32("k");
 
-        Tk::SpList<const NabaIr::CFunction> irFunctions = { irFunctionMain };
+            auto loop = functionBuilder.AddInt32("loop");
+            functionBuilder.AssignLiteral(loop, NabaIr::CLiteral::MakeInt32(-10) ) ;
 
+            NabaIr::CBlockBuilder whileBlock(irTypeManager);
+            whileBlock.IncrementLiteral(loop,NabaIr::CLiteral::MakeInt32(1) );
+            functionBuilder.While(loop, whileBlock.Flush() );
+
+            functionBuilder.AssignLiteral(k, NabaIr::CLiteral::MakeInt32(10) ) ;
+
+            functionBuilder.ZeroVariable(i);
+            functionBuilder.ZeroVariable(j);
+            
+            functionBuilder.AssignLiteral(i, NabaIr::CLiteral::MakeInt32(33) ) ;
+            functionBuilder.AssignLiteral(j, NabaIr::CLiteral::MakeInt64(55) ) ;
+
+            functionBuilder.IncrementVariable(i, k ) ;
+
+            functionBuilder.CallFunction(myFirstFunction, {i});
+
+            irFunctions.push_back(functionBuilder.Flush("Main"));
+        }
         Tk::Sp<NabaIr::CTranslationUnit> irUnitMain = Tk::MakeSp<NabaIr::CTranslationUnit>("Main", irFunctions);
         Tk::SpList<const NabaIr::CTranslationUnit> irUnits = { irUnitMain };
 
@@ -223,7 +229,7 @@ int main(int argv, char** argc)
         
         NabaIr::Backends::CppGen::Stream(irModule, targetFile );
 
-        targetFile << "int main(int argv, const char** argc ){return 0;}";
+        targetFile << "int main(int argv, const char** argc ){Main();return 0;}";
 
 //        node->MakeCpp(streamer);
     }

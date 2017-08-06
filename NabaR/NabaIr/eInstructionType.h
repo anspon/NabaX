@@ -13,7 +13,9 @@ enum eInstructionType
     itIncrementLiteral,
     itDecrementLiteral,
     itIncrementVariable,
-    itDecrementVariable
+    itDecrementVariable,
+    itCallFunction,
+    itWhile
 };
 
 

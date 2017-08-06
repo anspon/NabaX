@@ -6,15 +6,14 @@
 
 namespace NabaIr
 {
-class CType;
+class CVariable;
 
 class CParameter
 {
 public:
 
     CParameter(
-        const std::string& name,
-        Tk::Sp<const CType> type,
+        Tk::Sp<const CVariable> variable,
         eParameterType parameterType
         );
     ~CParameter();
@@ -24,20 +23,13 @@ public:
         ParameterType(
             )const;
 
-    Tk::Sp<const CType> 
-        DataType(
-            )const;
-    
-    const std::string 
-        Name(
+    Tk::Sp<const CVariable> 
+        Variable(
             )const;
 
 private:
-    const std::string 
-        m_name;
-    
-    const Tk::Sp<const CType> 
-        m_dataType;
+    const Tk::Sp<const CVariable> 
+        m_variable;
 
     const eParameterType 
         m_parameterType;

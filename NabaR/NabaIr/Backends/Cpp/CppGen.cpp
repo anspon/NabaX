@@ -17,6 +17,11 @@ namespace Backends
 
 namespace CppGen
 {
+//--------------------------------------------------------------------------------------------------
+static void StreamBlock(
+    Tk::Sp<const CBlock> block,
+    CStream& stream
+    );
 
 //--------------------------------------------------------------------------------------------------
 static void StreamLiteral(
@@ -44,21 +49,60 @@ static void StreamInstruction(
     CStream& stream
     )
 {
-
-
     switch(instruction->InstructionType() )
     {
         case itAssignLiteral:
         {
             stream << instruction->LhsVariable()->Name() << " = ";
             StreamLiteral(instruction->RhsLiteral(), stream );
-            stream << ";";
+            stream << ";" << CStream::CEndLine();
+            break;
+        }
+        case itIncrementLiteral:
+        {
+            stream << instruction->LhsVariable()->Name() << " += ";
+            StreamLiteral(instruction->RhsLiteral(), stream );
+            stream << ";" << CStream::CEndLine();
             break;
         }
         case itZeroVariable:
         {
             stream << instruction->LhsVariable()->Name() << " = 0";
-            stream << ";";
+            stream << ";" << CStream::CEndLine();
+            break;
+        }
+        case itAssignVariable:
+        {
+            stream << instruction->LhsVariable()->Name() << " = " << instruction->RhsVariable()->Name();
+            stream << ";" << CStream::CEndLine();
+            break;
+        }
+        case itIncrementVariable:
+        {
+            stream << instruction->LhsVariable()->Name() << " += " << instruction->RhsVariable()->Name();
+            stream << ";" << CStream::CEndLine();
+            break;
+        }
+        case itCallFunction:
+        {
+            stream << instruction->Function()->Name() << "(";
+            for( auto it  = instruction->FunctionParameters().begin(); it != instruction->FunctionParameters().end(); it++ )
+            {
+                if( it != instruction->FunctionParameters().begin() )
+                {
+                    stream << ", ";
+                }
+                stream << (*it)->Name();
+            }
+            stream << ");" << CStream::CEndLine();
+            break;
+        }
+        case itWhile:
+        {
+            stream << CStream::CEndLine();
+            stream << "while( " << instruction->LhsVariable()->Name() << " )"  << CStream::CEndLine();
+            StreamBlock(instruction->Block(), stream );
+            stream << CStream::CEndLine();
             break;
         }
     }
@@ -106,7 +150,6 @@ static void StreamBlock(
         for( Tk::Sp<const CInstruction> instruction : block->Instructions() )
         {
             StreamInstruction(instruction, stream);
-            stream << CStream::CEndLine();
         }
     }
     stream << "}" << CStream::CEndLine();
@@ -130,8 +173,8 @@ static void StreamParameter(
             break;
         }
     }
-    StreamNativeType(parameter->DataType()->NativeType(), stream);
-    stream << "& " << parameter->Name();
+    StreamNativeType(parameter->Variable()->DataType()->NativeType(), stream);
+    stream << "& " << parameter->Variable()->Name();
 }
 //--------------------------------------------------------------------------------------------------
 static void StreamFunction(
@@ -139,7 +182,7 @@ static void StreamFunction(
     CStream& stream
     )
 {
-    stream << "void " << function->Name() << "(" << CStream::CEndLine();
+    stream << "void " << function->Name() << "(";
 
     {
         CIndenter indent(stream, 1);
@@ -149,12 +192,16 @@ static void StreamFunction(
             {
                 stream << ", " << CStream::CEndLine();
             }
+            stream << CStream::CEndLine();
             StreamParameter(*it, stream);
         }
 
         stream << CStream::CEndLine() << ")" << CStream::CEndLine();
     }
     StreamBlock(function->Block(), stream);
+
+    stream << "//--------------------------------------------------------------------------------------------------";
+    stream << CStream::CEndLine();
 }
 //--------------------------------------------------------------------------------------------------
 void Stream(

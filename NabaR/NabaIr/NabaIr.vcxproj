@@ -28,6 +28,7 @@
     <ClInclude Include="eParameterType.h" />
     <ClInclude Include="eStandardType.h" />
     <ClInclude Include="Function.h" />
+    <ClInclude Include="FunctionBuilder.h" />
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="Literal.h" />
     <ClInclude Include="Module.h" />
@@ -46,6 +47,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockBuilder.cpp" />
     <ClCompile Include="Function.cpp" />
+    <ClCompile Include="FunctionBuilder.cpp" />
     <ClCompile Include="Instruction.cpp" />
     <ClCompile Include="Literal.cpp" />
     <ClCompile Include="Module.cpp" />

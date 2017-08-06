@@ -17,16 +17,6 @@ public:
         Construct(
             );
 
-    
-
-    Tk::Sp<const CParameter>
-        MakeStandardParameter(
-            eStandardType type,
-            const std::string& name,
-            eParameterType parameterType
-            )const;
-
-
     Tk::Sp<const CStandardType>
         StandardType(
             eStandardType type

@@ -42,14 +42,5 @@ Tk::Sp<const CStandardType> CTypeManager::StandardType(
     TK_ASSERT( it != m_standardTypes.end(), "Invalid standard type: " << type );
     return it->second;
 }
-//--------------------------------------------------------------------------------------------------
-Tk::Sp<const CParameter> CTypeManager::MakeStandardParameter(
-    eStandardType type,
-    const std::string& name,
-    eParameterType parameterType
-    )const
-{
-    return Tk::MakeSp<const CParameter>(name, StandardType(type), parameterType );
-}
 
 }
