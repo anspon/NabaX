@@ -14,7 +14,7 @@ class CFunctionBuilder : public CBlockBuilder
     using BaseClass = CBlockBuilder;
 public:
     CFunctionBuilder(
-        Tk::Sp<const CTypeManager> typeManager
+        Tk::Sp<CTypeManager> typeManager
         );
     ~CFunctionBuilder();
 
@@ -24,8 +24,9 @@ public:
             )const;
 
     Tk::Sp<const CVariable>
-        AddParameterInt32(
-            const std::string& name,
+        AddParameter(
+            const std::string& typeName,
+            const std::string& parameterName,
             eParameterType parameterType
             );
 

@@ -5,10 +5,11 @@
 namespace Ast
 {
 CLiteral::CLiteral(
-    const CPosition& position
+    const StringToken* stringToken
     )
 {
-    m_position = position;
+    m_position = stringToken->m_position;
+    m_originalText = stringToken->m_string;
 }
 }
 

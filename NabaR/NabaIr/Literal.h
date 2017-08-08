@@ -19,6 +19,11 @@ public:
             int64_t value
             );
 
+    static Tk::Sp<const CLiteral>
+        MakeDouble(
+            double value
+            );
+
     ~CLiteral();
 
     int32_t

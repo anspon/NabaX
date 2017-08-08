@@ -7,7 +7,7 @@ namespace NabaIr
 {
 
 CFunctionBuilder::CFunctionBuilder(
-    Tk::Sp<const CTypeManager> typeManager
+    Tk::Sp<CTypeManager> typeManager
     ):
     BaseClass(typeManager)
 {
@@ -29,12 +29,13 @@ Tk::Sp<NabaIr::CFunction> CFunctionBuilder::Flush(
             );
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const CVariable> CFunctionBuilder::AddParameterInt32(
-    const std::string & name,
+Tk::Sp<const CVariable> CFunctionBuilder::AddParameter(
+    const std::string& typeName,
+    const std::string& variableName,
     eParameterType parameterType
     )
 {
-    auto variable = MakeInt32(name);
+    auto variable = AddVariable(typeName, variableName);
     auto parameter = Tk::MakeSp<CParameter>(variable, parameterType );
     m_parameters.push_back(parameter);
     return variable;

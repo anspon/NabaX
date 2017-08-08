@@ -14,6 +14,12 @@ public:
         const CExpression* rhs
         );
 
+    Tk::Sp<const NabaIr::CVariable>
+        MakeExpressionIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder
+            )const;
+
 private:
     Tk::Sp<const CExpression> 
         m_lhs;

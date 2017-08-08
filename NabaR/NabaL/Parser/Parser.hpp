@@ -97,6 +97,7 @@ typedef union YYSTYPE
     Ast::CBlock* block;
     Ast::CBlock* blockParts;
     Ast::CExpression* expr;
+	Ast::CAssignment* assignment;
     Ast::CBlockPart* blockPart;
     Ast::CIdentifier* ident;
     Ast::CVariableDeclaration* var_decl;
@@ -112,7 +113,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 116 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.hpp"
+#line 117 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.hpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

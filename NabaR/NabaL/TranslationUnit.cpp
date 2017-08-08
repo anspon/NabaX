@@ -1,5 +1,10 @@
 #include "NabaLPch.h"
 #include "TranslationUnit.h"
+#include "Ast/Node.h"
+
+#include "NabaIr/TypeManager.h"
+#include "NabaIr/TranslationUnit.h"
+#include "NabaIr/BlockBuilder.h"
 
 
 namespace NabaL
@@ -38,6 +43,18 @@ Tk::Sp<const Ast::CNode>  CTranslationUnit::Ast(
     )const
 {
     return m_ast;
+}
+//--------------------------------------------------------------------------------------------------
+Tk::Sp<const NabaIr::CTranslationUnit> 
+    CTranslationUnit::MakeIr(
+    )const
+{
+    Tk::Sp<NabaIr::CTypeManager> irTypeManager = NabaIr::CTypeManager::Construct();
+    NabaIr::CBlockBuilder blockBuilder(irTypeManager);
+    Tk::SpList<const NabaIr::CFunction> irFunctions;
+    m_ast->MakeIr(irTypeManager, blockBuilder, irFunctions);
+
+    return Tk::MakeSp<NabaIr::CTranslationUnit>("Main", irFunctions);
 }
 
 }

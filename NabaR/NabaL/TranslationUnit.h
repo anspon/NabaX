@@ -9,6 +9,11 @@ namespace Ast
 class CNode;
 }
 
+namespace NabaIr
+{
+class CTranslationUnit;
+}
+
 namespace NabaL
 {
 class CCompileError;
@@ -26,6 +31,10 @@ public:
 
     Tk::Sp<const Ast::CNode> 
         Ast(
+            )const;
+
+    Tk::Sp<const NabaIr::CTranslationUnit> 
+        MakeIr(
             )const;
             
     ~CTranslationUnit(

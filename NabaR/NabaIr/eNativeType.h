@@ -8,6 +8,7 @@ enum eNativeType
 {
     ntInt64,
     ntInt32,
+    ntDouble,
     ntVoidPtr
 };
 }

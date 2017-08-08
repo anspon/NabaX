@@ -19,7 +19,12 @@ public:
         const CBlockPart* block
         );
 
-
+    void
+        MakeIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder,
+            Tk::SpList<const NabaIr::CFunction>& functions
+            )const override;
 private:
     Tk::Sp<const CIdentifier> 
         m_type;

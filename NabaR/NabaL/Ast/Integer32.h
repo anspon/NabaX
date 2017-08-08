@@ -14,6 +14,12 @@ public:
         const StringToken* value
         );
 
+    Tk::Sp<const NabaIr::CVariable>
+        MakeExpressionIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder
+            )const;
+
     int32_t 
         m_value;
 

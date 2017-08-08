@@ -3,17 +3,36 @@
 
 #include "Expression.h"
 
+namespace NabaIr
+{
+class CBlockBuilder;
+}
+
 namespace Ast
 {
 class CBlockPart;
 
-class CBlock : public CExpression 
+class CBlock : public CBlockPart 
 {
 public:
     void
         AddBlockPart(
             const CBlockPart* part
             );
+    
+    void
+        MakeIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder,
+            Tk::SpList<const NabaIr::CFunction>& functions
+            )const override;
+    
+    void
+        MakeFunctionIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder
+            )const;
+
 
 private:        
     Tk::SpList<const CBlockPart>

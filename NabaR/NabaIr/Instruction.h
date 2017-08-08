@@ -39,7 +39,7 @@ public:
             );
     static Tk::Sp<const CInstruction>
         MakeCallFunction(
-            Tk::Sp<const CFunction> function,
+            const std::string& functionName,
             const Tk::SpList<const CVariable>& parameters
             );
 
@@ -59,7 +59,7 @@ public:
         Tk::Sp<const CVariable> lhsVariable,
         Tk::Sp<const CVariable> rhsVariable,
         Tk::Sp<const CLiteral> rhsLiteral,
-        Tk::Sp<const CFunction> function,
+        const std::string& functionName,
         const Tk::SpList<const CVariable>& functionParameters,
         Tk::Sp<const CBlock> block
         );
@@ -77,8 +77,8 @@ public:
         RhsLiteral(
             )const;
     
-    Tk::Sp<const CFunction> 
-        Function(
+    const std::string& 
+        FunctionName(
             )const;
     
     const Tk::SpList<const CVariable>& 
@@ -104,8 +104,8 @@ private:
     const Tk::Sp<const CLiteral> 
         m_rhsLiteral;
 
-    const Tk::Sp<const CFunction> 
-        m_function;
+    const std::string& 
+        m_functionName;
     
     const Tk::SpList<const CVariable> 
         m_functionParameters;

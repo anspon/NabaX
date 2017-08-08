@@ -15,6 +15,12 @@ public:
         const CIdentifier* id, 
         const Tk::SpList<const CExpression>* arguments
         ) ;
+
+    Tk::Sp<const NabaIr::CVariable>
+        MakeExpressionIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder
+            )const override;
     
 private:
     Tk::Sp<const CIdentifier>

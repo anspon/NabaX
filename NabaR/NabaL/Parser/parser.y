@@ -74,6 +74,7 @@ typedef void* yyscan_t;
     Ast::CBlock* block;
     Ast::CBlock* blockParts;
     Ast::CExpression* expr;
+	Ast::CAssignment* assignment;
     Ast::CBlockPart* blockPart;
     Ast::CIdentifier* ident;
     Ast::CVariableDeclaration* var_decl;
@@ -104,6 +105,7 @@ typedef void* yyscan_t;
  */
 %type <ident> ident
 %type <expr> numeric expr 
+%type <assignment> assignment
 %type <funcParList> func_decl_args
 %type <exprvec> call_args
 %type <blockParts> blockParts 
@@ -135,16 +137,13 @@ blockPart :
     func_decl | 
     struct | 
     expr { $$ = new Ast::CExpressionStatement($1); } |
-    block
+|	assignment |
+    block 
     ;
 
 block : 
     TLBRACE blockParts TRBRACE { $$ = $2; } | 
     TLBRACE TRBRACE { $$ = new Ast::CBlock(); }
-    ;
-
-lparen:
-    TLPAREN
     ;
 
 struct :  
@@ -163,7 +162,7 @@ structParts:
     ;
 
 func_decl : 
-    ident ident lparen func_decl_args TRPAREN block { $$ = new Ast::CFunction($1, $2, $4, $6); }
+    ident ident TLPAREN func_decl_args TRPAREN block { $$ = new Ast::CFunction($1, $2, $4, $6); }
     ;
     
 func_decl_args : 
@@ -175,7 +174,6 @@ func_decl_args :
 func_param:
     ident ident { $$ = new Ast::CFunctionParameter($1, $2, nullptr); } 
     ;
-    
 
 var_decl : 
     ident ident TSEMICOLON { $$ = new Ast::CVariableDeclaration($1, $2, nullptr); } | 
@@ -187,12 +185,16 @@ ident :
     ;
 
 numeric : 
+	T_I64 { $$ = new Ast::CInteger64($1);} | 
     T_I32 { $$ = new Ast::CInteger32($1);} | 
     TDOUBLE { $$ = new Ast::CDouble($1);}
     ;
+
+assignment :
+	ident TEQUAL expr TSEMICOLON{ $$ = new Ast::CAssignment($<ident>1, $3); } 
+	;
     
 expr : 
-    ident TEQUAL expr { $$ = new Ast::CAssignment($<ident>1, $3); } | 
     ident TLPAREN call_args TRPAREN { $$ = new Ast::CMethodCall($1, $3); } | 
     ident { $<ident>$ = $1; } | 
     numeric | 

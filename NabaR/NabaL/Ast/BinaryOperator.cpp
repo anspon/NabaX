@@ -15,4 +15,12 @@ CBinaryOperator::CBinaryOperator(
     m_op = op;
     m_rhs = Tk::AttachSp(rhs);
 }
+//--------------------------------------------------------------------------------------------------
+Tk::Sp<const NabaIr::CVariable> CBinaryOperator::MakeExpressionIr(
+    Tk::Sp<NabaIr::CTypeManager> typeManager,
+    NabaIr::CBlockBuilder & blockBuilder
+    ) const
+{
+    return Tk::Sp<const NabaIr::CVariable>();
+}
 }

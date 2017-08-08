@@ -13,11 +13,15 @@ public:
         const StringToken* stringToken
         );
 
+    Tk::Sp<const NabaIr::CVariable>
+        MakeExpressionIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder
+            )const;
+
     int64_t 
         m_value;
 
-    std::string
-        m_originalText;
 };}
 
 

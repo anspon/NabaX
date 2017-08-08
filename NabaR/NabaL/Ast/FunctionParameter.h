@@ -18,7 +18,7 @@ public:
         const CExpression* assignmentExpr
         );
 
-private:
+public:
     Tk::Sp<const CIdentifier> 
         m_type;
     

@@ -12,14 +12,18 @@ public:
     CDouble(
         const StringToken* stringToken
         );
+
+    Tk::Sp<const NabaIr::CVariable>
+        MakeExpressionIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder
+            )const;
     
        
 private:    
     double 
         m_value;
 
-    std::string 
-        m_originalText;    
 };
 
 }

@@ -48,4 +48,14 @@ Tk::Sp<const CLiteral> CLiteral::MakeInt64(
     instance->m_.int64Value = value;
     return instance;
 }
+//--------------------------------------------------------------------------------------------------
+Tk::Sp<const CLiteral> CLiteral::MakeDouble(
+    double value
+    )
+{
+    Tk::Sp<CLiteral> instance(new CLiteral);
+    instance->m_nativeType = ntDouble;
+    instance->m_.doubleValue = value;
+    return instance;
+}
 }

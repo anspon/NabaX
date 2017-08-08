@@ -1,6 +1,3 @@
-{
-    
-}
 #include "NabaCPch.h"
 
 #include "NabaL/ParseModule.h"
@@ -55,73 +52,11 @@ void ErrorCheckModuleThrow(Tk::Sp<const NabaL::CModule> astModule )
         TK_ASSERT( !hasErrors, "Errors found during compilation, aborting" );
     }
 }
-
-
-class CType
-{
-public:
-    CType(        
-        const std::string& name,
-        const std::string& fullyQualifiedName
-        ):
-        m_name(name),
-        m_fullyQualifiedName(fullyQualifiedName)
-    {
-        
-    }
-
-    const std::string&
-        Name(
-            )const
-    {
-        return m_name;
-    }
-
-private:
-    const std::string
-        m_name;
-
-    const std::string
-        m_fullyQualifiedName;
-};
 //--------------------------------------------------------------------------------------------------
-class CCoreType : public CType
-{
-    using BaseClass = CType;
-public:
-    CCoreType(        
-        const std::string& name
-        ):
-        BaseClass(name, name)
-    {
-    }
-
-    
-};
-
-class CStruct  : public CType
-{
-    using BaseClass = CType;
-public:
-    CStruct(        
-        const std::string& name
-        ):
-        BaseClass(name, name)
-    {
-    }
-    
-};
-//--------------------------------------------------------------------------------------------------
-Tk::SpList<const CType> ResolveTypes(
+void ResolveTypes(
     Tk::Sp<const NabaL::CModule> astModule 
     )
 {
-    Tk::SpList<const CType> allTypes;
-    
-    allTypes.push_back( Tk::MakeSp<CCoreType>("i32") );
-    allTypes.push_back( Tk::MakeSp<CCoreType>("i64") );
-    allTypes.push_back( Tk::MakeSp<CCoreType>("double") );
-
     Tk::SpList<const NabaL::CCompileError> allErrors;
 
     bool hasErrors = false;
@@ -141,8 +76,6 @@ Tk::SpList<const CType> ResolveTypes(
     {
         PrintError( error );
     }
-
-    return allTypes;
 }
 //--------------------------------------------------------------------------------------------------
 int main(int argv, char** argc)
@@ -159,6 +92,7 @@ int main(int argv, char** argc)
 
         ResolveTypes(astModule);
 
+        Tk::Sp<const NabaIr::CModule> irModule = astModule->MakeIr();
 
 //        BuildAllTypes(astModule);
 
@@ -169,6 +103,22 @@ int main(int argv, char** argc)
         filesystem::path filePath = buildPath /= "HelloWorld.cpp";
         CStreamT<std::ofstream> targetFile( filePath );
 
+        NabaIr::Backends::CppGen::Stream(irModule, targetFile );
+        targetFile << "int main(int argv, const char** argc ){Main();return 0;}";
+
+//        node->MakeCpp(streamer);
+    }
+    catch( Tk::CException& e )
+    {
+        std::cout << e.Message() << std::endl;
+        std::cin.get();
+    }
+    return 0;
+}
+
+
+
+    /*
         Tk::Sp<const NabaIr::CTypeManager> irTypeManager = NabaIr::CTypeManager::Construct();
         
         Tk::SpList<const NabaIr::CFunction> irFunctions;
@@ -227,17 +177,4 @@ int main(int argv, char** argc)
 
         Tk::Sp<NabaIr::CModule> irModule = Tk::MakeSp<NabaIr::CModule>("HelloWorld", irUnits);
         
-        NabaIr::Backends::CppGen::Stream(irModule, targetFile );
-
-        targetFile << "int main(int argv, const char** argc ){Main();return 0;}";
-
-//        node->MakeCpp(streamer);
-    }
-    catch( Tk::CException& e )
-    {
-        std::cout << e.Message() << std::endl;
-        std::cin.get();
-    }
-    return 0;
-}
-
+*/

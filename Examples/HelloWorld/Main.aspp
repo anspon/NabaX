@@ -14,7 +14,6 @@ struct Apa
     int c;
 };
 
-
 struct Apa2
 {
     Apa3 m_apa3;
@@ -23,16 +22,22 @@ struct Apa2
     Apa m_apa2;
 
 };
-void Banana(int k)
+void Banana(i32 k)
 {
     Apa2 apa2;
     Apa2 apa2_1 = apa2;
+	i32 j = k;
 }
 
 void Main()
 {
+	i32 i=1;
+	i64 j;
+	Banana(i) 
+	Banana(7i32)
+	Banana(99i32)
     Apa apa;
-}
-
+	j=7;
+	}
 
 

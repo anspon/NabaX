@@ -6,11 +6,13 @@
 #include "StandardType.h"
 #include "Block.h"
 
+#include "Tk/Exception.h"
+
 namespace NabaIr
 {
 //--------------------------------------------------------------------------------------------------
 CBlockBuilder::CBlockBuilder(
-    Tk::Sp<const CTypeManager> typeManager
+    Tk::Sp<CTypeManager> typeManager
     )
 {
     m_typeManager = typeManager;
@@ -19,7 +21,7 @@ CBlockBuilder::CBlockBuilder(
 Tk::Sp<const CBlock> CBlockBuilder::Flush(
     ) const
 {
-    return Tk::MakeSp<CBlock>(m_variables, m_instructions);
+    return Tk::MakeSp<CBlock>(m_localVariables, m_instructions);
 }
 //--------------------------------------------------------------------------------------------------
 void CBlockBuilder::AssignVariable(
@@ -63,12 +65,12 @@ void CBlockBuilder::IncrementLiteral(
 }
 //--------------------------------------------------------------------------------------------------
 void CBlockBuilder::CallFunction(
-    Tk::Sp<const CFunction> function,
+    const std::string& functionName,
     const Tk::SpList<const CVariable>& parameters
     )
 {
     m_instructions.push_back(
-        CInstruction::MakeCallFunction( function, parameters )
+        CInstruction::MakeCallFunction( functionName, parameters )
         );
 }
 //--------------------------------------------------------------------------------------------------
@@ -82,44 +84,44 @@ void CBlockBuilder::While(
         );
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const CVariable> CBlockBuilder::MakeInt32(
-    const std::string & name
+Tk::Sp<const CVariable> CBlockBuilder::AddLocalVariable(
+    const std::string& typeName, 
+    const std::string& variableName
     )
 {
-    return 
-        Tk::MakeSp<CVariable>(
-            m_typeManager->StandardType(stInt32),
-            name
-        );
-
-}
-//--------------------------------------------------------------------------------------------------
-Tk::Sp<const CVariable> CBlockBuilder::AddInt32(
-    const std::string & name
-    )
-{
-    auto variable = MakeInt32(name);
-    m_variables.push_back(variable);
+    auto variable = AddVariable(typeName, variableName);
+    m_localVariables.push_back(variable);
     return variable;
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const CVariable> CBlockBuilder::MakeInt64(
-    const std::string & name
+Tk::Sp<const CVariable> CBlockBuilder::GetVariable(
+    const std::string& variableName
     )
 {
-    return 
-        Tk::MakeSp<NabaIr::CVariable>(
-            m_typeManager->StandardType(NabaIr::stInt64),
-            name
-        );
+    auto it = m_variables.find(variableName);
+    TK_ASSERT( it != m_variables.end(), "No such variable" );
+    return it->second;
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const CVariable> CBlockBuilder::AddInt64(
-    const std::string & name
+Tk::Sp<const CVariable> CBlockBuilder::AddVariable(
+    const std::string& typeName,
+    const std::string& variableName
     )
 {
-    auto variable = MakeInt64(name);
-    m_variables.push_back(variable);
+    std::string actualName = variableName;
+    if( !actualName.size() )
+    {
+        static int count = 0;
+        count++;
+
+        actualName = "anonymous" + std::to_string(count);
+    }
+    auto variable = 
+        Tk::MakeSp<NabaIr::CVariable>(
+            m_typeManager->Type(typeName),
+            actualName
+        );
+    m_variables[variableName] = variable;
     return variable;
 }
 //--------------------------------------------------------------------------------------------------

@@ -14,7 +14,7 @@ class CBlockBuilder
 {
 public:
     CBlockBuilder(
-        Tk::Sp<const CTypeManager> typeManager
+        Tk::Sp<CTypeManager> typeManager
         );
     
     Tk::Sp<const CBlock> 
@@ -22,15 +22,22 @@ public:
             )const;
 
     Tk::Sp<const CVariable>
-        AddInt32(
-            const std::string& name
-            );
-    
-    Tk::Sp<const CVariable>
-        AddInt64(
-            const std::string& name
+        AddLocalVariable(
+            const std::string& typeName,
+            const std::string& variableName
             );
 
+    Tk::Sp<const CVariable>
+        GetVariable(
+            const std::string& variableName
+            );
+
+    Tk::Sp<const CVariable>
+        AddVariable(
+            const std::string& typeName,
+            const std::string& variableName
+            );
+    
     void
         ZeroVariable(
             Tk::Sp<const CVariable> variable
@@ -59,7 +66,7 @@ public:
             );
     void
         CallFunction(
-            Tk::Sp<const CFunction> function,
+            const std::string& functionName,
             const Tk::SpList<const CVariable>& parameters
             );
     void
@@ -68,24 +75,17 @@ public:
             Tk::Sp<const CBlock> block
             );
 
-protected:
-    Tk::Sp<const CVariable>
-        MakeInt32(
-            const std::string& name
-            );
-    
-    Tk::Sp<const CVariable>
-        MakeInt64(
-            const std::string& name
-            );
 private:
-    Tk::SpList<const CVariable>
+    Tk::SpMap<std::string, const CVariable>
         m_variables;
+
+    Tk::SpList<const CVariable>
+        m_localVariables;
 
     Tk::SpList<const CInstruction>
         m_instructions;
 
-    Tk::Sp<const CTypeManager> 
+    Tk::Sp<CTypeManager> 
         m_typeManager;
 };
 

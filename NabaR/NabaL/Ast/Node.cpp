@@ -13,5 +13,20 @@ const CPosition& CNode::Position()const
 {
     return m_position;
 }
+//--------------------------------------------------------------------------------------------------
+void CNode::MakeIr(
+    Tk::Sp<NabaIr::CTypeManager> typeManager,
+    NabaIr::CBlockBuilder& blockBuilder,
+    Tk::SpList<const NabaIr::CFunction>& functions
+    ) const
+{
+}
+//--------------------------------------------------------------------------------------------------
+void CNode::MakeFunctionIr(
+    Tk::Sp<NabaIr::CTypeManager> typeManager,
+    NabaIr::CBlockBuilder& blockBuilder
+    ) const
+{
+}
 }
 

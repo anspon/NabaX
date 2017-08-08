@@ -5,6 +5,9 @@
 #include "FunctionParameter.h"
 #include "BlockPart.h"
 
+#include "NabaIr/FunctionBuilder.h"
+#include "NabaIr/Literal.h"
+
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -23,5 +26,22 @@ CFunction::CFunction(
         delete arguments;
     }
     m_block = Tk::AttachSp(block);
+}
+//--------------------------------------------------------------------------------------------------
+void CFunction::MakeIr(
+    Tk::Sp<NabaIr::CTypeManager> typeManager,
+    NabaIr::CBlockBuilder& blockBuilder,
+    Tk::SpList<const NabaIr::CFunction>& functions
+    ) const
+{
+    NabaIr::CFunctionBuilder functionBuilder(typeManager);
+    
+    for( Tk::Sp<const CFunctionParameter> functionParameter : m_arguments )
+    {
+        functionBuilder.AddParameter(functionParameter->m_type->m_name, functionParameter->m_id->m_name, NabaIr::ptIn );
+    }
+
+    m_block->MakeFunctionIr(typeManager, functionBuilder);
+    functions.push_back(functionBuilder.Flush(m_id->m_name));
 }
 }

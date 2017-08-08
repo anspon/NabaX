@@ -2,6 +2,11 @@
 #define NabaL_CModule_H
 
 
+namespace NabaIr
+{
+class CModule;
+}
+
 namespace NabaL
 {
 class CTranslationUnit;
@@ -15,6 +20,10 @@ public:
         );
     ~CModule();
 
+
+    Tk::Sp<const NabaIr::CModule> 
+        MakeIr(
+            )const;
 
     const Tk::SpList<const CTranslationUnit>&
         TranslationUnits(

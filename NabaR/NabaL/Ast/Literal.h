@@ -10,10 +10,13 @@ class CLiteral : public CExpression
 {
 public:
         CLiteral(
-            const CPosition& position
+            const StringToken* stringToken
             );
 
 private:
+    std::string 
+        m_originalText;    
+
 };
 
 }

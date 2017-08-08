@@ -17,6 +17,12 @@ public:
         const CIdentifier* id, 
         const CExpression* assignmentExpr
         );
+    
+    void
+        MakeFunctionIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder
+            )const override;
 
 private:
     Tk::Sp<const CIdentifier> 

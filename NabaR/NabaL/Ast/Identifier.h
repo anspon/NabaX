@@ -13,6 +13,12 @@ public:
         CIdentifier(
             const StringToken* stringToken
             );
+
+    Tk::Sp<const NabaIr::CVariable>
+        MakeExpressionIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder
+            )const;
     
     const std::string 
         m_name;

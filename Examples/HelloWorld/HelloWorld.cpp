@@ -1,34 +1,37 @@
 #include <stdint.h>
-void MyFirstFunction(
-    const int32_t& in1
+void Banana(
+    const int32_t& k
     )
 {
-    int32_t i;
-    int64_t j;
-    i = 0;
-    j = 0;
-    i = in1;
+    void* apa2;
+    void* apa2_1;
+    int32_t j;
+    apa2 = 0;
+    apa2_1 = apa2;
+    j = k;
 }
 //--------------------------------------------------------------------------------------------------
 void Main(
     )
 {
     int32_t i;
+    int32_t anonymous1;
     int64_t j;
-    int32_t k;
-    int32_t loop;
-    loop = int32_t(-10);
-    while( loop )
-    {
-        loop += int32_t(1);
-    }
-    k = int32_t(10);
-    i = 0;
+    int32_t anonymous2;
+    int32_t anonymous3;
+    void* apa;
+    int32_t anonymous4;
+    anonymous1 = int32_t(1);
+    i = anonymous1;
     j = 0;
-    i = int32_t(33);
-    j = int64_t(55);
-    i += k;
-    MyFirstFunction(i);
+    Banana(i);
+    anonymous2 = int32_t(7);
+    Banana(anonymous2);
+    anonymous3 = int32_t(99);
+    Banana(anonymous3);
+    apa = 0;
+    anonymous4 = int32_t(7);
+    j = anonymous4;
 }
 //--------------------------------------------------------------------------------------------------
 int main(int argv, const char** argc ){Main();return 0;}

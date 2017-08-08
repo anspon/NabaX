@@ -85,7 +85,7 @@ static void StreamInstruction(
         }
         case itCallFunction:
         {
-            stream << instruction->Function()->Name() << "(";
+            stream << instruction->FunctionName() << "(";
             for( auto it  = instruction->FunctionParameters().begin(); it != instruction->FunctionParameters().end(); it++ )
             {
                 if( it != instruction->FunctionParameters().begin() )
