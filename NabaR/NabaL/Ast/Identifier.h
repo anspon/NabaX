@@ -24,6 +24,26 @@ public:
         m_name;
 };
 
+class CIdentifierChain : public CExpression 
+{
+using BaseClass = CExpression;
+
+public:
+        CIdentifierChain(
+            );
+
+    Tk::Sp<const NabaIr::CVariable>
+        MakeExpressionIr(
+            Tk::Sp<NabaIr::CTypeManager> typeManager,
+            NabaIr::CBlockBuilder& blockBuilder
+            )const;
+
+    void 
+        AddIdentifier(
+            const CIdentifier* identifier
+            );
+};
+
 }
 
 

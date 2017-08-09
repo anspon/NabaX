@@ -17,6 +17,9 @@
 #include "Ast/VariableDeclaration.h"
 #include "Ast/MethodCall.h"
 #include "Ast/Assignment.h"
+#include "Ast/While.h"
+#include "Ast/For.h"
+
 #include "Ast/BinaryOperator.h"
 #include "Tk/SharedPtr.h"
 #include "Ast/Node.h"
@@ -94,9 +97,9 @@ typedef void* yyscan_t;
    they represent.
  */
 %token <stringToken> TIDENTIFIER T_I32 T_I64 TDOUBLE TSTRUCT
-%token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
+%token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL TWHILE TFOR
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE TCOMMA TDOT 
-%token <token> TPLUS TMINUS TMUL TDIV TSEMICOLON
+%token <token> TPLUS TMINUS TMUL TDIV TSEMICOLON TCOLON
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -104,13 +107,13 @@ typedef void* yyscan_t;
    calling an (NIdentifier*). It makes the compiler happy.
  */
 %type <ident> ident
-%type <expr> numeric expr 
+%type <expr> numeric expr functionCall
 %type <funcParList> func_decl_args
 %type <exprvec> call_args
 %type <blockParts> blockParts 
-%type <blockPart> var_decl func_decl struct blockPart fileScope block assignment exprStatement
+%type <blockPart> var_decl func_decl struct blockPart fileScope block assignment exprStatement while for
 %type <func_param> func_param
-%type <token> comparison
+%type <token> binaryOperation
 %type <structPart> structPart
 %type <structParts> structParts
 
@@ -137,7 +140,9 @@ blockPart :
     struct | 
     exprStatement |
 	assignment |
-    block 
+    block |
+	while |
+	for
     ;
 
 exprStatement : 
@@ -152,6 +157,14 @@ struct :
     TSTRUCT ident TLBRACE structParts TRBRACE TSEMICOLON { $$ = new Ast::CStruct($2, $4); } |
     TSTRUCT ident TLBRACE TRBRACE TSEMICOLON { $$ = new Ast::CStruct($2, nullptr); }
     ;
+
+while:
+	TWHILE TLPAREN expr TRPAREN block { $$ = new Ast::CWhile(nullptr, $3, $5); } |
+	ident TEQUAL TWHILE TLPAREN expr TRPAREN block { $$ = new Ast::CWhile($1, $5, $7); }
+
+for:
+	TFOR TLPAREN ident TCOLON expr TRPAREN block { $$ = new Ast::CFor(nullptr, $3, $5, $7 ); } | 
+	ident TEQUAL TFOR TLPAREN ident TCOLON expr TRPAREN block { $$ = new Ast::CFor($1, $5, $7, $9 ); }
 
 structPart : 
     ident ident TSEMICOLON { $$ = new Ast::CStructVariable($1, $2, nullptr); } |
@@ -197,12 +210,16 @@ assignment :
 	;
     
 expr : 
-    ident TLPAREN call_args TRPAREN { $$ = new Ast::CMethodCall($1, $3); } | 
+    functionCall | 
     ident { $<ident>$ = $1; } | 
     numeric | 
-    expr comparison expr{ $$ = new Ast::CBinaryOperator($1, $2, $3); } | 
+    expr binaryOperation expr{ $$ = new Ast::CBinaryOperator($1, $2, $3); } | 
     TLPAREN expr TRPAREN { $$ = $2; }
     ;
+
+
+functionCall:
+	ident TLPAREN call_args TRPAREN { $$ = new Ast::CMethodCall($1, $3); }
     
 call_args : 
     /*blank*/  { $$ = new Tk::SpList<const Ast::CExpression>; } | 
@@ -210,7 +227,7 @@ call_args :
     call_args TCOMMA expr  { $1->push_back(Tk::AttachSp($3) ); }
     ;
 
-comparison : 
+binaryOperation : 
     TCEQ | 
     TCNE | 
     TCLT | 

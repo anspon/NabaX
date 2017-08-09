@@ -48,6 +48,8 @@ extern void SaveStringToken( YYSTYPE* yylval, const char* text , int len, unsign
 [\n]                 NEW_LINE;
 [ \t]                 ;
 "struct"                return TOKEN(TSTRUCT);
+"while"                return TOKEN(TWHILE);
+"for"                return TOKEN(TFOR);
 [a-zA-Z_][a-zA-Z0-9\_]*  SAVE_STRING_TOKEN; return TIDENTIFIER;
 [0-9][0-9\_]*(\.)?[0-9\_]*d      SAVE_STRING_TOKEN; return TDOUBLE;
 [0-9][0-9\_]*i32             SAVE_STRING_TOKEN; return T_I32;
@@ -71,6 +73,7 @@ extern void SaveStringToken( YYSTYPE* yylval, const char* text , int len, unsign
 "-"                     return TOKEN(TMINUS);
 "*"                     return TOKEN(TMUL);
 "/"                     return TOKEN(TDIV);
+":"                     return TOKEN(TCOLON);
 .                       printf("Unknown token!n"); yyterminate();
 
 %%

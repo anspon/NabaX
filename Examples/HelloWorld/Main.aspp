@@ -51,6 +51,19 @@ void Main()
 	bool isLess = i < k;
 	bool isLarger = i > k;
 	bool notEqual = i != k;
+	
+	f = for( j : range(10, 10) )
+	{
+	}
+
+	w1 = while( i < k )
+	{
+		
+		w2 = while( j < k)
+		{
+		}
+		i = i + 1;
+	}
 
 }
 

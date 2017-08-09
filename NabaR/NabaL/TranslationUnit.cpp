@@ -52,7 +52,7 @@ Tk::Sp<const NabaIr::CTranslationUnit>
     Tk::Sp<NabaIr::CTypeManager> irTypeManager = NabaIr::CTypeManager::Construct();
     Tk::SpList<const NabaIr::CFunction> irFunctions;
 
-    NabaIr::CBlockBuilder blockBuilder(irTypeManager);
+    NabaIr::CBlockBuilder blockBuilder(irTypeManager, nullptr);
 
     m_ast->MakeIr(irTypeManager, blockBuilder, irFunctions);
 

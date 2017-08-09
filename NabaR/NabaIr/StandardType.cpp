@@ -5,10 +5,11 @@ namespace NabaIr
 {
 //--------------------------------------------------------------------------------------------------
 CStandardType::CStandardType(
+    const std::string& typeName,
     eNativeType nativeType,
     eStandardType standardType
     ):
-    BaseClass(nativeType),
+    BaseClass(typeName, nativeType),
     m_standardType(standardType)
 {
 }

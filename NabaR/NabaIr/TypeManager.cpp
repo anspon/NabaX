@@ -30,10 +30,10 @@ Tk::Sp<CTypeManager> CTypeManager::Construct(
 void CTypeManager::PrivateConstruct(
     )
 {
-    m_standardTypes[stInt64] = Tk::Sp<CStandardType>(new CStandardType(ntInt64, stInt64) );
-    m_standardTypes[stInt32] = Tk::Sp<CStandardType>(new CStandardType(ntInt32, stInt32) );
-    m_standardTypes[stDouble] = Tk::Sp<CStandardType>(new CStandardType(ntDouble, stDouble) );
-    m_standardTypes[stBool] = Tk::Sp<CStandardType>(new CStandardType(ntBool, stBool) );
+    m_standardTypes[stInt64] = Tk::Sp<CStandardType>(new CStandardType("i64", ntInt64, stInt64) );
+    m_standardTypes[stInt32] = Tk::Sp<CStandardType>(new CStandardType("i32", ntInt32, stInt32) );
+    m_standardTypes[stDouble] = Tk::Sp<CStandardType>(new CStandardType("double", ntDouble, stDouble) );
+    m_standardTypes[stBool] = Tk::Sp<CStandardType>(new CStandardType("bool", ntBool, stBool) );
 
     m_allTypes["i64"] = StandardType( stInt64 );
     m_allTypes["i32"] = StandardType( stInt32 );
@@ -63,7 +63,7 @@ Tk::Sp<const CType> CTypeManager::Type(
     }
     else
     {
-        result = Tk::MakeSp<CType>(ntVoidPtr);
+        result = Tk::MakeSp<CType>(typeName, ntVoidPtr);
         m_allTypes[typeName] = result;
     }
     return result;

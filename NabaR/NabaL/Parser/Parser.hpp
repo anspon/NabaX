@@ -41,7 +41,7 @@ extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
 /* Line 2058 of yacc.c  */
-#line 54 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 57 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
 
 #ifndef YY_TYPEDEF_YY_SCANNER_T
@@ -72,17 +72,20 @@ typedef void* yyscan_t;
      TCGT = 267,
      TCGE = 268,
      TEQUAL = 269,
-     TLPAREN = 270,
-     TRPAREN = 271,
-     TLBRACE = 272,
-     TRBRACE = 273,
-     TCOMMA = 274,
-     TDOT = 275,
-     TPLUS = 276,
-     TMINUS = 277,
-     TMUL = 278,
-     TDIV = 279,
-     TSEMICOLON = 280
+     TWHILE = 270,
+     TFOR = 271,
+     TLPAREN = 272,
+     TRPAREN = 273,
+     TLBRACE = 274,
+     TRBRACE = 275,
+     TCOMMA = 276,
+     TDOT = 277,
+     TPLUS = 278,
+     TMINUS = 279,
+     TMUL = 280,
+     TDIV = 281,
+     TSEMICOLON = 282,
+     TCOLON = 283
    };
 #endif
 
@@ -91,7 +94,7 @@ typedef void* yyscan_t;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 72 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
+#line 75 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
     Ast::CNode* m_node;
     Ast::CBlock* block;
@@ -112,7 +115,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 116 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.hpp"
+#line 119 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.hpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

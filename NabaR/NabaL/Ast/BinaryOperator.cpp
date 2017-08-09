@@ -3,6 +3,8 @@
 #include "BinaryOperator.h"
 
 #include "NabaIr/BlockBuilder.h"
+#include "NabaIr/Variable.h"
+#include "NabaIr/Type.h"
 
 namespace Ast
 {
@@ -69,6 +71,12 @@ Tk::Sp<const NabaIr::CVariable> CBinaryOperator::MakeExpressionIr(
         }
         case TPLUS:
         {
+            auto lhsVariable = m_lhs->MakeExpressionIr(typeManager, blockBuilder);
+            auto rhsVariable = m_rhs->MakeExpressionIr(typeManager, blockBuilder);
+            auto var  = blockBuilder.AddLocalVariable(lhsVariable->DataType()->TypeName(), "");
+            blockBuilder.AssignVariable(var, lhsVariable);
+            blockBuilder.IncrementVariable(var, rhsVariable);
+            return var;
             break;
         }
         case TMINUS:

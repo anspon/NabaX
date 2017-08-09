@@ -17,6 +17,7 @@ public:
 
 protected:
     CStandardType(
+        const std::string& typeName,
         eNativeType nativeType,
         eStandardType standardType
         );

@@ -18,7 +18,8 @@ class CBlockBuilder
 {
 public:
     CBlockBuilder(
-        Tk::Sp<CTypeManager> typeManager
+        Tk::Sp<CTypeManager> typeManager,
+        const CBlockBuilder* parentBlock
         );
     
     Tk::Sp<const CBlock> 
@@ -34,7 +35,7 @@ public:
     Tk::Sp<const CVariable>
         GetVariable(
             const std::string& variableName
-            );
+            )const;
 
     Tk::Sp<const CVariable>
         AddVariable(
@@ -89,6 +90,9 @@ public:
             );
 
 private:
+    const CBlockBuilder* 
+        m_parentBlock;
+
     Tk::SpMap<std::string, const CVariable>
         m_variables;
 

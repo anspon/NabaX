@@ -27,6 +27,7 @@
     <ClCompile Include="Ast\Expression.cpp" />
     <ClCompile Include="Ast\ExpressionStatement.cpp" />
     <ClCompile Include="Ast\FileScope.cpp" />
+    <ClCompile Include="Ast\For.cpp" />
     <ClCompile Include="Ast\Function.cpp" />
     <ClCompile Include="Ast\FunctionParameter.cpp" />
     <ClCompile Include="Ast\Identifier.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="Ast\StructPart.cpp" />
     <ClCompile Include="Ast\StructVariable.cpp" />
     <ClCompile Include="Ast\VariableDeclaration.cpp" />
+    <ClCompile Include="Ast\While.cpp" />
     <ClCompile Include="CompileError.cpp" />
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="NabaLPch.cpp">
@@ -61,6 +63,7 @@
     <ClInclude Include="Ast\Expression.h" />
     <ClInclude Include="Ast\ExpressionStatement.h" />
     <ClInclude Include="Ast\FileScope.h" />
+    <ClInclude Include="Ast\For.h" />
     <ClInclude Include="Ast\Function.h" />
     <ClInclude Include="Ast\FunctionParameter.h" />
     <ClInclude Include="Ast\Identifier.h" />
@@ -75,6 +78,7 @@
     <ClInclude Include="Ast\StructPart.h" />
     <ClInclude Include="Ast\StructVariable.h" />
     <ClInclude Include="Ast\VariableDeclaration.h" />
+    <ClInclude Include="Ast\While.h" />
     <ClInclude Include="CompileError.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="NabaLPch.h" />

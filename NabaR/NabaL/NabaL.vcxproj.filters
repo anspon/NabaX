@@ -105,6 +105,12 @@
     <ClCompile Include="CompileError.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Ast\While.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ast\For.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NabaLPch.h">
@@ -192,6 +198,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CompileError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ast\While.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ast\For.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

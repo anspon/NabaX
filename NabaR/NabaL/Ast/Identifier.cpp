@@ -24,6 +24,23 @@ Tk::Sp<const NabaIr::CVariable>
     return blockBuilder.GetVariable(m_name);
 }
 //--------------------------------------------------------------------------------------------------
+CIdentifierChain::CIdentifierChain()
+{
+}
+//--------------------------------------------------------------------------------------------------
+Tk::Sp<const NabaIr::CVariable> CIdentifierChain::MakeExpressionIr(
+    Tk::Sp<NabaIr::CTypeManager> typeManager,
+    NabaIr::CBlockBuilder& blockBuilder
+    ) const
+{
+    return Tk::Sp<const NabaIr::CVariable>();
+}
+//--------------------------------------------------------------------------------------------------
+void CIdentifierChain::AddIdentifier(
+    const CIdentifier* identifier
+    )
+{
+}
 
 }
 

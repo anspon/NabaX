@@ -9,7 +9,7 @@ namespace NabaIr
 CFunctionBuilder::CFunctionBuilder(
     Tk::Sp<CTypeManager> typeManager
     ):
-    BaseClass(typeManager)
+    BaseClass(typeManager, nullptr)
 {
 }
 //--------------------------------------------------------------------------------------------------

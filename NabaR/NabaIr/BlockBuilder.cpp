@@ -12,10 +12,13 @@ namespace NabaIr
 {
 //--------------------------------------------------------------------------------------------------
 CBlockBuilder::CBlockBuilder(
-    Tk::Sp<CTypeManager> typeManager
-    )
+    Tk::Sp<CTypeManager> typeManager,
+    const CBlockBuilder* parentBlock
+    ):
+    m_parentBlock(parentBlock)
 {
     m_typeManager = typeManager;
+
 }
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CBlock> CBlockBuilder::Flush(
@@ -96,11 +99,24 @@ Tk::Sp<const CVariable> CBlockBuilder::AddLocalVariable(
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CVariable> CBlockBuilder::GetVariable(
     const std::string& variableName
-    )
+    )const
 {
+    Tk::Sp<const CVariable> result;
+
     auto it = m_variables.find(variableName);
-    TK_ASSERT( it != m_variables.end(), "No such variable" );
-    return it->second;
+    if( it != m_variables.end() )
+    {
+        result = it->second;
+    }
+    else
+    {
+        if( m_parentBlock )
+        {
+            result = m_parentBlock->GetVariable(variableName);
+        }
+    }
+    TK_ASSERT( nullptr != result, "No such variable" );
+    return result;
 }
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CVariable> CBlockBuilder::AddVariable(
