@@ -78,6 +78,9 @@
     <ClInclude Include="FunctionBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="eBinaryBoolInstruction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NabaIrPch.cpp">
@@ -126,6 +129,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FunctionBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="eBinaryBoolInstruction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

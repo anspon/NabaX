@@ -1,6 +1,8 @@
 #ifndef NabaIr_CBlockBuilder_H
 #define NabaIr_CBlockBuilder_H
 
+#include "eBinaryBoolInstruction.h"
+
 namespace NabaIr
 {
 class CBlock;
@@ -9,6 +11,8 @@ class CInstruction;
 class CTypeManager;
 class CFunction;
 class CLiteral;
+
+
 
 class CBlockBuilder
 {
@@ -38,6 +42,15 @@ public:
             const std::string& variableName
             );
     
+
+    void
+        AddBinaryOperationBoolResult(
+            eBinaryBoolInstruction binaryBoolInstruction,
+            Tk::Sp<const CVariable> result,
+            Tk::Sp<const CVariable> lhs,
+            Tk::Sp<const CVariable> rhs
+            );
+
     void
         ZeroVariable(
             Tk::Sp<const CVariable> variable

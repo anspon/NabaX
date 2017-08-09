@@ -8,6 +8,8 @@ enum eStandardType
 {
     stInt64,
     stInt32,
+    stDouble,
+    stBool
 };
 
 }

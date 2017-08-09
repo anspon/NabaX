@@ -74,7 +74,6 @@ typedef void* yyscan_t;
     Ast::CBlock* block;
     Ast::CBlock* blockParts;
     Ast::CExpression* expr;
-	Ast::CAssignment* assignment;
     Ast::CBlockPart* blockPart;
     Ast::CIdentifier* ident;
     Ast::CVariableDeclaration* var_decl;
@@ -88,6 +87,7 @@ typedef void* yyscan_t;
     Ast::CStructPart*     structPart;
     Tk::SpList<const Ast::CStructPart>* structParts;
 }
+
 
 /* Define our terminal symbols (tokens). This should
    match our tokens.l lex file. We also define the node type
@@ -105,11 +105,10 @@ typedef void* yyscan_t;
  */
 %type <ident> ident
 %type <expr> numeric expr 
-%type <assignment> assignment
 %type <funcParList> func_decl_args
 %type <exprvec> call_args
 %type <blockParts> blockParts 
-%type <blockPart> var_decl func_decl struct blockPart fileScope block  
+%type <blockPart> var_decl func_decl struct blockPart fileScope block assignment exprStatement
 %type <func_param> func_param
 %type <token> comparison
 %type <structPart> structPart
@@ -136,10 +135,13 @@ blockPart :
     var_decl | 
     func_decl | 
     struct | 
-    expr { $$ = new Ast::CExpressionStatement($1); } |
-|	assignment |
+    exprStatement |
+	assignment |
     block 
     ;
+
+exprStatement : 
+	expr TSEMICOLON { $$ = new Ast::CExpressionStatement($1); } 
 
 block : 
     TLBRACE blockParts TRBRACE { $$ = $2; } | 

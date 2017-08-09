@@ -125,6 +125,18 @@ Tk::Sp<const CVariable> CBlockBuilder::AddVariable(
     return variable;
 }
 //--------------------------------------------------------------------------------------------------
+void CBlockBuilder::AddBinaryOperationBoolResult(
+    eBinaryBoolInstruction binaryBoolInstruction,
+    Tk::Sp<const CVariable> result,
+    Tk::Sp<const CVariable> lhs,
+    Tk::Sp<const CVariable> rhs
+    )
+{
+    m_instructions.push_back(
+        CInstruction::MakeBinaryBoolInstruction( binaryBoolInstruction, result, lhs, rhs )
+        );
+}
+//--------------------------------------------------------------------------------------------------
 void CBlockBuilder::ZeroVariable(
     Tk::Sp<const CVariable> variable
     )

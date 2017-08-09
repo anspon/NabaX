@@ -18,18 +18,11 @@ public:
         CExpression(
             );
 
-    void
-        MakeIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder,
-            Tk::SpList<const NabaIr::CFunction>& functions
-            )const override;
-
-    void 
-        MakeFunctionIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder
-            ) const override;
+    void MakeIr(
+        Tk::Sp<NabaIr::CTypeManager> typeManager,
+        NabaIr::CBlockBuilder& blockBuilder,
+        Tk::SpList<const NabaIr::CFunction>& functions
+        ) const override;
 
     virtual Tk::Sp<const NabaIr::CVariable>
         MakeExpressionIr(

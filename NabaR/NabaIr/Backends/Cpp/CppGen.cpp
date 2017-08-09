@@ -41,6 +41,16 @@ static void StreamLiteral(
             stream.Stream() << "int64_t(" << literal->Int64() << ")";
             break;
         }
+        case ntDouble:
+        {
+            stream.Stream() << "double(" << literal->Double() << ")";
+            break;
+        }
+        case ntBool:
+        {
+            stream.Stream() << ( literal->Double() ? "true" : "false" );
+            break;
+        }
     }
 }
 //--------------------------------------------------------------------------------------------------
@@ -83,9 +93,24 @@ static void StreamInstruction(
             stream << ";" << CStream::CEndLine();
             break;
         }
+        case itBinaryBoolOperation:
+        {
+            stream << instruction->ResultVariable()->Name() << " = ( " << instruction->LhsVariable()->Name();
+            switch( instruction->BinaryBoolInstruction().Value() )
+            {
+                case NabaIr::bbiEqual:  { stream << " == "; break;}
+                case NabaIr::bbiLess:   { stream << " < ";  break;}
+                case NabaIr::bbiGreater:   { stream << " > ";  break;}
+                case NabaIr::bbiLessEqual:   { stream << " <= ";  break;}
+                case NabaIr::bbiGreaterEqual:   { stream << " >= ";  break;}
+                case NabaIr::bbiNotEqual:   { stream << " != ";  break;}
+            }
+            stream << instruction->RhsVariable()->Name() << " );" << CStream::CEndLine();
+            break;
+        }
         case itCallFunction:
         {
-            stream << instruction->FunctionName() << "(";
+            stream << instruction->FunctionName().Value() << "(";
             for( auto it  = instruction->FunctionParameters().begin(); it != instruction->FunctionParameters().end(); it++ )
             {
                 if( it != instruction->FunctionParameters().begin() )
@@ -123,6 +148,16 @@ static void StreamNativeType(
         case ntInt64:
         {
             stream << "int64_t";
+            break;
+        }
+        case ntBool:
+        {
+            stream << "bool";
+            break;
+        }
+        case ntDouble:
+        {
+            stream << "bool";
             break;
         }
         case ntVoidPtr:
@@ -190,7 +225,7 @@ static void StreamFunction(
         {
             if( it != function->Parameters().begin() )
             {
-                stream << ", " << CStream::CEndLine();
+                stream << ", ";
             }
             stream << CStream::CEndLine();
             StreamParameter(*it, stream);

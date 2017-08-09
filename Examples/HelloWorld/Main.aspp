@@ -1,3 +1,4 @@
+
 int s_j=1_000_000i32;
 int s_k_1=1i32;
 int s_k_2=1i32;
@@ -29,15 +30,28 @@ void Banana(i32 k)
 	i32 j = k;
 }
 
+void Function2(i32 k, i64 p)
+{
+	i32 k1 = k;
+	i64 p1 = p;
+}
 void Main()
 {
 	i32 i=1;
+	i32 k=1;
 	i64 j;
-	Banana(i) 
-	Banana(7i32)
-	Banana(99i32)
+	Banana(i); 
+	Banana(7i32);
+	Banana(99i32);
     Apa apa;
+	Function2(99i32, 17i64);
 	j=7;
-	}
+	
+	bool isEqual = i == k;
+	bool isLess = i < k;
+	bool isLarger = i > k;
+	bool notEqual = i != k;
+
+}
 
 

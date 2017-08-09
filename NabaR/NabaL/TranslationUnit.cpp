@@ -50,8 +50,10 @@ Tk::Sp<const NabaIr::CTranslationUnit>
     )const
 {
     Tk::Sp<NabaIr::CTypeManager> irTypeManager = NabaIr::CTypeManager::Construct();
-    NabaIr::CBlockBuilder blockBuilder(irTypeManager);
     Tk::SpList<const NabaIr::CFunction> irFunctions;
+
+    NabaIr::CBlockBuilder blockBuilder(irTypeManager);
+
     m_ast->MakeIr(irTypeManager, blockBuilder, irFunctions);
 
     return Tk::MakeSp<NabaIr::CTranslationUnit>("Main", irFunctions);

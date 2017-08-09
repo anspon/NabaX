@@ -24,6 +24,16 @@ int64_t CLiteral::Int64() const
     return m_.int64Value;
 }
 //--------------------------------------------------------------------------------------------------
+bool CLiteral::Bool() const
+{
+    return m_.boolValue;
+}
+//--------------------------------------------------------------------------------------------------
+double CLiteral::Double() const
+{
+    return m_.doubleValue;
+}
+//--------------------------------------------------------------------------------------------------
 eNativeType CLiteral::NativeType() const
 {
     return m_nativeType;
@@ -56,6 +66,16 @@ Tk::Sp<const CLiteral> CLiteral::MakeDouble(
     Tk::Sp<CLiteral> instance(new CLiteral);
     instance->m_nativeType = ntDouble;
     instance->m_.doubleValue = value;
+    return instance;
+}
+//--------------------------------------------------------------------------------------------------
+Tk::Sp<const CLiteral> CLiteral::MakeBool(
+    bool value
+    )
+{
+    Tk::Sp<CLiteral> instance(new CLiteral);
+    instance->m_nativeType = ntBool;
+    instance->m_.boolValue = value;
     return instance;
 }
 }

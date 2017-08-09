@@ -21,12 +21,5 @@ void CNode::MakeIr(
     ) const
 {
 }
-//--------------------------------------------------------------------------------------------------
-void CNode::MakeFunctionIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
-    ) const
-{
-}
 }
 

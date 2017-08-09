@@ -13,6 +13,7 @@
 #include <fstream>
 
 #include "Tk/SharedPtr.h"
+#include "Tk/NullableT.h"
 
 #endif
 

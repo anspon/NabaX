@@ -32,9 +32,13 @@ void CTypeManager::PrivateConstruct(
 {
     m_standardTypes[stInt64] = Tk::Sp<CStandardType>(new CStandardType(ntInt64, stInt64) );
     m_standardTypes[stInt32] = Tk::Sp<CStandardType>(new CStandardType(ntInt32, stInt32) );
+    m_standardTypes[stDouble] = Tk::Sp<CStandardType>(new CStandardType(ntDouble, stDouble) );
+    m_standardTypes[stBool] = Tk::Sp<CStandardType>(new CStandardType(ntBool, stBool) );
 
     m_allTypes["i64"] = StandardType( stInt64 );
     m_allTypes["i32"] = StandardType( stInt32 );
+    m_allTypes["double"] = StandardType( stDouble );
+    m_allTypes["bool"] = StandardType( stBool );
 }
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CStandardType> CTypeManager::StandardType(

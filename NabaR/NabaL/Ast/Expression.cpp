@@ -16,13 +16,5 @@ void CExpression::MakeIr(
 {
     MakeExpressionIr(typeManager, blockBuilder);
 }
-//--------------------------------------------------------------------------------------------------
-void CExpression::MakeFunctionIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder & blockBuilder
-    ) const
-{
-    MakeExpressionIr(typeManager, blockBuilder);
-}
 }
 

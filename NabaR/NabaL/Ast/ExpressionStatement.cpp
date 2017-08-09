@@ -13,9 +13,10 @@ CExpressionStatement::CExpressionStatement(
     m_expression = Tk::AttachSp(expression);
 }
 //--------------------------------------------------------------------------------------------------
-void CExpressionStatement::MakeFunctionIr(
+void CExpressionStatement::MakeIr(
     Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
+    NabaIr::CBlockBuilder& blockBuilder,
+    Tk::SpList<const NabaIr::CFunction>& functions
     ) const
 {
     m_expression->MakeExpressionIr(typeManager, blockBuilder );

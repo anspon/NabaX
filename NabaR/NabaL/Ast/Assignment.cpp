@@ -18,9 +18,10 @@ CAssignment::CAssignment(
     m_rhs = Tk::AttachSp(rhs);
 }
 //--------------------------------------------------------------------------------------------------
-void CAssignment::MakeFunctionIr(
+void CAssignment::MakeIr(
     Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
+    NabaIr::CBlockBuilder& blockBuilder,
+    Tk::SpList<const NabaIr::CFunction>& functions
     )const
 {
     Tk::Sp<const NabaIr::CVariable> lhsVar = blockBuilder.GetVariable(m_lhs->m_name);

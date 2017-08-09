@@ -23,6 +23,10 @@ public:
         MakeDouble(
             double value
             );
+    Tk::Sp<const CLiteral> 
+        MakeBool(
+            bool value
+            );
 
     ~CLiteral();
 
@@ -33,7 +37,13 @@ public:
     int64_t
         Int64(
             )const;
+    bool
+        Bool(
+            )const;
 
+    double
+        Double(
+            )const;
     eNativeType 
         NativeType(
             )const;
@@ -49,6 +59,7 @@ private:
         int64_t int64Value;
         int32_t int32Value;
         double doubleValue;
+        bool boolValue;
     }m_;
 };
 

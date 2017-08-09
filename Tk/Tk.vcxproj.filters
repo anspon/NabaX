@@ -33,6 +33,9 @@
     <ClInclude Include="MapFindOrThrow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NullableT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TkPch.cpp">
@@ -44,5 +47,10 @@
     <ClCompile Include="FilePosition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NullableT.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

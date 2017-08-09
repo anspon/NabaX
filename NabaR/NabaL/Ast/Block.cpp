@@ -2,6 +2,8 @@
 
 #include "Block.h"
 
+#include "NabaIr/BlockBuilder.h"
+
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -18,20 +20,11 @@ void CBlock::MakeIr(
     Tk::SpList<const NabaIr::CFunction>& functions
     ) const
 {
+//    NabaIr::CBlockBuilder localBlockBuilder(typeManager);
     for( Tk::Sp<const CBlockPart> blockPart : m_blockParts )
     {
         blockPart->MakeIr(typeManager, blockBuilder, functions);
     }
 }
-//--------------------------------------------------------------------------------------------------
-void CBlock::MakeFunctionIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
-    )const
-{
-    for( Tk::Sp<const CBlockPart> blockPart : m_blockParts )
-    {
-        blockPart->MakeFunctionIr(typeManager, blockBuilder);
-    }    
-}
+
 }

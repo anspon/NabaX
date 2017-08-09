@@ -45,12 +45,6 @@ public:
             Tk::SpList<const NabaIr::CFunction>& functions
             )const;
 
-    virtual void
-        MakeFunctionIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder
-            )const;
-
 protected:
     CPosition
         m_position;

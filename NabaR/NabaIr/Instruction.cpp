@@ -6,26 +6,24 @@ namespace NabaIr
 
 //--------------------------------------------------------------------------------------------------
 CInstruction::CInstruction(
-    eInstructionType instructionType,
-    Tk::Sp<const CVariable> lhsVariable,
-    Tk::Sp<const CVariable> rhsVariable,
-    Tk::Sp<const CLiteral> rhsLiteral,
-    const std::string& functionName,
-    const Tk::SpList<const CVariable>& functionParameters,
-    Tk::Sp<const CBlock> block
+    eInstructionType instructionType
     ):
-    m_instructionType(instructionType),
-    m_lhsVariable(lhsVariable),
-    m_rhsVariable(rhsVariable),
-    m_rhsLiteral(rhsLiteral),
-    m_functionName(functionName),
-    m_functionParameters(functionParameters),
-    m_block(block)
+    m_instructionType(instructionType)
 {
 }
 //--------------------------------------------------------------------------------------------------
 CInstruction::~CInstruction()
 {
+}
+//--------------------------------------------------------------------------------------------------
+Tk::Sp<const CVariable> CInstruction::ResultVariable() const
+{
+    return m_resultVariable;
+}
+//--------------------------------------------------------------------------------------------------
+Tk::CNullableT<eBinaryBoolInstruction> CInstruction::BinaryBoolInstruction() const
+{
+    return m_binaryBoolInstruction;
 }
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CVariable> CInstruction::LhsVariable() const
@@ -43,7 +41,7 @@ Tk::Sp<const CLiteral> CInstruction::RhsLiteral() const
     return m_rhsLiteral;
 }
 //--------------------------------------------------------------------------------------------------
-const std::string&  CInstruction::FunctionName() const
+const Tk::CNullableT<std::string>&  CInstruction::FunctionName() const
 {
     return m_functionName;
 }
@@ -69,7 +67,25 @@ Tk::Sp<const CInstruction> CInstruction::MakeCallFunction(
     const Tk::SpList<const CVariable>& parameters
     )
 {
-    return Tk::MakeSp<CInstruction>(itCallFunction, nullptr, nullptr, nullptr, functionName, parameters, nullptr );
+    Tk::Sp<CInstruction> instruction = Tk::MakeSp<CInstruction>(itCallFunction);
+    instruction->m_functionName = functionName;
+    instruction->m_functionParameters = parameters;
+    return instruction;
+}
+//--------------------------------------------------------------------------------------------------
+Tk::Sp<const CInstruction> CInstruction::MakeBinaryBoolInstruction(
+    eBinaryBoolInstruction type,
+    Tk::Sp<const CVariable> result,
+    Tk::Sp<const CVariable> lhsVariable,
+    Tk::Sp<const CVariable> rhsVariable
+    )
+{
+    Tk::Sp<CInstruction> instruction = Tk::MakeSp<CInstruction>(itBinaryBoolOperation);
+    instruction->m_binaryBoolInstruction = type;
+    instruction->m_resultVariable = result;
+    instruction->m_lhsVariable = lhsVariable;
+    instruction->m_rhsVariable = rhsVariable;
+    return instruction;
 }
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CInstruction> CInstruction::MakeIncrementLiteral(
@@ -77,16 +93,21 @@ Tk::Sp<const CInstruction> CInstruction::MakeIncrementLiteral(
     Tk::Sp<const CLiteral> rhsLiteral
     )
 {
-    return Tk::MakeSp<CInstruction>(itIncrementLiteral, lhsVariable, nullptr, rhsLiteral, "", Tk::SpList<const CVariable>(), nullptr );
+    Tk::Sp<CInstruction> instruction = Tk::MakeSp<CInstruction>(itIncrementLiteral);
+    instruction->m_lhsVariable = lhsVariable;
+    instruction->m_rhsLiteral = rhsLiteral;
+    return instruction;
 }
-
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CInstruction> CInstruction::MakeIncrementVariable(
     Tk::Sp<const CVariable> lhsVariable,
     Tk::Sp<const CVariable> rhsVariable
     )
 {
-    return Tk::MakeSp<CInstruction>(itIncrementVariable, lhsVariable, rhsVariable, nullptr, "", Tk::SpList<const CVariable>(), nullptr );
+    Tk::Sp<CInstruction> instruction = Tk::MakeSp<CInstruction>(itIncrementVariable);
+    instruction->m_lhsVariable = lhsVariable;
+    instruction->m_rhsVariable = rhsVariable;
+    return instruction;
 }
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CInstruction> CInstruction::MakeAssignLiteral(
@@ -94,7 +115,10 @@ Tk::Sp<const CInstruction> CInstruction::MakeAssignLiteral(
     Tk::Sp<const CLiteral> rhsLiteral
     )
 {
-    return Tk::MakeSp<CInstruction>(itAssignLiteral, lhsVariable, nullptr, rhsLiteral, "", Tk::SpList<const CVariable>(), nullptr );
+    Tk::Sp<CInstruction> instruction = Tk::MakeSp<CInstruction>(itAssignLiteral);
+    instruction->m_lhsVariable = lhsVariable;
+    instruction->m_rhsLiteral = rhsLiteral;
+    return instruction;
 }
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CInstruction> CInstruction::MakeAssignVariable(
@@ -102,14 +126,19 @@ Tk::Sp<const CInstruction> CInstruction::MakeAssignVariable(
     Tk::Sp<const CVariable> rhsVariable
     )
 {
-    return Tk::MakeSp<CInstruction>(itAssignVariable, lhsVariable, rhsVariable, nullptr, "", Tk::SpList<const CVariable>(), nullptr );
+    Tk::Sp<CInstruction> instruction = Tk::MakeSp<CInstruction>(itAssignVariable);
+    instruction->m_lhsVariable = lhsVariable;
+    instruction->m_rhsVariable = rhsVariable;
+    return instruction;
 }
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CInstruction> CInstruction::MakeZeroVariable(
     Tk::Sp<const CVariable> lhsVariable
     )
 {
-    return Tk::MakeSp<CInstruction>(itZeroVariable, lhsVariable, nullptr, nullptr, "", Tk::SpList<const CVariable>(), nullptr );
+    Tk::Sp<CInstruction> instruction = Tk::MakeSp<CInstruction>(itZeroVariable);
+    instruction->m_lhsVariable = lhsVariable;
+    return instruction;
 }
 //--------------------------------------------------------------------------------------------------
 Tk::Sp<const CInstruction> CInstruction::MakeWhile(
@@ -117,7 +146,10 @@ Tk::Sp<const CInstruction> CInstruction::MakeWhile(
     Tk::Sp<const CBlock> block
     )
 {
-    return Tk::MakeSp<CInstruction>(itWhile, lhsVariable, nullptr, nullptr, "", Tk::SpList<const CVariable>(), block );
+    Tk::Sp<CInstruction> instruction = Tk::MakeSp<CInstruction>(itWhile);
+    instruction->m_lhsVariable = lhsVariable;
+    instruction->m_block = block;
+    return instruction;
 }
 
 }

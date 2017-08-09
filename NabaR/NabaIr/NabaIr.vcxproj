@@ -23,6 +23,7 @@
     <ClInclude Include="Backends\Cpp\CppGen.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockBuilder.h" />
+    <ClInclude Include="eBinaryBoolInstruction.h" />
     <ClInclude Include="eInstructionType.h" />
     <ClInclude Include="eNativeType.h" />
     <ClInclude Include="eParameterType.h" />
@@ -46,6 +47,7 @@
     <ClCompile Include="Backends\Cpp\CppGen.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockBuilder.cpp" />
+    <ClCompile Include="eBinaryBoolInstruction.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="FunctionBuilder.cpp" />
     <ClCompile Include="Instruction.cpp" />

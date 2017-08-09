@@ -15,7 +15,8 @@ enum eInstructionType
     itIncrementVariable,
     itDecrementVariable,
     itCallFunction,
-    itWhile
+    itWhile,
+    itBinaryBoolOperation
 };
 
 

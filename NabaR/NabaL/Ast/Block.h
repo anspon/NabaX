@@ -27,13 +27,6 @@ public:
             Tk::SpList<const NabaIr::CFunction>& functions
             )const override;
     
-    void
-        MakeFunctionIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder
-            )const;
-
-
 private:        
     Tk::SpList<const CBlockPart>
         m_blockParts;

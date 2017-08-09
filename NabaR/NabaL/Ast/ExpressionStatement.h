@@ -15,9 +15,10 @@ public:
             );
 
     void 
-        MakeFunctionIr(
+        MakeIr(
             Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder
+            NabaIr::CBlockBuilder& blockBuilder,
+            Tk::SpList<const NabaIr::CFunction>& functions
             ) const override;
 
     Tk::Sp<const CExpression> 

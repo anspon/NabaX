@@ -41,7 +41,7 @@ void CFunction::MakeIr(
         functionBuilder.AddParameter(functionParameter->m_type->m_name, functionParameter->m_id->m_name, NabaIr::ptIn );
     }
 
-    m_block->MakeFunctionIr(typeManager, functionBuilder);
+    m_block->MakeIr(typeManager, functionBuilder, functions);
     functions.push_back(functionBuilder.Flush(m_id->m_name));
 }
 }

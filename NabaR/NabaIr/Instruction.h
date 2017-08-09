@@ -2,6 +2,7 @@
 #define NabaIr_CInstruction_H
 
 #include "eInstructionType.h"
+#include "eBinaryBoolInstruction.h"
 
 namespace NabaIr
 {
@@ -42,6 +43,15 @@ public:
             const std::string& functionName,
             const Tk::SpList<const CVariable>& parameters
             );
+    
+    static Tk::Sp<const CInstruction>
+        MakeBinaryBoolInstruction(
+            eBinaryBoolInstruction type,
+            Tk::Sp<const CVariable> result,
+            Tk::Sp<const CVariable> lhsVariable,
+            Tk::Sp<const CVariable> rhsVariable
+            );
+
 
     static Tk::Sp<const CInstruction>
         MakeZeroVariable(
@@ -55,15 +65,17 @@ public:
             );
 
     CInstruction(
-        eInstructionType instructionType,
-        Tk::Sp<const CVariable> lhsVariable,
-        Tk::Sp<const CVariable> rhsVariable,
-        Tk::Sp<const CLiteral> rhsLiteral,
-        const std::string& functionName,
-        const Tk::SpList<const CVariable>& functionParameters,
-        Tk::Sp<const CBlock> block
+        eInstructionType instructionType
         );
     ~CInstruction();
+
+    Tk::Sp<const CVariable>
+        ResultVariable(
+            )const;
+
+    Tk::CNullableT<eBinaryBoolInstruction>
+        BinaryBoolInstruction(
+            )const;   
 
     Tk::Sp<const CVariable> 
         LhsVariable(
@@ -77,7 +89,7 @@ public:
         RhsLiteral(
             )const;
     
-    const std::string& 
+    const Tk::CNullableT<std::string>& 
         FunctionName(
             )const;
     
@@ -92,25 +104,32 @@ public:
         Block(
             )const;
 private:
+    
+    Tk::CNullableT<eBinaryBoolInstruction>
+        m_binaryBoolInstruction;
+
+    Tk::Sp<const CVariable>
+        m_resultVariable;
+
     eInstructionType 
         m_instructionType;
 
-    const Tk::Sp<const CVariable> 
+    Tk::Sp<const CVariable> 
         m_lhsVariable;
     
-    const Tk::Sp<const CVariable> 
+    Tk::Sp<const CVariable> 
         m_rhsVariable;
 
-    const Tk::Sp<const CLiteral> 
+    Tk::Sp<const CLiteral> 
         m_rhsLiteral;
 
-    const std::string& 
+    Tk::CNullableT<std::string>
         m_functionName;
     
-    const Tk::SpList<const CVariable> 
+    Tk::SpList<const CVariable> 
         m_functionParameters;
     
-    const Tk::Sp<const CBlock> 
+    Tk::Sp<const CBlock> 
         m_block;
 
 };

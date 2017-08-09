@@ -22,6 +22,7 @@
     <ClInclude Include="Exception.h" />
     <ClInclude Include="FilePosition.h" />
     <ClInclude Include="MapFindOrThrow.h" />
+    <ClInclude Include="NullableT.h" />
     <ClInclude Include="SharedPtr.h" />
     <ClInclude Include="TkPch.h" />
     <ClInclude Include="TkPchHeaders.h" />
@@ -32,6 +33,9 @@
     <ClCompile Include="TkPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NullableT.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BD70C313-FBE0-4D8B-BF5E-E7C2EB037532}</ProjectGuid>

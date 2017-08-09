@@ -20,12 +20,13 @@ CVariableDeclaration::CVariableDeclaration(
     m_assignmentExpr = Tk::AttachSp(assignmentExpr);
 }
 //--------------------------------------------------------------------------------------------------
-void CVariableDeclaration::MakeFunctionIr(
+void CVariableDeclaration::MakeIr(
     Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
+    NabaIr::CBlockBuilder& blockBuilder,
+    Tk::SpList<const NabaIr::CFunction>& functions
     ) const
 {
-    
+   
     auto variable = blockBuilder.AddLocalVariable( m_type->m_name, m_id->m_name );
     if( m_assignmentExpr )
     {
