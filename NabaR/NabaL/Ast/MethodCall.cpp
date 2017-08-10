@@ -7,9 +7,12 @@
 #include "NabaIr/Variable.h"
 #include "NabaIr/Function.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
-
 //--------------------------------------------------------------------------------------------------
 CMethodCall::CMethodCall(
     const CIdentifier* id, 
@@ -24,20 +27,22 @@ CMethodCall::CMethodCall(
     }
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const NabaIr::CVariable> CMethodCall::MakeExpressionIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
+Tk::Sp<const Ir::CVariable> CMethodCall::MakeExpressionIr(
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder
     ) const
 {
-    Tk::SpList<const NabaIr::CVariable> parameters;
+    Tk::SpList<const Ir::CVariable> parameters;
     for( Tk::Sp<const CExpression> argumentExpression : m_arguments )
     {
-        Tk::Sp<const NabaIr::CVariable> var = argumentExpression->MakeExpressionIr(typeManager, blockBuilder );
+        Tk::Sp<const Ir::CVariable> var = argumentExpression->MakeExpressionIr(typeManager, blockBuilder );
         parameters.push_back(var);
     }
 
     blockBuilder.CallFunction(m_id->m_name, parameters );
-    return Tk::Sp<const NabaIr::CVariable>();
+    return Tk::Sp<const Ir::CVariable>();
 }
 
+}
+}
 }

@@ -1,10 +1,14 @@
-#ifndef NabaL_Ast_CStruct_H
-#define NabaL_Ast_CStruct_H
+#ifndef Naba_Lng_Ast_CStruct_H
+#define Naba_Lng_Ast_CStruct_H
 
 #include "NabaLPchHeaders.h"
 
 #include "Statement.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 class CIdentifier;
@@ -25,6 +29,9 @@ private:
     Tk::SpList<const CStructPart>
         m_parts;
 };
+
+}
+}
 }
 
 

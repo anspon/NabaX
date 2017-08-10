@@ -1,8 +1,12 @@
-#ifndef NabaL_Ast_CMethodCall_H
-#define NabaL_Ast_CMethodCall_H
+#ifndef Naba_Lng_Ast_CMethodCall_H
+#define Naba_Lng_Ast_CMethodCall_H
 
 #include "Expression.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 class CIdentifier;
@@ -16,10 +20,10 @@ public:
         const Tk::SpList<const CExpression>* arguments
         ) ;
 
-    Tk::Sp<const NabaIr::CVariable>
+    Tk::Sp<const Ir::CVariable>
         MakeExpressionIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder
+            Tk::Sp<Ir::CTypeManager> typeManager,
+            Ir::CBlockBuilder& blockBuilder
             )const override;
     
 private:
@@ -30,6 +34,8 @@ private:
         m_arguments;
 
 };
+}
+}
 }
 
 

@@ -4,7 +4,9 @@
 #include "eStandardType.h"
 #include "eParameterType.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CType;
 class CStandardType;
@@ -44,6 +46,7 @@ private:
 
 };
 
+}
 }
 
 

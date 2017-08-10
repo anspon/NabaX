@@ -1,13 +1,19 @@
-#ifndef NabaL_CModule_H
-#define NabaL_CModule_H
+#ifndef Naba_Lng_CModule_H
+#define Naba_Lng_CModule_H
 
 
-namespace NabaIr
+
+namespace Naba
+{ 
+namespace Ir
 {
 class CModule;
 }
 
-namespace NabaL
+namespace Lng 
+{
+
+namespace Ast
 {
 class CTranslationUnit;
 
@@ -21,7 +27,7 @@ public:
     ~CModule();
 
 
-    Tk::Sp<const NabaIr::CModule> 
+    Tk::Sp<const Ir::CModule> 
         MakeIr(
             )const;
 
@@ -37,6 +43,8 @@ private:
         m_translationUnits;
 };
 
+}
+}
 }
 
 #endif

@@ -2,6 +2,10 @@
 
 #include "Literal.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 CLiteral::CLiteral(
@@ -10,6 +14,9 @@ CLiteral::CLiteral(
 {
     m_position = stringToken->m_position;
     m_originalText = stringToken->m_string;
+}
+
+}
 }
 }
 

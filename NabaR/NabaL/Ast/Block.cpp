@@ -4,6 +4,10 @@
 
 #include "NabaIr/BlockBuilder.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -15,16 +19,18 @@ void CBlock::AddBlockPart(
 }
 //--------------------------------------------------------------------------------------------------
 void CBlock::MakeIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder,
-    Tk::SpList<const NabaIr::CFunction>& functions
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder,
+    Tk::SpList<const Ir::CFunction>& functions
     ) const
 {
-//    NabaIr::CBlockBuilder localBlockBuilder(typeManager);
+//    Ir::CBlockBuilder localBlockBuilder(typeManager);
     for( Tk::Sp<const CBlockPart> blockPart : m_blockParts )
     {
         blockPart->MakeIr(typeManager, blockBuilder, functions);
     }
 }
 
+}
+}
 }

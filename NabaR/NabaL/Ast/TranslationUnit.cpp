@@ -7,7 +7,11 @@
 #include "NabaIr/BlockBuilder.h"
 
 
-namespace NabaL
+namespace Naba
+{
+namespace Lng
+{
+namespace Ast
 {
 
 
@@ -45,20 +49,22 @@ Tk::Sp<const Ast::CNode>  CTranslationUnit::Ast(
     return m_ast;
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const NabaIr::CTranslationUnit> 
+Tk::Sp<const Ir::CTranslationUnit> 
     CTranslationUnit::MakeIr(
     )const
 {
-    Tk::Sp<NabaIr::CTypeManager> irTypeManager = NabaIr::CTypeManager::Construct();
-    Tk::SpList<const NabaIr::CFunction> irFunctions;
+    Tk::Sp<Ir::CTypeManager> irTypeManager = Ir::CTypeManager::Construct();
+    Tk::SpList<const Ir::CFunction> irFunctions;
 
-    NabaIr::CBlockBuilder blockBuilder(irTypeManager, nullptr);
+    Ir::CBlockBuilder blockBuilder(irTypeManager, nullptr);
 
     m_ast->MakeIr(irTypeManager, blockBuilder, irFunctions);
 
-    return Tk::MakeSp<NabaIr::CTranslationUnit>("Main", irFunctions);
+    return Tk::MakeSp<Ir::CTranslationUnit>("Main", irFunctions);
 }
 
+}
+}
 }
 
 

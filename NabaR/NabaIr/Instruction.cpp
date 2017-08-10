@@ -1,7 +1,9 @@
 #include "NabaIrPch.h"
 #include "Instruction.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 //--------------------------------------------------------------------------------------------------
@@ -152,4 +154,5 @@ Tk::Sp<const CInstruction> CInstruction::MakeWhile(
     return instruction;
 }
 
+}
 }

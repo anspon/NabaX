@@ -1,8 +1,11 @@
 #ifndef NabaIr_CFunction_H
 #define NabaIr_CFunction_H
 
-namespace NabaIr
+namespace Naba
 {
+namespace Ir
+{
+
 class CParameter;
 class CBlock;
 
@@ -40,6 +43,7 @@ private:
 };
 
 
+}
 }
 
 #endif

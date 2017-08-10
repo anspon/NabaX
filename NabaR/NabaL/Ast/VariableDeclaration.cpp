@@ -10,6 +10,10 @@
 #include "NabaIr/TypeManager.h"
 #include "NabaIr/Type.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -25,12 +29,12 @@ CVariableDeclaration::CVariableDeclaration(
 }
 //--------------------------------------------------------------------------------------------------
 void CVariableDeclaration::MakeIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder,
-    Tk::SpList<const NabaIr::CFunction>& functions
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder,
+    Tk::SpList<const Ir::CFunction>& functions
     ) const
 {
-    Tk::Sp<const NabaIr::CType> irType;
+    Tk::Sp<const Ir::CType> irType;
 
     if( m_type )
     {
@@ -51,7 +55,7 @@ void CVariableDeclaration::MakeIr(
     auto variable = blockBuilder.AddLocalVariable( irType->TypeName(), m_id->m_name );
     if( m_assignmentExpr )
     {
-        Tk::Sp<const NabaIr::CVariable> rhsVar = m_assignmentExpr->MakeExpressionIr(typeManager, blockBuilder);
+        Tk::Sp<const Ir::CVariable> rhsVar = m_assignmentExpr->MakeExpressionIr(typeManager, blockBuilder);
         blockBuilder.AssignVariable(variable, rhsVar);
     }
     else
@@ -60,5 +64,6 @@ void CVariableDeclaration::MakeIr(
     }
 }
 
-
+}
+}
 }

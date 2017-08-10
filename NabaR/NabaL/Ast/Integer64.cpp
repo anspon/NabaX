@@ -5,6 +5,10 @@
 #include "NabaIr/BlockBuilder.h"
 #include "NabaIr/Literal.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -17,14 +21,16 @@ CInteger64::CInteger64(
     delete stringToken;
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const NabaIr::CVariable> CInteger64::MakeExpressionIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
+Tk::Sp<const Ir::CVariable> CInteger64::MakeExpressionIr(
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder
     )const
 {
     auto var = blockBuilder.AddLocalVariable("i64", "");
-    blockBuilder.AssignLiteral(var, NabaIr::CLiteral::MakeInt64(m_value) ) ;
+    blockBuilder.AssignLiteral(var, Ir::CLiteral::MakeInt64(m_value) ) ;
     return var;
 }
 
+}
+}
 }

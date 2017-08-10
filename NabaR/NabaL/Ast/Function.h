@@ -1,8 +1,13 @@
-#ifndef NabaL_Ast_CFunction_H
-#define NabaL_Ast_CFunction_H
+#ifndef Naba_Lng_Ast_CFunction_H
+#define Naba_Lng_Ast_CFunction_H
 
 
 #include "Statement.h"
+
+namespace Naba
+{
+namespace Lng
+{
 
 namespace Ast
 {
@@ -21,9 +26,9 @@ public:
 
     void
         MakeIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder,
-            Tk::SpList<const NabaIr::CFunction>& functions
+            Tk::Sp<Ir::CTypeManager> typeManager,
+            Ir::CBlockBuilder& blockBuilder,
+            Tk::SpList<const Ir::CFunction>& functions
             )const override;
 private:
     Tk::Sp<const CIdentifier> 
@@ -39,6 +44,9 @@ private:
         m_block;
 
 };
+
+}
+}
 }
 
 

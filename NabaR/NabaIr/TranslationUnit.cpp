@@ -2,7 +2,9 @@
 #include "TranslationUnit.h"
 
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 //--------------------------------------------------------------------------------------------------
 CTranslationUnit::CTranslationUnit(
@@ -24,4 +26,5 @@ const Tk::SpList<const CFunction>& CTranslationUnit::Functions(
     return m_functions;
 }
 
+}
 }

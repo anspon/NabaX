@@ -2,7 +2,9 @@
 #define NabaIr_eStandardType_H
 
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 enum eStandardType
 {
@@ -12,6 +14,7 @@ enum eStandardType
     stBool
 };
 
+}
 }
 
 

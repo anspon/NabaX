@@ -5,7 +5,11 @@
 #include "NabaIr/Module.h"
 #include "NabaIr/TranslationUnit.h"
 
-namespace NabaL
+namespace Naba
+{ 
+namespace Lng 
+{
+namespace Ast
 {
 
 CModule::CModule(
@@ -27,15 +31,17 @@ CModule::~CModule()
 {
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const NabaIr::CModule> CModule::MakeIr() const
+Tk::Sp<const Ir::CModule> CModule::MakeIr() const
 {
-    Tk::SpList<const NabaIr::CTranslationUnit> irUnits;
+    Tk::SpList<const Ir::CTranslationUnit> irUnits;
 
     for( Tk::Sp<const CTranslationUnit> unit : m_translationUnits )
     {
         irUnits.push_back( unit->MakeIr() );
     }
-    return Tk::MakeSp<NabaIr::CModule>("HelloWorld", irUnits);
+    return Tk::MakeSp<Ir::CModule>("HelloWorld", irUnits);
 }
 
+}
+}
 }

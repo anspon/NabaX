@@ -10,11 +10,13 @@
 #include "Instruction.h"
 #include "Literal.h"
 
-namespace NabaIr
+namespace Naba
 {
-namespace Backends
+namespace Ir
 {
 
+namespace Backends
+{
 namespace CppGen
 {
 //--------------------------------------------------------------------------------------------------
@@ -98,12 +100,12 @@ static void StreamInstruction(
             stream << instruction->ResultVariable()->Name() << " = ( " << instruction->LhsVariable()->Name();
             switch( instruction->BinaryBoolInstruction().Value() )
             {
-                case NabaIr::bbiEqual:  { stream << " == "; break;}
-                case NabaIr::bbiLess:   { stream << " < ";  break;}
-                case NabaIr::bbiGreater:   { stream << " > ";  break;}
-                case NabaIr::bbiLessEqual:   { stream << " <= ";  break;}
-                case NabaIr::bbiGreaterEqual:   { stream << " >= ";  break;}
-                case NabaIr::bbiNotEqual:   { stream << " != ";  break;}
+                case Ir::bbiEqual:  { stream << " == "; break;}
+                case Ir::bbiLess:   { stream << " < ";  break;}
+                case Ir::bbiGreater:   { stream << " > ";  break;}
+                case Ir::bbiLessEqual:   { stream << " <= ";  break;}
+                case Ir::bbiGreaterEqual:   { stream << " >= ";  break;}
+                case Ir::bbiNotEqual:   { stream << " != ";  break;}
             }
             stream << instruction->RhsVariable()->Name() << " );" << CStream::CEndLine();
             break;
@@ -258,6 +260,8 @@ void Stream(
 }
 }
 }
+}
+
 /*
 //--------------------------------------------------------------------------------------------------
 void CVariableDeclaration::MakeCpp(

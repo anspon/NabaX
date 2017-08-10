@@ -97,22 +97,22 @@ typedef union YYSTYPE
 /* Line 2058 of yacc.c  */
 #line 75 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
-    Ast::CNode* m_node;
-    Ast::CBlock* block;
-    Ast::CBlock* blockParts;
-    Ast::CExpression* expr;
-    Ast::CBlockPart* blockPart;
-    Ast::CIdentifier* ident;
-    Ast::CVariableDeclaration* var_decl;
-    Ast::CFunctionParameter* func_param;
-    Tk::SpList<const Ast::CVariableDeclaration>* varvec;
-    Tk::SpList<const Ast::CFunctionParameter>* funcParList;
-    Tk::SpList<const Ast::CExpression>* exprvec;
+    Naba::Lng::Ast::CNode* m_node;
+    Naba::Lng::Ast::CBlock* block;
+    Naba::Lng::Ast::CBlock* blockParts;
+    Naba::Lng::Ast::CExpression* expr;
+    Naba::Lng::Ast::CBlockPart* blockPart;
+    Naba::Lng::Ast::CIdentifier* ident;
+    Naba::Lng::Ast::CVariableDeclaration* var_decl;
+    Naba::Lng::Ast::CFunctionParameter* func_param;
+    Tk::SpList<const Naba::Lng::Ast::CVariableDeclaration>* varvec;
+    Tk::SpList<const Naba::Lng::Ast::CFunctionParameter>* funcParList;
+    Tk::SpList<const Naba::Lng::Ast::CExpression>* exprvec;
     StringToken* stringToken;
     int token;
 
-    Ast::CStructPart*     structPart;
-    Tk::SpList<const Ast::CStructPart>* structParts;
+    Naba::Lng::Ast::CStructPart*     structPart;
+    Tk::SpList<const Naba::Lng::Ast::CStructPart>* structParts;
 
 
 /* Line 2058 of yacc.c  */
@@ -145,7 +145,7 @@ int yyparse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int yyparse (yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const NabaL::CCompileError>& errorOut, Tk::Sp<const Ast::CNode>& expressionOut);
+int yyparse (yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const Naba::Lng::CCompileError>& errorOut, Tk::Sp<const Naba::Lng::Ast::CNode>& expressionOut);
 #else
 int yyparse ();
 #endif

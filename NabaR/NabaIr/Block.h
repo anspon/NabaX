@@ -1,8 +1,9 @@
 #ifndef NabaIr_CBlock_H
 #define NabaIr_CBlock_H
 
-
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CVariable;
 class CInstruction;
@@ -32,6 +33,7 @@ private:
 
 };
 
+}
 }
 
 #endif

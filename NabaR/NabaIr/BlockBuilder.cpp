@@ -8,7 +8,9 @@
 
 #include "Tk/Exception.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 //--------------------------------------------------------------------------------------------------
 CBlockBuilder::CBlockBuilder(
@@ -133,7 +135,7 @@ Tk::Sp<const CVariable> CBlockBuilder::AddVariable(
         actualName = "anonymous" + std::to_string(count);
     }
     auto variable = 
-        Tk::MakeSp<NabaIr::CVariable>(
+        Tk::MakeSp<Ir::CVariable>(
             m_typeManager->Type(typeName),
             actualName
         );
@@ -163,4 +165,5 @@ void CBlockBuilder::ZeroVariable(
     
 }
 
+}
 }

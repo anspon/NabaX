@@ -6,9 +6,12 @@
 #include "NabaIr/Literal.h"
 
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
-
 //--------------------------------------------------------------------------------------------------
 CInteger32::CInteger32( 
     const StringToken* stringToken
@@ -19,15 +22,17 @@ CInteger32::CInteger32(
     delete stringToken;
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const NabaIr::CVariable> CInteger32::MakeExpressionIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
+Tk::Sp<const Ir::CVariable> CInteger32::MakeExpressionIr(
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder
     )const
 {
     auto var = blockBuilder.AddLocalVariable("i32", "");
-    blockBuilder.AssignLiteral(var, NabaIr::CLiteral::MakeInt32(m_value) ) ;
+    blockBuilder.AssignLiteral(var, Ir::CLiteral::MakeInt32(m_value) ) ;
     return var;
 }
 
 
+}
+}
 }

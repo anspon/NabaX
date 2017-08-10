@@ -1,9 +1,13 @@
-#ifndef NabaL_Ast_CLiteral_H
-#define NabaL_Ast_CLiteral_H
+#ifndef Naba_Lng_Ast_CLiteral_H
+#define Naba_Lng_Ast_CLiteral_H
 
 
 #include "Expression.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 class CLiteral : public CExpression
@@ -19,6 +23,8 @@ private:
 
 };
 
+}
+}
 }
 
 

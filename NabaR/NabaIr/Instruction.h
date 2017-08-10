@@ -4,7 +4,9 @@
 #include "eInstructionType.h"
 #include "eBinaryBoolInstruction.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 class CVariable;
@@ -135,6 +137,7 @@ private:
 };
 
 
+}
 }
 
 

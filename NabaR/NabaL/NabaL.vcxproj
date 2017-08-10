@@ -35,24 +35,24 @@
     <ClCompile Include="Ast\Integer64.cpp" />
     <ClCompile Include="Ast\Literal.cpp" />
     <ClCompile Include="Ast\MethodCall.cpp" />
+    <ClCompile Include="Ast\Module.cpp" />
     <ClCompile Include="Ast\Node.cpp" />
+    <ClCompile Include="Ast\ParseModule.cpp" />
     <ClCompile Include="Ast\Scope.cpp" />
     <ClCompile Include="Ast\Statement.cpp" />
     <ClCompile Include="Ast\Struct.cpp" />
     <ClCompile Include="Ast\StructPart.cpp" />
     <ClCompile Include="Ast\StructVariable.cpp" />
+    <ClCompile Include="Ast\TranslationUnit.cpp" />
     <ClCompile Include="Ast\VariableDeclaration.cpp" />
     <ClCompile Include="Ast\While.cpp" />
     <ClCompile Include="CompileError.cpp" />
-    <ClCompile Include="Module.cpp" />
     <ClCompile Include="NabaLPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ParseModule.cpp" />
     <ClCompile Include="Parser\ParserPchWrapper.cpp" />
     <ClCompile Include="Parser\TokensPchWrapper.cpp" />
     <ClCompile Include="SourceCodeError.cpp" />
-    <ClCompile Include="TranslationUnit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ast\Assignment.h" />
@@ -71,21 +71,21 @@
     <ClInclude Include="Ast\Integer64.h" />
     <ClInclude Include="Ast\Literal.h" />
     <ClInclude Include="Ast\MethodCall.h" />
+    <ClInclude Include="Ast\Module.h" />
     <ClInclude Include="Ast\Node.h" />
+    <ClInclude Include="Ast\ParseModule.h" />
     <ClInclude Include="Ast\Scope.h" />
     <ClInclude Include="Ast\Statement.h" />
     <ClInclude Include="Ast\Struct.h" />
     <ClInclude Include="Ast\StructPart.h" />
     <ClInclude Include="Ast\StructVariable.h" />
+    <ClInclude Include="Ast\TranslationUnit.h" />
     <ClInclude Include="Ast\VariableDeclaration.h" />
     <ClInclude Include="Ast\While.h" />
     <ClInclude Include="CompileError.h" />
-    <ClInclude Include="Module.h" />
     <ClInclude Include="NabaLPch.h" />
     <ClInclude Include="NabalPchHeaders.h" />
-    <ClInclude Include="ParseModule.h" />
     <ClInclude Include="SourceCodeError.h" />
-    <ClInclude Include="TranslationUnit.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Parser\parser.y">

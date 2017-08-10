@@ -4,6 +4,10 @@
 
 #include "NabaIr/BlockBuilder.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 CIdentifier::CIdentifier(
@@ -15,32 +19,16 @@ CIdentifier::CIdentifier(
     delete stringToken; 
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const NabaIr::CVariable> 
+Tk::Sp<const Ir::CVariable> 
     CIdentifier::MakeExpressionIr(
-        Tk::Sp<NabaIr::CTypeManager> typeManager,
-        NabaIr::CBlockBuilder& blockBuilder
+        Tk::Sp<Ir::CTypeManager> typeManager,
+        Ir::CBlockBuilder& blockBuilder
         ) const
 {
     return blockBuilder.GetVariable(m_name);
 }
-//--------------------------------------------------------------------------------------------------
-CIdentifierChain::CIdentifierChain()
-{
-}
-//--------------------------------------------------------------------------------------------------
-Tk::Sp<const NabaIr::CVariable> CIdentifierChain::MakeExpressionIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
-    ) const
-{
-    return Tk::Sp<const NabaIr::CVariable>();
-}
-//--------------------------------------------------------------------------------------------------
-void CIdentifierChain::AddIdentifier(
-    const CIdentifier* identifier
-    )
-{
-}
 
+}
+}
 }
 

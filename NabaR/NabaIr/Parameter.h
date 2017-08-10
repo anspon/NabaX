@@ -4,7 +4,9 @@
 #include "eParameterType.h"
 
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CVariable;
 
@@ -35,7 +37,8 @@ private:
         m_parameterType;
 };
 
-
 }
+}
+
 
 #endif

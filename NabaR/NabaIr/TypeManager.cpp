@@ -6,7 +6,9 @@
 
 #include "Tk/Exception.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 //--------------------------------------------------------------------------------------------------
 CTypeManager::CTypeManager()
@@ -70,4 +72,5 @@ Tk::Sp<const CType> CTypeManager::Type(
 }
 //--------------------------------------------------------------------------------------------------
 
+}
 }

@@ -1,8 +1,11 @@
-#ifndef NabaL_Ast_CBinaryOperator_H
-#define NabaL_Ast_CBinaryOperator_H
+#ifndef Naba_Lng_Ast_CBinaryOperator_H
+#define Naba_Lng_Ast_CBinaryOperator_H
 
 #include "Expression.h"
-
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 class CBinaryOperator : public CExpression 
@@ -14,10 +17,10 @@ public:
         const CExpression* rhs
         );
 
-    Tk::Sp<const NabaIr::CVariable>
+    Tk::Sp<const Ir::CVariable>
         MakeExpressionIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder
+            Tk::Sp<Ir::CTypeManager> typeManager,
+            Ir::CBlockBuilder& blockBuilder
             )const;
 
 private:
@@ -30,7 +33,10 @@ private:
     Tk::Sp<const CExpression> 
         m_rhs;
 
-};}
+};
+}
+}
+}
 
 
 #endif

@@ -1,9 +1,12 @@
-#ifndef NabaL_Ast_CExpression_H
-#define NabaL_Ast_CExpression_H
+#ifndef Naba_Lng_Ast_CExpression_H
+#define Naba_Lng_Ast_CExpression_H
 
 #include "BlockPart.h"
 
-namespace NabaIr
+
+namespace Naba
+{
+namespace Ir
 {
 class CVariable;
 class CTypeManager;
@@ -11,6 +14,8 @@ class CBlockBuilder;
 class CType;
 }
 
+namespace Lng
+{
 namespace Ast
 {
 class CExpression : public CBlockPart
@@ -19,24 +24,26 @@ public:
         CExpression(
             );
     
-    Tk::Sp<const NabaIr::CType>
+    Tk::Sp<const Ir::CType>
         Type(
-            Tk::Sp<NabaIr::CTypeManager> typeManager
+            Tk::Sp<Ir::CTypeManager> typeManager
             )const;
 
     void MakeIr(
-        Tk::Sp<NabaIr::CTypeManager> typeManager,
-        NabaIr::CBlockBuilder& blockBuilder,
-        Tk::SpList<const NabaIr::CFunction>& functions
+        Tk::Sp<Ir::CTypeManager> typeManager,
+        Ir::CBlockBuilder& blockBuilder,
+        Tk::SpList<const Ir::CFunction>& functions
         ) const override;
 
-    virtual Tk::Sp<const NabaIr::CVariable>
+    virtual Tk::Sp<const Ir::CVariable>
         MakeExpressionIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder
+            Tk::Sp<Ir::CTypeManager> typeManager,
+            Ir::CBlockBuilder& blockBuilder
             )const = 0;
 };
 
+}
+}
 }
 
 

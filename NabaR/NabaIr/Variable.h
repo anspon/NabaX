@@ -1,7 +1,9 @@
 #ifndef NabaIr_CVariable_H
 #define NabaIr_CVariable_H
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CType;
 
@@ -30,6 +32,7 @@ private:
         m_name;
 };
 
+}
 }
 
 

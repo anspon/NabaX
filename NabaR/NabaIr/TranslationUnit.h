@@ -2,7 +2,9 @@
 #define NabaIr_CTranslationUnit_H
 
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CFunction;
 
@@ -27,6 +29,7 @@ private:
         m_functions;
 };
 
+}
 }
 
 #endif

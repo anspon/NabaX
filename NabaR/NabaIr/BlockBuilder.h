@@ -3,7 +3,9 @@
 
 #include "eBinaryBoolInstruction.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CBlock;
 class CVariable;
@@ -107,6 +109,7 @@ private:
 };
 
 
+}
 }
 
 #endif

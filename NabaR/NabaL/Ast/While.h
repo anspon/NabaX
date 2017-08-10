@@ -1,8 +1,12 @@
-#ifndef NabaL_CWhile_H
-#define NabaL_CWhile_H
+#ifndef Naba_Lng_Ast_CWhile_H
+#define Naba_Lng_Ast_CWhile_H
 
 #include "BlockPart.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 class CExpression;
@@ -20,9 +24,9 @@ public:
 
     void
         MakeIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder,
-            Tk::SpList<const NabaIr::CFunction>& functions
+            Tk::Sp<Ir::CTypeManager> typeManager,
+            Ir::CBlockBuilder& blockBuilder,
+            Tk::SpList<const Ir::CFunction>& functions
             )const override;
 
     ~CWhile();
@@ -36,6 +40,8 @@ private:
 };
 
 
+}
+}
 }
 
 

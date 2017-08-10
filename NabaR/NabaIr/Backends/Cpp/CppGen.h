@@ -2,7 +2,9 @@
 #define NabaIr_CppGen_H
 
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 namespace Backends
@@ -15,8 +17,11 @@ void
         CStream& stream
         );
 }
+
 }
 }
+}
+
 
 
 #endif

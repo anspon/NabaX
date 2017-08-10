@@ -3,10 +3,13 @@
 #include "Tk/NullableT.inl"
 
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 template class Tk::CNullableT<eBinaryBoolInstruction>;
 
 
+}
 }

@@ -33,8 +33,8 @@ extern void
     ReportError(
         YYLTYPE* location,
         const filesystem::path& pathFile, 
-        Tk::Sp<const NabaL::CCompileError>& errorOut, 
-        Tk::Sp<const Ast::CNode>& expressionOut,
+        Tk::Sp<const Naba::Lng::CCompileError>& errorOut, 
+        Tk::Sp<const Naba::Lng::Ast::CNode>& expressionOut,
         const char* msg
         );
 
@@ -42,8 +42,8 @@ int yyerror (
     YYLTYPE* location,
     yyscan_t scanner, 
     const filesystem::path& pathFile, 
-    Tk::Sp<const NabaL::CCompileError>& errorOut, 
-    Tk::Sp<const Ast::CNode>& expressionOut,
+    Tk::Sp<const Naba::Lng::CCompileError>& errorOut, 
+    Tk::Sp<const Naba::Lng::Ast::CNode>& expressionOut,
     const char* msg
     )
 {
@@ -68,27 +68,27 @@ typedef void* yyscan_t;
 %lex-param   { yyscan_t scanner }
 %parse-param { yyscan_t scanner }
 %parse-param { const filesystem::path& pathFile }
-%parse-param { Tk::Sp<const NabaL::CCompileError>& errorOut }
-%parse-param { Tk::Sp<const Ast::CNode>& expressionOut }
+%parse-param { Tk::Sp<const Naba::Lng::CCompileError>& errorOut }
+%parse-param { Tk::Sp<const Naba::Lng::Ast::CNode>& expressionOut }
 
 /* Represents the many different ways we can access our data */
 %union {
-    Ast::CNode* m_node;
-    Ast::CBlock* block;
-    Ast::CBlock* blockParts;
-    Ast::CExpression* expr;
-    Ast::CBlockPart* blockPart;
-    Ast::CIdentifier* ident;
-    Ast::CVariableDeclaration* var_decl;
-    Ast::CFunctionParameter* func_param;
-    Tk::SpList<const Ast::CVariableDeclaration>* varvec;
-    Tk::SpList<const Ast::CFunctionParameter>* funcParList;
-    Tk::SpList<const Ast::CExpression>* exprvec;
+    Naba::Lng::Ast::CNode* m_node;
+    Naba::Lng::Ast::CBlock* block;
+    Naba::Lng::Ast::CBlock* blockParts;
+    Naba::Lng::Ast::CExpression* expr;
+    Naba::Lng::Ast::CBlockPart* blockPart;
+    Naba::Lng::Ast::CIdentifier* ident;
+    Naba::Lng::Ast::CVariableDeclaration* var_decl;
+    Naba::Lng::Ast::CFunctionParameter* func_param;
+    Tk::SpList<const Naba::Lng::Ast::CVariableDeclaration>* varvec;
+    Tk::SpList<const Naba::Lng::Ast::CFunctionParameter>* funcParList;
+    Tk::SpList<const Naba::Lng::Ast::CExpression>* exprvec;
     StringToken* stringToken;
     int token;
 
-    Ast::CStructPart*     structPart;
-    Tk::SpList<const Ast::CStructPart>* structParts;
+    Naba::Lng::Ast::CStructPart*     structPart;
+    Tk::SpList<const Naba::Lng::Ast::CStructPart>* structParts;
 }
 
 
@@ -125,7 +125,7 @@ fileScope :
     ;
       
 blockParts : 
-    blockPart { $$ = new Ast::CBlock(); $$->AddBlockPart($<blockPart>1); } | 
+    blockPart { $$ = new Naba::Lng::Ast::CBlock(); $$->AddBlockPart($<blockPart>1); } | 
     blockParts blockPart { $1->AddBlockPart($<blockPart>2); }
     ;
 
@@ -141,68 +141,68 @@ blockPart :
     ;
 
 exprStatement : 
-	expr TSEMICOLON { $$ = new Ast::CExpressionStatement($1); } 
+	expr TSEMICOLON { $$ = new Naba::Lng::Ast::CExpressionStatement($1); } 
 
 block : 
     TLBRACE blockParts TRBRACE { $$ = $2; } | 
-    TLBRACE TRBRACE { $$ = new Ast::CBlock(); }
+    TLBRACE TRBRACE { $$ = new Naba::Lng::Ast::CBlock(); }
     ;
 
 struct :  
-    TSTRUCT ident TLBRACE structParts TRBRACE TSEMICOLON { $$ = new Ast::CStruct($2, $4); } |
-    TSTRUCT ident TLBRACE TRBRACE TSEMICOLON { $$ = new Ast::CStruct($2, nullptr); }
+    TSTRUCT ident TLBRACE structParts TRBRACE TSEMICOLON { $$ = new Naba::Lng::Ast::CStruct($2, $4); } |
+    TSTRUCT ident TLBRACE TRBRACE TSEMICOLON { $$ = new Naba::Lng::Ast::CStruct($2, nullptr); }
     ;
 
 while:
-	TWHILE TLPAREN expr TRPAREN block { $$ = new Ast::CWhile(nullptr, $3, $5); } |
-	TVAR ident TEQUAL TWHILE TLPAREN expr TRPAREN block { $$ = new Ast::CWhile($2, $6, $8); }
+	TWHILE TLPAREN expr TRPAREN block { $$ = new Naba::Lng::Ast::CWhile(nullptr, $3, $5); } |
+	TVAR ident TEQUAL TWHILE TLPAREN expr TRPAREN block { $$ = new Naba::Lng::Ast::CWhile($2, $6, $8); }
 
 for:
-	TFOR TLPAREN ident TCOLON expr TRPAREN block { $$ = new Ast::CFor(nullptr, $3, $5, $7 ); } | 
-	TVAR ident TEQUAL TFOR TLPAREN ident TCOLON expr TRPAREN block { $$ = new Ast::CFor($2, $6, $8, $10 ); }
+	TFOR TLPAREN ident TCOLON expr TRPAREN block { $$ = new Naba::Lng::Ast::CFor(nullptr, $3, $5, $7 ); } | 
+	TVAR ident TEQUAL TFOR TLPAREN ident TCOLON expr TRPAREN block { $$ = new Naba::Lng::Ast::CFor($2, $6, $8, $10 ); }
 
 structPart : 
-    ident ident TSEMICOLON { $$ = new Ast::CStructVariable($1, $2, nullptr); } |
-    ident ident TEQUAL expr TSEMICOLON { $$ = new Ast::CStructVariable($1, $2, $4); }
+    ident ident TSEMICOLON { $$ = new Naba::Lng::Ast::CStructVariable($1, $2, nullptr); } |
+    ident ident TEQUAL expr TSEMICOLON { $$ = new Naba::Lng::Ast::CStructVariable($1, $2, $4); }
     ;
 
 structParts: 
-    structPart { $$ = new Tk::SpList<const Ast::CStructPart>; $$->push_back(Tk::AttachSp($<structPart>1)); } | 
+    structPart { $$ = new Tk::SpList<const Naba::Lng::Ast::CStructPart>; $$->push_back(Tk::AttachSp($<structPart>1)); } | 
     structParts structPart { $1->push_back(Tk::AttachSp($<structPart>2)); }
     ;
 
 func_decl : 
-    ident ident TLPAREN func_decl_args TRPAREN block { $$ = new Ast::CFunction($1, $2, $4, $6); }
+    ident ident TLPAREN func_decl_args TRPAREN block { $$ = new Naba::Lng::Ast::CFunction($1, $2, $4, $6); }
     ;
     
 func_decl_args : 
-    /*blank*/  { $$ = new Tk::SpList<const Ast::CFunctionParameter>; } | 
-    func_param { $$ = new Tk::SpList<const Ast::CFunctionParameter>; $$->push_back(Tk::AttachSp($<func_param>1)); } | 
+    /*blank*/  { $$ = new Tk::SpList<const Naba::Lng::Ast::CFunctionParameter>; } | 
+    func_param { $$ = new Tk::SpList<const Naba::Lng::Ast::CFunctionParameter>; $$->push_back(Tk::AttachSp($<func_param>1)); } | 
     func_decl_args TCOMMA func_param { $1->push_back(Tk::AttachSp($<func_param>3)); }
     ;
 
 func_param:
-    ident ident { $$ = new Ast::CFunctionParameter($1, $2, nullptr); } 
+    ident ident { $$ = new Naba::Lng::Ast::CFunctionParameter($1, $2, nullptr); } 
     ;
 
 var_decl : 
-    TVAR ident ident TSEMICOLON { $$ = new Ast::CVariableDeclaration($2, $3, nullptr); } | 
-    TVAR ident TEQUAL expr TSEMICOLON { $$ = new Ast::CVariableDeclaration(nullptr, $2, $4); } |
-    TVAR ident ident TEQUAL expr TSEMICOLON { $$ = new Ast::CVariableDeclaration($2, $3, $5); }
+    TVAR ident ident TSEMICOLON { $$ = new Naba::Lng::Ast::CVariableDeclaration($2, $3, nullptr); } | 
+    TVAR ident TEQUAL expr TSEMICOLON { $$ = new Naba::Lng::Ast::CVariableDeclaration(nullptr, $2, $4); } |
+    TVAR ident ident TEQUAL expr TSEMICOLON { $$ = new Naba::Lng::Ast::CVariableDeclaration($2, $3, $5); }
     ;
 
 ident : 
-    TIDENTIFIER { $$ = new Ast::CIdentifier($1); }
+    TIDENTIFIER { $$ = new Naba::Lng::Ast::CIdentifier($1); }
     ;
 
 numeric : 
-	T_I64 { $$ = new Ast::CInteger64($1);} | 
-    T_I32 { $$ = new Ast::CInteger32($1);} | 
-    TDOUBLE { $$ = new Ast::CDouble($1);}
+	T_I64 { $$ = new Naba::Lng::Ast::CInteger64($1);} | 
+    T_I32 { $$ = new Naba::Lng::Ast::CInteger32($1);} | 
+    TDOUBLE { $$ = new Naba::Lng::Ast::CDouble($1);}
     ;
 
 assignment :
-	ident TEQUAL expr TSEMICOLON{ $$ = new Ast::CAssignment($<ident>1, $3); } 
+	ident TEQUAL expr TSEMICOLON{ $$ = new Naba::Lng::Ast::CAssignment($<ident>1, $3); } 
 	;
 
     
@@ -210,7 +210,7 @@ expr :
     functionCall | 
     ident { $<ident>$ = $1; } | 
     numeric | 
-    expr binaryOperation expr{ $$ = new Ast::CBinaryOperator($1, $2, $3); } | 
+    expr binaryOperation expr{ $$ = new Naba::Lng::Ast::CBinaryOperator($1, $2, $3); } | 
     TLPAREN expr TRPAREN { $$ = $2; }
     ;
 
@@ -218,11 +218,11 @@ expr :
 
 
 functionCall:
-	ident TLPAREN call_args TRPAREN { $$ = new Ast::CMethodCall($1, $3); }
+	ident TLPAREN call_args TRPAREN { $$ = new Naba::Lng::Ast::CMethodCall($1, $3); }
     
 call_args : 
-    /*blank*/  { $$ = new Tk::SpList<const Ast::CExpression>; } | 
-    expr { $$ = new Tk::SpList<const Ast::CExpression>; $$->push_back(Tk::AttachSp($1)); } | 
+    /*blank*/  { $$ = new Tk::SpList<const Naba::Lng::Ast::CExpression>; } | 
+    expr { $$ = new Tk::SpList<const Naba::Lng::Ast::CExpression>; $$->push_back(Tk::AttachSp($1)); } | 
     call_args TCOMMA expr  { $1->push_back(Tk::AttachSp($3) ); }
     ;
 

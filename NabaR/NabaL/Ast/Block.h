@@ -1,13 +1,16 @@
-#ifndef NabaL_Ast_CBlock_H
-#define NabaL_Ast_CBlock_H
+#ifndef Naba_Lng_Ast_CBlock_H
+#define Naba_Lng_Ast_CBlock_H
 
 #include "Expression.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CBlockBuilder;
 }
-
+namespace Lng
+{
 namespace Ast
 {
 class CBlockPart;
@@ -22,9 +25,9 @@ public:
     
     void
         MakeIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder,
-            Tk::SpList<const NabaIr::CFunction>& functions
+            Tk::Sp<Ir::CTypeManager> typeManager,
+            Ir::CBlockBuilder& blockBuilder,
+            Tk::SpList<const Ir::CFunction>& functions
             )const override;
     
 private:        
@@ -32,6 +35,8 @@ private:
         m_blockParts;
 };
 
+}
+}
 }
 
 

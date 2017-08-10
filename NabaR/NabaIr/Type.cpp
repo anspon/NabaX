@@ -2,7 +2,9 @@
 #include "Type.h"
 
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 //--------------------------------------------------------------------------------------------------
@@ -30,4 +32,5 @@ eNativeType CType::NativeType(
     return m_nativeType;
 }
 
+}
 }

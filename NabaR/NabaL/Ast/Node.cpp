@@ -2,6 +2,10 @@
 #include "Node.h"
 
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 CNode::~CNode()
@@ -15,11 +19,15 @@ const CPosition& CNode::Position()const
 }
 //--------------------------------------------------------------------------------------------------
 void CNode::MakeIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder,
-    Tk::SpList<const NabaIr::CFunction>& functions
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder,
+    Tk::SpList<const Ir::CFunction>& functions
     ) const
 {
 }
+
 }
+}
+}
+
 

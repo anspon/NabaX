@@ -3,7 +3,9 @@
 #include "Function.h"
 #include "Parameter.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 CFunctionBuilder::CFunctionBuilder(
@@ -17,12 +19,12 @@ CFunctionBuilder::~CFunctionBuilder()
 {
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<NabaIr::CFunction> CFunctionBuilder::Flush(
+Tk::Sp<Ir::CFunction> CFunctionBuilder::Flush(
     const std::string& functionName
     )const
 {
     return 
-        Tk::MakeSp<NabaIr::CFunction>(
+        Tk::MakeSp<Ir::CFunction>(
             functionName,
             m_parameters,
             BaseClass::Flush()
@@ -42,4 +44,5 @@ Tk::Sp<const CVariable> CFunctionBuilder::AddParameter(
 }
 //--------------------------------------------------------------------------------------------------
 
+}
 }

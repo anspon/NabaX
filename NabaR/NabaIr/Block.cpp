@@ -1,7 +1,9 @@
 #include "NabaIrPch.h"
 #include "Block.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 //--------------------------------------------------------------------------------------------------
@@ -29,4 +31,6 @@ const Tk::SpList<const CInstruction>& CBlock::Instructions() const
     return m_instructions;
 }
 
+
+}
 }

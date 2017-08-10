@@ -1,7 +1,9 @@
 #ifndef NabaIr_eParameterType_H
 #define NabaIr_eParameterType_H
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 enum eParameterType
@@ -10,6 +12,8 @@ enum eParameterType
     ptInOut,
     ptOut
 };
+
+}
 }
 
 

@@ -1,7 +1,9 @@
 #include "NabaIrPch.h"
 #include "Function.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 CFunction::CFunction(
@@ -37,4 +39,5 @@ const Tk::SpList<const CParameter>& CFunction::Parameters(
     return m_parameters;
 }
 
+}
 }

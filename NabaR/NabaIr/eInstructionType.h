@@ -2,7 +2,9 @@
 #define NabaIr_eInstructionType_H
 
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 enum eInstructionType
@@ -20,6 +22,7 @@ enum eInstructionType
 };
 
 
+}
 }
 
 #endif

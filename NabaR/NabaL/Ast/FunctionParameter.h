@@ -1,7 +1,12 @@
-#ifndef NabaL_Ast_CFunctionParameter_H
-#define NabaL_Ast_CFunctionParameter_H
+#ifndef Naba_Lng_Ast_CFunctionParameter_H
+#define Naba_Lng_Ast_CFunctionParameter_H
 
 #include "Statement.h"
+
+namespace Naba
+{
+namespace Lng
+{
 
 namespace Ast
 {
@@ -27,7 +32,11 @@ public:
     
     Tk::Sp<const CExpression> 
         m_assignmentExpr;
-};}
+};
+
+}
+}
+}
 
 
 #endif

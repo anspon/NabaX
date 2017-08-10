@@ -3,7 +3,9 @@
 
 #include "eNativeType.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CType
 {
@@ -34,6 +36,7 @@ private:
 };
 
 
+}
 }
 
 #endif

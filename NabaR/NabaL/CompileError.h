@@ -1,13 +1,16 @@
-#ifndef NabaL_CCompileError_H
-#define NabaL_CCompileError_H
+#ifndef Naba_Lng_CCompileError_H
+#define Naba_Lng_CCompileError_H
 
 namespace Tk
 {
 class CFilePosition;    
 }
 
-namespace NabaL
+namespace Naba
+{ 
+namespace Lng 
 {
+
 enum class eCompileError
 {
     None = 0,
@@ -49,5 +52,7 @@ private:
     Tk::Sp<const Tk::CFilePosition>
         m_filePosition;
 };
+
+}
 }
 #endif

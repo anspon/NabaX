@@ -2,7 +2,9 @@
 #define NabaIr_eNativeType_H
 
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 enum eNativeType
 {
@@ -12,6 +14,8 @@ enum eNativeType
     ntBool,
     ntVoidPtr
 };
+
+}
 }
 
 

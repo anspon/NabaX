@@ -2,8 +2,11 @@
 #include "CompileError.h"
 
 
-namespace NabaL
+namespace Naba
+{ 
+namespace Lng 
 {
+
 CCompileError::CCompileError(
     eCompileError code,
     const std::string& text,
@@ -33,4 +36,5 @@ Tk::Sp<const Tk::CFilePosition> CCompileError::FilePosition(
     return m_filePosition;
 }
 
+}
 }

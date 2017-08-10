@@ -6,6 +6,10 @@
 
 #include "NabaIr/BlockBuilder.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -19,14 +23,16 @@ CAssignment::CAssignment(
 }
 //--------------------------------------------------------------------------------------------------
 void CAssignment::MakeIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder,
-    Tk::SpList<const NabaIr::CFunction>& functions
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder,
+    Tk::SpList<const Ir::CFunction>& functions
     )const
 {
-    Tk::Sp<const NabaIr::CVariable> lhsVar = blockBuilder.GetVariable(m_lhs->m_name);
-    Tk::Sp<const NabaIr::CVariable> rhsVar = m_rhs->MakeExpressionIr(typeManager, blockBuilder);
+    Tk::Sp<const Ir::CVariable> lhsVar = blockBuilder.GetVariable(m_lhs->m_name);
+    Tk::Sp<const Ir::CVariable> rhsVar = m_rhs->MakeExpressionIr(typeManager, blockBuilder);
     blockBuilder.AssignVariable(lhsVar, rhsVar);
 }
 
+}
+}
 }

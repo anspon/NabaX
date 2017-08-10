@@ -4,6 +4,10 @@
 #include "NabaIr/BlockBuilder.h"
 #include "NabaIr/Literal.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 
@@ -17,14 +21,16 @@ CDouble::CDouble(
     delete stringToken;
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const NabaIr::CVariable> CDouble::MakeExpressionIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
+Tk::Sp<const Ir::CVariable> CDouble::MakeExpressionIr(
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder
     )const
 {
     auto var = blockBuilder.AddLocalVariable("double", "");
-    blockBuilder.AssignLiteral(var, NabaIr::CLiteral::MakeDouble(m_value) ) ;
+    blockBuilder.AssignLiteral(var, Ir::CLiteral::MakeDouble(m_value) ) ;
     return var;
 }
 
+}
+}
 }

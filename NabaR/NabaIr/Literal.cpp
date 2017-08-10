@@ -3,7 +3,9 @@
 
 //--------------------------------------------------------------------------------------------------
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 CLiteral::CLiteral(
     )
@@ -77,5 +79,7 @@ Tk::Sp<const CLiteral> CLiteral::MakeBool(
     instance->m_nativeType = ntBool;
     instance->m_.boolValue = value;
     return instance;
+}
+
 }
 }

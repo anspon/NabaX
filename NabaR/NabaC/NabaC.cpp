@@ -1,8 +1,8 @@
 #include "NabaCPch.h"
 
-#include "NabaL/ParseModule.h"
-#include "NabaL/TranslationUnit.h"
-#include "NabaL/Module.h"
+#include "NabaL/Ast/ParseModule.h"
+#include "NabaL/Ast/TranslationUnit.h"
+#include "NabaL/Ast/Module.h"
 #include "NabaL/CompileError.h"
 #include "NabaIr/Backends/CodeStreamer.h"
 #include "NabaIr/Module.h"
@@ -24,7 +24,7 @@
 #include "Tk/FilePosition.h"
 
 static void PrintError(
-    Tk::Sp<const NabaL::CCompileError> error
+    Tk::Sp<const Naba::Lng::CCompileError> error
     )
 {
     if( error->FilePosition() )
@@ -35,13 +35,13 @@ static void PrintError(
     std::cout << "Error " << (int)error->Code() << ": " << error->Text() << std::endl;
 }
 //--------------------------------------------------------------------------------------------------
-void ErrorCheckModuleThrow(Tk::Sp<const NabaL::CModule> astModule )
+void ErrorCheckModuleThrow(Tk::Sp<const Naba::Lng::Ast::CModule> astModule )
 {
     bool hasErrors = false;
-    for( Tk::Sp<const NabaL::CTranslationUnit> translationUnit : astModule->TranslationUnits() )
+    for( Tk::Sp<const Naba::Lng::Ast::CTranslationUnit> translationUnit : astModule->TranslationUnits() )
     {
             
-        for( Tk::Sp<const NabaL::CCompileError> error : translationUnit->Errors() )
+        for( Tk::Sp<const Naba::Lng::CCompileError> error : translationUnit->Errors() )
         {
             PrintError( error );
             hasErrors = true;
@@ -54,25 +54,25 @@ void ErrorCheckModuleThrow(Tk::Sp<const NabaL::CModule> astModule )
 }
 //--------------------------------------------------------------------------------------------------
 void ResolveTypes(
-    Tk::Sp<const NabaL::CModule> astModule 
+    Tk::Sp<const Naba::Lng::Ast::CModule> astModule 
     )
 {
-    Tk::SpList<const NabaL::CCompileError> allErrors;
+    Tk::SpList<const Naba::Lng::CCompileError> allErrors;
 
     bool hasErrors = false;
-    for( Tk::Sp<const NabaL::CTranslationUnit> translationUnit : astModule->TranslationUnits() )
+    for( Tk::Sp<const Naba::Lng::Ast::CTranslationUnit> translationUnit : astModule->TranslationUnits() )
     {
-        const Tk::Sp<const Ast::CNode> ast = translationUnit->Ast();
+        const Tk::Sp<const Naba::Lng::Ast::CNode> ast = translationUnit->Ast();
         if( translationUnit->Errors().size() )
         {
-            for( Tk::Sp<const NabaL::CCompileError> error : translationUnit->Errors() )
+            for( Tk::Sp<const Naba::Lng::CCompileError> error : translationUnit->Errors() )
             {
                 allErrors.push_back(error);
             }
         }
     }
 
-    for( Tk::Sp<const NabaL::CCompileError> error : allErrors )
+    for( Tk::Sp<const Naba::Lng::CCompileError> error : allErrors )
     {
         PrintError( error );
     }
@@ -87,12 +87,12 @@ int main(int argv, char** argc)
 
         std::string sourceDirectory = argc[1];
 
-        Tk::Sp<const NabaL::CModule> astModule = NabaL::ParseModule(sourceDirectory);
+        Tk::Sp<const Naba::Lng::Ast::CModule> astModule = Naba::Lng::Ast::ParseModule(sourceDirectory);
         ErrorCheckModuleThrow(astModule);
 
         ResolveTypes(astModule);
 
-        Tk::Sp<const NabaIr::CModule> irModule = astModule->MakeIr();
+        Tk::Sp<const Naba::Ir::CModule> irModule = astModule->MakeIr();
 
 //        BuildAllTypes(astModule);
 
@@ -103,7 +103,7 @@ int main(int argv, char** argc)
         filesystem::path filePath = buildPath /= "HelloWorld.cpp";
         CStreamT<std::ofstream> targetFile( filePath );
 
-        NabaIr::Backends::CppGen::Stream(irModule, targetFile );
+        Naba::Ir::Backends::CppGen::Stream(irModule, targetFile );
         targetFile << "int main(int argv, const char** argc ){Main();return 0;}";
 
 //        node->MakeCpp(streamer);
@@ -119,23 +119,23 @@ int main(int argv, char** argc)
 
 
     /*
-        Tk::Sp<const NabaIr::CTypeManager> irTypeManager = NabaIr::CTypeManager::Construct();
+        Tk::Sp<const Ir::CTypeManager> irTypeManager = Ir::CTypeManager::Construct();
         
-        Tk::SpList<const NabaIr::CFunction> irFunctions;
-        Tk::Sp<const NabaIr::CFunction> myFirstFunction;
+        Tk::SpList<const Ir::CFunction> irFunctions;
+        Tk::Sp<const Ir::CFunction> myFirstFunction;
         {
-            NabaIr::CFunctionBuilder functionBuilder(irTypeManager);
+            Ir::CFunctionBuilder functionBuilder(irTypeManager);
 
             auto i = functionBuilder.AddInt32("i");
             auto j = functionBuilder.AddInt64("j");
 
-            auto in1 = functionBuilder.AddParameterInt32("in1", NabaIr::ptIn);
+            auto in1 = functionBuilder.AddParameterInt32("in1", Ir::ptIn);
 
-            Tk::Sp<const NabaIr::CLiteral> irLiteralInt32Zero = 
-                NabaIr::CLiteral::MakeInt32(0);
+            Tk::Sp<const Ir::CLiteral> irLiteralInt32Zero = 
+                Ir::CLiteral::MakeInt32(0);
 
-            Tk::Sp<const NabaIr::CLiteral> irLiteralInt6455 = 
-                NabaIr::CLiteral::MakeInt64(55);
+            Tk::Sp<const Ir::CLiteral> irLiteralInt6455 = 
+                Ir::CLiteral::MakeInt64(55);
         
             functionBuilder.ZeroVariable(i);
             functionBuilder.ZeroVariable(j);
@@ -145,26 +145,26 @@ int main(int argv, char** argc)
             irFunctions.push_back(myFirstFunction);
         }
         {
-            NabaIr::CFunctionBuilder functionBuilder(irTypeManager);
+            Ir::CFunctionBuilder functionBuilder(irTypeManager);
 
             auto i = functionBuilder.AddInt32("i");
             auto j = functionBuilder.AddInt64("j");
             auto k = functionBuilder.AddInt32("k");
 
             auto loop = functionBuilder.AddInt32("loop");
-            functionBuilder.AssignLiteral(loop, NabaIr::CLiteral::MakeInt32(-10) ) ;
+            functionBuilder.AssignLiteral(loop, Ir::CLiteral::MakeInt32(-10) ) ;
 
-            NabaIr::CBlockBuilder whileBlock(irTypeManager);
-            whileBlock.IncrementLiteral(loop,NabaIr::CLiteral::MakeInt32(1) );
+            Ir::CBlockBuilder whileBlock(irTypeManager);
+            whileBlock.IncrementLiteral(loop,Ir::CLiteral::MakeInt32(1) );
             functionBuilder.While(loop, whileBlock.Flush() );
 
-            functionBuilder.AssignLiteral(k, NabaIr::CLiteral::MakeInt32(10) ) ;
+            functionBuilder.AssignLiteral(k, Ir::CLiteral::MakeInt32(10) ) ;
 
             functionBuilder.ZeroVariable(i);
             functionBuilder.ZeroVariable(j);
             
-            functionBuilder.AssignLiteral(i, NabaIr::CLiteral::MakeInt32(33) ) ;
-            functionBuilder.AssignLiteral(j, NabaIr::CLiteral::MakeInt64(55) ) ;
+            functionBuilder.AssignLiteral(i, Ir::CLiteral::MakeInt32(33) ) ;
+            functionBuilder.AssignLiteral(j, Ir::CLiteral::MakeInt64(55) ) ;
 
             functionBuilder.IncrementVariable(i, k ) ;
 
@@ -172,9 +172,9 @@ int main(int argv, char** argc)
 
             irFunctions.push_back(functionBuilder.Flush("Main"));
         }
-        Tk::Sp<NabaIr::CTranslationUnit> irUnitMain = Tk::MakeSp<NabaIr::CTranslationUnit>("Main", irFunctions);
-        Tk::SpList<const NabaIr::CTranslationUnit> irUnits = { irUnitMain };
+        Tk::Sp<Ir::CTranslationUnit> irUnitMain = Tk::MakeSp<Ir::CTranslationUnit>("Main", irFunctions);
+        Tk::SpList<const Ir::CTranslationUnit> irUnits = { irUnitMain };
 
-        Tk::Sp<NabaIr::CModule> irModule = Tk::MakeSp<NabaIr::CModule>("HelloWorld", irUnits);
+        Tk::Sp<Ir::CModule> irModule = Tk::MakeSp<Ir::CModule>("HelloWorld", irUnits);
         
 */

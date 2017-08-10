@@ -3,6 +3,10 @@
 #include "Struct.h"
 #include "Identifier.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -18,5 +22,8 @@ CStruct::CStruct(
         delete list;
     }
 
+}
+
+}
 }
 }

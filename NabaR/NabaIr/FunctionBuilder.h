@@ -4,7 +4,9 @@
 #include "BlockBuilder.h"
 #include "eParameterType.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CFunction;
 class CParameter;
@@ -18,7 +20,7 @@ public:
         );
     ~CFunctionBuilder();
 
-    Tk::Sp<NabaIr::CFunction>
+    Tk::Sp<Ir::CFunction>
         Flush(
             const std::string& functionName
             )const;
@@ -38,5 +40,7 @@ private:
 
 
 }
+}
+
 
 #endif

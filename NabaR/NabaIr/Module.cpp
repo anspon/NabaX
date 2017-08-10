@@ -2,9 +2,10 @@
 #include "Module.h"
 
 
-namespace NabaIr
+namespace Naba
 {
-
+namespace Ir
+{
 CModule::CModule(
     const std::string& name,
     const Tk::SpList<const CTranslationUnit>& translationUnits
@@ -25,4 +26,5 @@ const Tk::SpList<const CTranslationUnit>& CModule::TranslationUnits(
 }
 //--------------------------------------------------------------------------------------------------
 
+}
 }

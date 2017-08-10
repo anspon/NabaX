@@ -1,7 +1,9 @@
 #ifndef NabaIr_eBinaryBoolInstruction_H
 #define NabaIr_eBinaryBoolInstruction_H
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 enum eBinaryBoolInstruction
 {
@@ -14,6 +16,7 @@ enum eBinaryBoolInstruction
 };
 
 
+}
 }
 
 #endif

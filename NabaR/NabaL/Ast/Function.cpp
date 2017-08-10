@@ -8,6 +8,10 @@
 #include "NabaIr/FunctionBuilder.h"
 #include "NabaIr/Literal.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -29,19 +33,22 @@ CFunction::CFunction(
 }
 //--------------------------------------------------------------------------------------------------
 void CFunction::MakeIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder,
-    Tk::SpList<const NabaIr::CFunction>& functions
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder,
+    Tk::SpList<const Ir::CFunction>& functions
     ) const
 {
-    NabaIr::CFunctionBuilder functionBuilder(typeManager);
+    Ir::CFunctionBuilder functionBuilder(typeManager);
     
     for( Tk::Sp<const CFunctionParameter> functionParameter : m_arguments )
     {
-        functionBuilder.AddParameter(functionParameter->m_type->m_name, functionParameter->m_id->m_name, NabaIr::ptIn );
+        functionBuilder.AddParameter(functionParameter->m_type->m_name, functionParameter->m_id->m_name, Ir::ptIn );
     }
 
     m_block->MakeIr(typeManager, functionBuilder, functions);
     functions.push_back(functionBuilder.Flush(m_id->m_name));
+}
+
+}
 }
 }

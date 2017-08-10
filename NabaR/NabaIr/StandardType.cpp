@@ -1,7 +1,9 @@
 #include "NabaIrPch.h"
 #include "StandardType.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 //--------------------------------------------------------------------------------------------------
 CStandardType::CStandardType(
@@ -18,4 +20,6 @@ CStandardType::~CStandardType()
 {
 }
 //--------------------------------------------------------------------------------------------------
+
+}
 }

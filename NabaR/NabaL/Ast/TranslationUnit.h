@@ -1,22 +1,25 @@
-#ifndef NabaL_CTranslationUnit_H
-#define NabaL_CTranslationUnit_H
+#ifndef Naba_Lng_CTranslationUnit_H
+#define Naba_Lng_CTranslationUnit_H
 
 #include "NabalPchHeaders.h"
 
 
-namespace Ast
-{
-class CNode;
-}
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CTranslationUnit;
 }
 
-namespace NabaL
+namespace Lng
 {
 class CCompileError;
+
+namespace Ast
+{
+class CNode;
+
 
 class CTranslationUnit
 {
@@ -33,7 +36,7 @@ public:
         Ast(
             )const;
 
-    Tk::Sp<const NabaIr::CTranslationUnit> 
+    Tk::Sp<const Ir::CTranslationUnit> 
         MakeIr(
             )const;
             
@@ -63,7 +66,8 @@ private:
         m_errors;
 };
 
-
+}
+}
 }
 
 #endif

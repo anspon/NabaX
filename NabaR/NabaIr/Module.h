@@ -3,7 +3,9 @@
 
 #include "NabaIrPchHeaders.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 class CTranslationUnit;
 
@@ -28,6 +30,9 @@ private:
         m_translationUnits;
 };
 
+
 }
+}
+
 
 #endif

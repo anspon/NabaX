@@ -1,7 +1,9 @@
 #include "NabaIrPch.h"
 #include "Parameter.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 //--------------------------------------------------------------------------------------------------
@@ -30,4 +32,5 @@ eParameterType CParameter::ParameterType(
     return m_parameterType;
 }
 
+}
 }

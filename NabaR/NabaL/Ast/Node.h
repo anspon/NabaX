@@ -18,14 +18,18 @@ std::string m_string;
 CPosition m_position;
 };
 
-namespace NabaIr
+
+namespace Naba
+{
+namespace Ir
 {
 class CFunction;
 class CTypeManager;
 class CBlockBuilder;
-
 }
 
+namespace Lng
+{
 namespace Ast
 {
 
@@ -40,9 +44,9 @@ public:
     
     virtual void
         MakeIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder,
-            Tk::SpList<const NabaIr::CFunction>& functions
+            Tk::Sp<Ir::CTypeManager> typeManager,
+            Ir::CBlockBuilder& blockBuilder,
+            Tk::SpList<const Ir::CFunction>& functions
             )const;
 
 protected:
@@ -50,4 +54,7 @@ protected:
         m_position;
 };
 }
+}
+}
+
 #endif

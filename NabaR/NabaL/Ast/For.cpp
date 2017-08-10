@@ -5,6 +5,10 @@
 
 #include "NabaIr/BlockBuilder.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -20,9 +24,9 @@ CFor::CFor(
 }
 //--------------------------------------------------------------------------------------------------
 void CFor::MakeIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder,
-    Tk::SpList<const NabaIr::CFunction>& functions
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder,
+    Tk::SpList<const Ir::CFunction>& functions
     ) const
 {
     auto var = blockBuilder.AddLocalVariable("bool", "" );
@@ -30,7 +34,7 @@ void CFor::MakeIr(
     auto exprVar1 = m_expression->MakeExpressionIr(typeManager, blockBuilder);
     blockBuilder.AssignVariable(var, exprVar1);
 
-    NabaIr::CBlockBuilder ForBlock(typeManager, &blockBuilder);
+    Ir::CBlockBuilder ForBlock(typeManager, &blockBuilder);
     m_block->MakeIr(typeManager, ForBlock, functions);
     auto exprVar2 = m_expression->MakeExpressionIr(typeManager, ForBlock);
     ForBlock.AssignVariable(var, exprVar2);
@@ -41,5 +45,8 @@ void CFor::MakeIr(
 //--------------------------------------------------------------------------------------------------
 CFor::~CFor()
 {
+}
+
+}
 }
 }

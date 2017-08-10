@@ -5,6 +5,10 @@
 #include "Identifier.h"
 #include "Expression.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -19,4 +23,6 @@ CStructVariable::CStructVariable(
     m_assignmentExpr = Tk::AttachSp(assignmentExpr);
 }
 
+}
+}
 }

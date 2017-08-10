@@ -1,8 +1,12 @@
-#ifndef NabaL_Ast_CAssignment_H
-#define NabaL_Ast_CAssignment_H
+#ifndef Naba_Lng_Ast_CAssignment_H
+#define Naba_Lng_Ast_CAssignment_H
 
 #include "Expression.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 class CIdentifier;
@@ -17,9 +21,9 @@ public:
     
     void
         MakeIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder,
-            Tk::SpList<const NabaIr::CFunction>& functions
+            Tk::Sp<Ir::CTypeManager> typeManager,
+            Ir::CBlockBuilder& blockBuilder,
+            Tk::SpList<const Ir::CFunction>& functions
             )const override;
 
 private:
@@ -31,6 +35,8 @@ private:
 
 };
 
+}
+}
 }
 
 

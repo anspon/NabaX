@@ -40,25 +40,29 @@ void  NewLine(YYSTYPE* yylval, unsigned int line, int col)
 void ReportError(
     YYLTYPE* location,
     const filesystem::path& pathFile, 
-    Tk::Sp<const NabaL::CCompileError>& errorOut, 
-    Tk::Sp<const Ast::CNode>& expressionOut,
+    Tk::Sp<const Naba::Lng::CCompileError>& errorOut, 
+    Tk::Sp<const Naba::Lng::Ast::CNode>& expressionOut,
     const char* msg
     )
 {
     Tk::Sp<const Tk::CFilePosition>  filePosition = Tk::MakeSp<Tk::CFilePosition>(pathFile, location->first_line+1, location->first_column );
-    errorOut = Tk::MakeSp<NabaL::CCompileError>( NabaL::eCompileError::SyntaxError, msg, filePosition );
+    errorOut = Tk::MakeSp<Naba::Lng::CCompileError>( Naba::Lng::eCompileError::SyntaxError, msg, filePosition );
 //    errorOut = error;
 }
 
-namespace NabaL
-{
 
-Tk::Sp<const Ast::CNode> getAST(
+namespace Naba
+{
+namespace Lng
+{
+namespace Ast
+{
+Tk::Sp<const CNode> getAST(
     const filesystem::path& pathFile,
     const std::string& expression
     )
 {
-    Tk::Sp<const Ast::CNode> rootNode;
+    Tk::Sp<const CNode> rootNode;
     Tk::Sp<const CCompileError> errorOut;
 
     yyscan_t scanner = 0;
@@ -122,7 +126,7 @@ Tk::Sp<const CModule>
 
             Tk::SpList<const CCompileError> errors;
 
-            Tk::Sp<const Ast::CNode> node;
+            Tk::Sp<const CNode> node;
             try
             {
                  node = getAST(pathFile, completeText.c_str() );
@@ -139,3 +143,7 @@ Tk::Sp<const CModule>
 }
 
 }
+}
+}
+
+

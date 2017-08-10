@@ -4,7 +4,9 @@
 
 #include "eNativeType.h"
 
-namespace NabaIr
+namespace Naba
+{
+namespace Ir
 {
 
 class CLiteral
@@ -63,6 +65,7 @@ private:
     }m_;
 };
 
+}
 }
 
 

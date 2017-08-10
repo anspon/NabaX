@@ -1,8 +1,12 @@
-#ifndef NabaL_Ast_CStructVariableDeclaration_H
-#define NabaL_Ast_CStructVariableDeclaration_H
+#ifndef Naba_Lng_Ast_CStructVariableDeclaration_H
+#define Naba_Lng_Ast_CStructVariableDeclaration_H
 
 #include "StructPart.h"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 class CIdentifier;
@@ -28,6 +32,9 @@ private:
     Tk::Sp<const CExpression> 
         m_assignmentExpr;
 };
+
+}
+}
 }
 
 

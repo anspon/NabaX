@@ -1,7 +1,12 @@
-#ifndef NabaL_Ast_CDouble_H
-#define NabaL_Ast_CDouble_H
+#ifndef Naba_Lng_Ast_CDouble_H
+#define Naba_Lng_Ast_CDouble_H
 
 #include "Literal.h"
+
+namespace Naba
+{
+namespace Lng
+{
 
 namespace Ast
 {
@@ -13,10 +18,10 @@ public:
         const StringToken* stringToken
         );
 
-    Tk::Sp<const NabaIr::CVariable>
+    Tk::Sp<const Ir::CVariable>
         MakeExpressionIr(
-            Tk::Sp<NabaIr::CTypeManager> typeManager,
-            NabaIr::CBlockBuilder& blockBuilder
+            Tk::Sp<Ir::CTypeManager> typeManager,
+            Ir::CBlockBuilder& blockBuilder
             )const;
     
        
@@ -26,6 +31,8 @@ private:
 
 };
 
+}
+}
 }
 
 

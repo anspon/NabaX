@@ -6,6 +6,11 @@
 #include "NabaIr/Variable.h"
 #include "NabaIr/Type.h"
 
+namespace Naba
+{
+namespace Lng
+{
+class CCompileError;
 namespace Ast
 {
 class CBlock;
@@ -15,14 +20,15 @@ class CVariableDeclaration;
 class CFunctionParameter;
 class CStructPart;
 }
-namespace NabaL
-{
-class CCompileError;
 }
-
+}
 
 #include "Parser/Parser.hpp"
 
+namespace Naba
+{
+namespace Lng
+{
 namespace Ast
 {
 //--------------------------------------------------------------------------------------------------
@@ -37,9 +43,9 @@ CBinaryOperator::CBinaryOperator(
     m_rhs = Tk::AttachSp(rhs);
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const NabaIr::CVariable> CBinaryOperator::MakeExpressionIr(
-    Tk::Sp<NabaIr::CTypeManager> typeManager,
-    NabaIr::CBlockBuilder& blockBuilder
+Tk::Sp<const Ir::CVariable> CBinaryOperator::MakeExpressionIr(
+    Tk::Sp<Ir::CTypeManager> typeManager,
+    Ir::CBlockBuilder& blockBuilder
     ) const
 {
 
@@ -52,15 +58,15 @@ Tk::Sp<const NabaIr::CVariable> CBinaryOperator::MakeExpressionIr(
         case TCNE:
         case TCEQ:
         {
-            NabaIr::eBinaryBoolInstruction binaryBoolInstruction = NabaIr::bbiEqual;
+            Ir::eBinaryBoolInstruction binaryBoolInstruction = Ir::bbiEqual;
             switch( m_op )
             {
-                case TCGT: binaryBoolInstruction = NabaIr::bbiGreater;      break;
-                case TCGE: binaryBoolInstruction = NabaIr::bbiGreaterEqual; break;
-                case TCLE: binaryBoolInstruction = NabaIr::bbiLessEqual;    break;
-                case TCLT: binaryBoolInstruction = NabaIr::bbiLess;         break;
-                case TCNE: binaryBoolInstruction = NabaIr::bbiNotEqual;     break;
-                case TCEQ: binaryBoolInstruction = NabaIr::bbiEqual;  break;
+                case TCGT: binaryBoolInstruction = Ir::bbiGreater;      break;
+                case TCGE: binaryBoolInstruction = Ir::bbiGreaterEqual; break;
+                case TCLE: binaryBoolInstruction = Ir::bbiLessEqual;    break;
+                case TCLT: binaryBoolInstruction = Ir::bbiLess;         break;
+                case TCNE: binaryBoolInstruction = Ir::bbiNotEqual;     break;
+                case TCEQ: binaryBoolInstruction = Ir::bbiEqual;  break;
             }
             auto resultVariable = blockBuilder.AddLocalVariable("bool", "" );
             auto lhsVariable = m_lhs->MakeExpressionIr(typeManager, blockBuilder);
@@ -93,6 +99,9 @@ Tk::Sp<const NabaIr::CVariable> CBinaryOperator::MakeExpressionIr(
         }
     }
 
-    return Tk::Sp<const NabaIr::CVariable>();
+    return Tk::Sp<const Ir::CVariable>();
+}
+
+}
 }
 }
