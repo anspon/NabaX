@@ -74,18 +74,19 @@ typedef void* yyscan_t;
      TEQUAL = 269,
      TWHILE = 270,
      TFOR = 271,
-     TLPAREN = 272,
-     TRPAREN = 273,
-     TLBRACE = 274,
-     TRBRACE = 275,
-     TCOMMA = 276,
-     TDOT = 277,
-     TPLUS = 278,
-     TMINUS = 279,
-     TMUL = 280,
-     TDIV = 281,
-     TSEMICOLON = 282,
-     TCOLON = 283
+     TVAR = 272,
+     TLPAREN = 273,
+     TRPAREN = 274,
+     TLBRACE = 275,
+     TRBRACE = 276,
+     TCOMMA = 277,
+     TDOT = 278,
+     TPLUS = 279,
+     TMINUS = 280,
+     TMUL = 281,
+     TDIV = 282,
+     TSEMICOLON = 283,
+     TCOLON = 284
    };
 #endif
 
@@ -115,7 +116,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 119 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.hpp"
+#line 120 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.hpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

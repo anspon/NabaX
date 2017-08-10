@@ -97,15 +97,10 @@ typedef void* yyscan_t;
    they represent.
  */
 %token <stringToken> TIDENTIFIER T_I32 T_I64 TDOUBLE TSTRUCT
-%token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL TWHILE TFOR
+%token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL TWHILE TFOR TVAR
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE TCOMMA TDOT 
 %token <token> TPLUS TMINUS TMUL TDIV TSEMICOLON TCOLON
 
-/* Define the type of node our nonterminal symbols represent.
-   The types refer to the %union declaration above. Ex: when
-   we call an ident (defined by union type ident) we are really
-   calling an (NIdentifier*). It makes the compiler happy.
- */
 %type <ident> ident
 %type <expr> numeric expr functionCall
 %type <funcParList> func_decl_args
@@ -160,11 +155,11 @@ struct :
 
 while:
 	TWHILE TLPAREN expr TRPAREN block { $$ = new Ast::CWhile(nullptr, $3, $5); } |
-	ident TEQUAL TWHILE TLPAREN expr TRPAREN block { $$ = new Ast::CWhile($1, $5, $7); }
+	TVAR ident TEQUAL TWHILE TLPAREN expr TRPAREN block { $$ = new Ast::CWhile($2, $6, $8); }
 
 for:
 	TFOR TLPAREN ident TCOLON expr TRPAREN block { $$ = new Ast::CFor(nullptr, $3, $5, $7 ); } | 
-	ident TEQUAL TFOR TLPAREN ident TCOLON expr TRPAREN block { $$ = new Ast::CFor($1, $5, $7, $9 ); }
+	TVAR ident TEQUAL TFOR TLPAREN ident TCOLON expr TRPAREN block { $$ = new Ast::CFor($2, $6, $8, $10 ); }
 
 structPart : 
     ident ident TSEMICOLON { $$ = new Ast::CStructVariable($1, $2, nullptr); } |
@@ -191,8 +186,9 @@ func_param:
     ;
 
 var_decl : 
-    ident ident TSEMICOLON { $$ = new Ast::CVariableDeclaration($1, $2, nullptr); } | 
-    ident ident TEQUAL expr TSEMICOLON { $$ = new Ast::CVariableDeclaration($1, $2, $4); }
+    TVAR ident ident TSEMICOLON { $$ = new Ast::CVariableDeclaration($2, $3, nullptr); } | 
+    TVAR ident TEQUAL expr TSEMICOLON { $$ = new Ast::CVariableDeclaration(nullptr, $2, $4); } |
+    TVAR ident ident TEQUAL expr TSEMICOLON { $$ = new Ast::CVariableDeclaration($2, $3, $5); }
     ;
 
 ident : 
@@ -208,6 +204,7 @@ numeric :
 assignment :
 	ident TEQUAL expr TSEMICOLON{ $$ = new Ast::CAssignment($<ident>1, $3); } 
 	;
+
     
 expr : 
     functionCall | 
@@ -216,6 +213,8 @@ expr :
     expr binaryOperation expr{ $$ = new Ast::CBinaryOperator($1, $2, $3); } | 
     TLPAREN expr TRPAREN { $$ = $2; }
     ;
+
+
 
 
 functionCall:

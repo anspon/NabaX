@@ -1,8 +1,8 @@
 
-int s_j=1_000_000i32;
-int s_k_1=1i32;
-int s_k_2=1i32;
-double s_k = 1.76878d;
+var int s_j=1_000_000i32;
+var int s_k_1=1i32;
+var int s_k_2=1i32;
+var double s_k = 1.76878d;
 
 struct Apa
 {
@@ -25,41 +25,38 @@ struct Apa2
 };
 void Banana(i32 k)
 {
-    Apa2 apa2;
-    Apa2 apa2_1 = apa2;
-	i32 j = k;
+    var Apa2 apa2;
+    var Apa2 apa2_1 = apa2;
+	var i32 j = k;
 }
 
 void Function2(i32 k, i64 p)
 {
-	i32 k1 = k;
-	i64 p1 = p;
+	var i32 k1 = k;
+	var i64 p1 = p;
 }
+
 void Main()
 {
-	i32 i=1;
-	i32 k=1;
-	i64 j;
+	var i32 i=1;
+	var i32 k=1;
+	var i64 j;
 	Banana(i); 
 	Banana(7i32);
 	Banana(99i32);
-    Apa apa;
+    var Apa apa;
 	Function2(99i32, 17i64);
-	j=7;
+	var j2=7;
 	
-	bool isEqual = i == k;
-	bool isLess = i < k;
-	bool isLarger = i > k;
-	bool notEqual = i != k;
+	var bool isEqual = i == k;
+	var bool isLess = i < k;
+	var bool isLarger = i > k;
+	var bool notEqual = i != k;
 	
-	f = for( j : range(10, 10) )
-	{
-	}
-
-	w1 = while( i < k )
+	var w1 = while( i < k )
 	{
 		
-		w2 = while( j < k)
+		var w2 = while( j < k)
 		{
 		}
 		i = i + 1;

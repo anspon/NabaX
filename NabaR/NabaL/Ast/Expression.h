@@ -8,6 +8,7 @@ namespace NabaIr
 class CVariable;
 class CTypeManager;
 class CBlockBuilder;
+class CType;
 }
 
 namespace Ast
@@ -17,6 +18,11 @@ class CExpression : public CBlockPart
 public:
         CExpression(
             );
+    
+    Tk::Sp<const NabaIr::CType>
+        Type(
+            Tk::Sp<NabaIr::CTypeManager> typeManager
+            )const;
 
     void MakeIr(
         Tk::Sp<NabaIr::CTypeManager> typeManager,

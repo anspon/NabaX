@@ -26,5 +26,8 @@ private:
     if(!(condition) ){ std::stringstream stream; stream << text; throw Tk::CException(stream.str());}
 
 
+#define TK_THROW( text )\
+    { std::stringstream stream; stream << text; throw Tk::CException(stream.str());}
+
 
 #endif

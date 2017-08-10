@@ -3,8 +3,12 @@
 #include "Assignment.h"
 #include "Identifier.h"
 
+#include "Tk/Exception.h"
+
 #include "NabaIr/BlockBuilder.h"
 #include "NabaIr/Literal.h"
+#include "NabaIr/TypeManager.h"
+#include "NabaIr/Type.h"
 
 namespace Ast
 {
@@ -26,8 +30,25 @@ void CVariableDeclaration::MakeIr(
     Tk::SpList<const NabaIr::CFunction>& functions
     ) const
 {
-   
-    auto variable = blockBuilder.AddLocalVariable( m_type->m_name, m_id->m_name );
+    Tk::Sp<const NabaIr::CType> irType;
+
+    if( m_type )
+    {
+        irType = typeManager->Type(m_type->m_name);
+    }
+    else
+    {
+        if( m_assignmentExpr )
+        {
+            irType = m_assignmentExpr->Type(typeManager);
+        }
+        else
+        {
+            TK_THROW( "If a variable declaration does not have a type, it must be assigned");
+        }
+    }
+       
+    auto variable = blockBuilder.AddLocalVariable( irType->TypeName(), m_id->m_name );
     if( m_assignmentExpr )
     {
         Tk::Sp<const NabaIr::CVariable> rhsVar = m_assignmentExpr->MakeExpressionIr(typeManager, blockBuilder);

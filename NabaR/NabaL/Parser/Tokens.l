@@ -50,6 +50,7 @@ extern void SaveStringToken( YYSTYPE* yylval, const char* text , int len, unsign
 "struct"                return TOKEN(TSTRUCT);
 "while"                return TOKEN(TWHILE);
 "for"                return TOKEN(TFOR);
+"var"                return TOKEN(TVAR);
 [a-zA-Z_][a-zA-Z0-9\_]*  SAVE_STRING_TOKEN; return TIDENTIFIER;
 [0-9][0-9\_]*(\.)?[0-9\_]*d      SAVE_STRING_TOKEN; return TDOUBLE;
 [0-9][0-9\_]*i32             SAVE_STRING_TOKEN; return T_I32;
