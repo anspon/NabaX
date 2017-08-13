@@ -16,7 +16,8 @@ namespace Ast
 CAssignment::CAssignment(
     const CIdentifier* lhs, 
     const CExpression* rhs
-    )
+    ):
+    BaseClass(bptAssignement)
 {
     m_lhs = Tk::AttachSp(lhs);
     m_rhs = Tk::AttachSp(rhs);

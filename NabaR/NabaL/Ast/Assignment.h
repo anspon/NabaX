@@ -13,6 +13,7 @@ class CIdentifier;
 
 class CAssignment : public CBlockPart 
 {
+    using BaseClass = CBlockPart;
 public:
     CAssignment(
         const CIdentifier* lhs, 

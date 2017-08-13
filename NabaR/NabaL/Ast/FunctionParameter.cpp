@@ -13,13 +13,11 @@ namespace Ast
 //--------------------------------------------------------------------------------------------------
 CFunctionParameter::CFunctionParameter(
     const CIdentifier* type, 
-    const CIdentifier* id, 
-    const CExpression* assignmentExpr
+    const CIdentifier* id
     )
 {
     m_type = Tk::AttachSp(type);
     m_id = Tk::AttachSp(id);
-    m_assignmentExpr = Tk::AttachSp(assignmentExpr);
 }
 
 }

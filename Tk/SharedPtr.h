@@ -9,6 +9,21 @@ namespace Tk
 template<typename T>
 using Sp = std::shared_ptr<T>;
 
+template<typename T>
+using WeakSp = std::weak_ptr<T>;
+
+template<typename T>
+using EnableSharedSp = std::enable_shared_from_this<T>;
+
+#define DECLARE_SHARED_FROM_THIS(T)\
+    Tk::Sp<T> SharedThis(){return std::static_pointer_cast<T>(shared_from_this());}
+
+template<class _Ty1, class _Ty2>
+Sp<_Ty1> DynamicCast(const Sp<_Ty2>& _Other)
+{	
+    return std::dynamic_pointer_cast<_Ty1, _Ty2>(_Other);
+}
+
 template<typename T, class... _Types>
 Sp<T> MakeSp(_Types&&... _Args)
 {

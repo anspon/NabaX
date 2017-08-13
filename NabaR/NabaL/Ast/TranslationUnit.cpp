@@ -1,6 +1,7 @@
 #include "NabaLPch.h"
 #include "TranslationUnit.h"
-#include "Ast/Node.h"
+#include "Node.h"
+#include "Block.h"
 
 #include "NabaIr/TypeManager.h"
 #include "NabaIr/TranslationUnit.h"
@@ -18,7 +19,7 @@ namespace Ast
 //--------------------------------------------------------------------------------------------------
 CTranslationUnit::CTranslationUnit(
     const std::list<std::string>& nameSpace,
-    Tk::Sp<const Ast::CNode> ast,
+    Tk::Sp<const Ast::CBlock> ast,
     const filesystem::path& completePathFile,
     const Tk::SpList<const CCompileError>& errors
     ):
@@ -43,7 +44,7 @@ const Tk::SpList<const CCompileError>& CTranslationUnit::Errors()const
     return m_errors;
 }
 //--------------------------------------------------------------------------------------------------
-Tk::Sp<const Ast::CNode>  CTranslationUnit::Ast(
+Tk::Sp<const Ast::CBlock>  CTranslationUnit::Ast(
     )const
 {
     return m_ast;

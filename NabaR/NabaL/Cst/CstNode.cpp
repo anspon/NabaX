@@ -1,18 +1,19 @@
 #include "NabaLPch.h"
+#include "CstNode.h"
 
-#include "FileScope.h"
 
 namespace Naba
 {
 namespace Lng
 {
-namespace Ast
+namespace Cst
 {
-CFileScope::CFileScope()
+CNode::~CNode()
 {
+    int i=0; i++;
+}
+}
+}
 }
 
-}
-}
-}
 

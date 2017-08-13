@@ -11,7 +11,8 @@ namespace Lng
 {
 namespace Ast
 {
-CExpression::CExpression()
+CExpression::CExpression(
+    ):BaseClass(bptExpressionStatement)
 {
 }
 //--------------------------------------------------------------------------------------------------

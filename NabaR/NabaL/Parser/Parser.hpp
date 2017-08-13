@@ -97,7 +97,6 @@ typedef union YYSTYPE
 /* Line 2058 of yacc.c  */
 #line 75 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.y"
 
-    Naba::Lng::Ast::CNode* m_node;
     Naba::Lng::Ast::CBlock* block;
     Naba::Lng::Ast::CBlock* blockParts;
     Naba::Lng::Ast::CExpression* expr;
@@ -116,7 +115,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 120 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.hpp"
+#line 119 "C:\\dev\\NabaX\\NabaR\\NabaL\\Parser\\Parser.hpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -145,7 +144,7 @@ int yyparse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int yyparse (yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const Naba::Lng::CCompileError>& errorOut, Tk::Sp<const Naba::Lng::Ast::CNode>& expressionOut);
+int yyparse (yyscan_t scanner, const filesystem::path& pathFile, Tk::Sp<const Naba::Lng::CCompileError>& errorOut, Tk::Sp<Naba::Lng::Ast::CBlock>& fileScope);
 #else
 int yyparse ();
 #endif

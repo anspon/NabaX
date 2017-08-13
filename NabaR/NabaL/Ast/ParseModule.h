@@ -1,7 +1,7 @@
 #ifndef Naba_Lng_ParseModule_H
 #define Naba_Lng_ParseModule_H
 
-#include "NabaLPchHeaders.h"
+#include "NabaL/NabaLPchHeaders.h"
 
 namespace Naba
 { 

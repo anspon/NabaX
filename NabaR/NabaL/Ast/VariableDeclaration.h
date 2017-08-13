@@ -1,7 +1,7 @@
 #ifndef Naba_Lng_Ast_CVariableDeclaration_H
 #define Naba_Lng_Ast_CVariableDeclaration_H
 
-#include "Statement.h"
+#include "BlockPart.h"
 
 namespace Naba
 {
@@ -12,8 +12,9 @@ namespace Ast
 class CIdentifier;
 class CExpression;
 
-class CVariableDeclaration : public CStatement 
+class CVariableDeclaration : public CBlockPart
 {
+    using BaseClass = CBlockPart;
 public:
 
     CVariableDeclaration(

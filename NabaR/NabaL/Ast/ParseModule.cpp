@@ -41,7 +41,7 @@ void ReportError(
     YYLTYPE* location,
     const filesystem::path& pathFile, 
     Tk::Sp<const Naba::Lng::CCompileError>& errorOut, 
-    Tk::Sp<const Naba::Lng::Ast::CNode>& expressionOut,
+    Tk::Sp<Naba::Lng::Ast::CBlock>& fileScope,
     const char* msg
     )
 {
@@ -49,20 +49,18 @@ void ReportError(
     errorOut = Tk::MakeSp<Naba::Lng::CCompileError>( Naba::Lng::eCompileError::SyntaxError, msg, filePosition );
 //    errorOut = error;
 }
-
-
 namespace Naba
 {
 namespace Lng
 {
 namespace Ast
 {
-Tk::Sp<const CNode> getAST(
+Tk::Sp<const CBlock> getAST(
     const filesystem::path& pathFile,
     const std::string& expression
     )
 {
-    Tk::Sp<const CNode> rootNode;
+    Tk::Sp<CBlock> fileScope;
     Tk::Sp<const CCompileError> errorOut;
 
     yyscan_t scanner = 0;
@@ -79,7 +77,7 @@ Tk::Sp<const CNode> getAST(
     state->yy_bs_lineno =0;
     state->yy_bs_column =0;
 
-    yyparse(scanner, pathFile, errorOut, rootNode);
+    yyparse(scanner, pathFile, errorOut, fileScope);
     yy_delete_buffer(state, scanner);
     yylex_destroy(scanner);
 
@@ -87,9 +85,12 @@ Tk::Sp<const CNode> getAST(
     {
         throw errorOut;
     }
-    return rootNode;
-}
+    fileScope->SetBlockType(btFileScope);
+    fileScope->Initialize();
 
+    return fileScope;
+}
+//--------------------------------------------------------------------------------------------------
 Tk::Sp<const CModule>
     ParseModule(
         const std::string& sourceFolder
@@ -126,21 +127,24 @@ Tk::Sp<const CModule>
 
             Tk::SpList<const CCompileError> errors;
 
-            Tk::Sp<const CNode> node;
+            Tk::Sp<const CBlock> fileScope;
             try
             {
-                 node = getAST(pathFile, completeText.c_str() );
+                 fileScope = getAST(pathFile, completeText.c_str() );
+
+
             }
             catch( Tk::Sp<const CCompileError> error )
             {
                 errors.push_back(error);
             }
-            Tk::Sp<const CTranslationUnit> unit = Tk::MakeSp<CTranslationUnit>(nameSpacePath, node, pathFile, errors );
+            Tk::Sp<const CTranslationUnit> unit = Tk::MakeSp<CTranslationUnit>(nameSpacePath, fileScope, pathFile, errors );
             translationUnits.push_back(unit);
         }        
     }
     return Tk::MakeSp<CModule>(moduleName, translationUnits);
 }
+//--------------------------------------------------------------------------------------------------
 
 }
 }

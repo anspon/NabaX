@@ -3,7 +3,7 @@
 
 #include "NabaLPchHeaders.h"
 
-#include "Statement.h"
+#include "BlockPart.h"
 
 namespace Naba
 {
@@ -14,8 +14,9 @@ namespace Ast
 class CIdentifier;
 class CStructPart;
 
-class CStruct : public CStatement
+class CStruct : public CBlockPart
 {
+    using BaseClass = CBlockPart;
 public:
     CStruct(
         const CIdentifier* name,

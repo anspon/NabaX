@@ -12,7 +12,8 @@ namespace Ast
 //--------------------------------------------------------------------------------------------------
 CExpressionStatement::CExpressionStatement(
     const CExpression* expression
-    )
+    ):
+    BaseClass(bptExpressionStatement)
 {
     m_expression = Tk::AttachSp(expression);
 }

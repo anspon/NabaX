@@ -1,8 +1,6 @@
 #ifndef Naba_Lng_CModule_H
 #define Naba_Lng_CModule_H
 
-
-
 namespace Naba
 { 
 namespace Ir

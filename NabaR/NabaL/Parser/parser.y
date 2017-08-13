@@ -34,7 +34,7 @@ extern void
         YYLTYPE* location,
         const filesystem::path& pathFile, 
         Tk::Sp<const Naba::Lng::CCompileError>& errorOut, 
-        Tk::Sp<const Naba::Lng::Ast::CNode>& expressionOut,
+        Tk::Sp<Naba::Lng::Ast::CBlock>& fileScope,
         const char* msg
         );
 
@@ -43,11 +43,11 @@ int yyerror (
     yyscan_t scanner, 
     const filesystem::path& pathFile, 
     Tk::Sp<const Naba::Lng::CCompileError>& errorOut, 
-    Tk::Sp<const Naba::Lng::Ast::CNode>& expressionOut,
+    Tk::Sp<Naba::Lng::Ast::CBlock>& fileScope,
     const char* msg
     )
 {
-    ReportError( location, pathFile, errorOut, expressionOut, msg );
+    ReportError( location, pathFile, errorOut, fileScope, msg );
     return 0;
 }
 
@@ -69,11 +69,10 @@ typedef void* yyscan_t;
 %parse-param { yyscan_t scanner }
 %parse-param { const filesystem::path& pathFile }
 %parse-param { Tk::Sp<const Naba::Lng::CCompileError>& errorOut }
-%parse-param { Tk::Sp<const Naba::Lng::Ast::CNode>& expressionOut }
+%parse-param { Tk::Sp<Naba::Lng::Ast::CBlock>& fileScope }
 
 /* Represents the many different ways we can access our data */
 %union {
-    Naba::Lng::Ast::CNode* m_node;
     Naba::Lng::Ast::CBlock* block;
     Naba::Lng::Ast::CBlock* blockParts;
     Naba::Lng::Ast::CExpression* expr;
@@ -121,7 +120,7 @@ typedef void* yyscan_t;
 %%
 
 fileScope : 
-    blockParts { expressionOut = Tk::AttachSp($1); }
+    blockParts { fileScope = Tk::AttachSp($1); }
     ;
       
 blockParts : 
@@ -172,7 +171,7 @@ structParts:
     ;
 
 func_decl : 
-    ident ident TLPAREN func_decl_args TRPAREN block { $$ = new Naba::Lng::Ast::CFunction($1, $2, $4, $6); }
+    ident ident TLPAREN func_decl_args TRPAREN block { $$ = new Naba::Lng::Ast::CFunction($1, $2, $4, (Naba::Lng::Ast::CBlock*)$6); }
     ;
     
 func_decl_args : 
@@ -182,7 +181,7 @@ func_decl_args :
     ;
 
 func_param:
-    ident ident { $$ = new Naba::Lng::Ast::CFunctionParameter($1, $2, nullptr); } 
+    ident ident { $$ = new Naba::Lng::Ast::CFunctionParameter($1, $2); } 
     ;
 
 var_decl : 

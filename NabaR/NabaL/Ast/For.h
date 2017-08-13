@@ -16,6 +16,7 @@ class CIdentifier;
 
 class CFor : public CBlockPart
 {
+    using BaseClass = CBlockPart;
 public:
     CFor(
         const CIdentifier* blockName,

@@ -1,7 +1,7 @@
 #ifndef Naba_Lng_CTranslationUnit_H
 #define Naba_Lng_CTranslationUnit_H
 
-#include "NabalPchHeaders.h"
+#include "NabaLPchHeaders.h"
 
 
 
@@ -18,8 +18,7 @@ class CCompileError;
 
 namespace Ast
 {
-class CNode;
-
+class CBlock;
 
 class CTranslationUnit
 {
@@ -27,12 +26,12 @@ public:
 
     CTranslationUnit(
         const std::list<std::string>& nameSpace,
-        Tk::Sp<const Ast::CNode> ast,
+        Tk::Sp<const Ast::CBlock> ast,
         const filesystem::path& completePathFile,
         const Tk::SpList<const CCompileError>& errors
         );
 
-    Tk::Sp<const Ast::CNode> 
+    Tk::Sp<const Ast::CBlock> 
         Ast(
             )const;
 
@@ -56,7 +55,7 @@ private:
     const std::list<std::string> 
         m_nameSpace;
 
-    const Tk::Sp<const Ast::CNode> 
+    const Tk::Sp<const Ast::CBlock> 
         m_ast;
 
     const filesystem::path 

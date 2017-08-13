@@ -19,6 +19,8 @@ class CIdentifier;
 class CVariableDeclaration;
 class CFunctionParameter;
 class CStructPart;
+class CStruct;
+class CFunction;
 }
 }
 }

@@ -16,7 +16,8 @@ CWhile::CWhile(
     const CIdentifier* blockName,
     const CExpression* expression,
     const CBlockPart* block
-    )
+    ):
+    BaseClass(bptWhile)
 {
     m_expression = Tk::AttachSp(expression);
     m_block = Tk::AttachSp(block);

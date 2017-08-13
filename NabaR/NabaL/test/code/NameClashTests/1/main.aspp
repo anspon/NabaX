@@ -1,0 +1,33 @@
+
+struct Apa
+{
+    int b = 7;
+    int c;
+};
+struct Apa2
+{
+    int b = 7;
+    int c;
+};
+
+
+
+
+{
+	void Func1(i32 k)
+	{
+	}	
+	var i32 k1 = k;
+	{
+		void Func2(i32 k)
+		{
+		}	
+		var i64 k2 = p;
+		{
+			void Func3(i32 k)
+			{
+			}	
+			var i64 k3 = p;
+		}
+	}
+}

@@ -1,7 +1,7 @@
 #ifndef Naba_Lng_Ast_CExpressionStatement_H
 #define Naba_Lng_Ast_CExpressionStatement_H
 
-#include "Statement.h"
+#include "BlockPart.h"
 
 namespace Naba
 {
@@ -12,8 +12,9 @@ namespace Ast
 {
 class CExpression;
 
-class CExpressionStatement : public CStatement 
+class CExpressionStatement : public CBlockPart 
 {
+    using BaseClass = CBlockPart;
 public:
         CExpressionStatement(
             const CExpression* expression

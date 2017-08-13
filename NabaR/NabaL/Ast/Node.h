@@ -1,5 +1,5 @@
-#ifndef Imdr_Ast_H
-#define Imdr_Ast_H
+#ifndef Naba_Lng_Ast_CNode_H
+#define Naba_Lng_Ast_CNode_H
 
 struct CPosition
 {
@@ -33,7 +33,7 @@ namespace Lng
 namespace Ast
 {
 
-class CNode 
+class CNode : public Tk::EnableSharedSp<CNode>
 {
 public:
     virtual ~CNode();
@@ -41,7 +41,7 @@ public:
     const CPosition&
         Position(
             )const;
-    
+
     virtual void
         MakeIr(
             Tk::Sp<Ir::CTypeManager> typeManager,

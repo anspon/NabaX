@@ -2,7 +2,7 @@
 #define Naba_Lng_Ast_CFunction_H
 
 
-#include "Statement.h"
+#include "BlockPart.h"
 
 namespace Naba
 {
@@ -13,17 +13,22 @@ namespace Ast
 {
 class CIdentifier;
 class CFunctionParameter;
+class CBlock;
 
-class CFunction : public CStatement 
+class CFunction : public CBlockPart 
 {
+    using BaseClass = CBlockPart;
 public:
     CFunction(
         const CIdentifier* type, 
         const CIdentifier* id, 
         const Tk::SpList<const CFunctionParameter>* arguments, 
-        const CBlockPart* block
+        CBlock* block
         );
-
+    
+    Tk::Sp<CBlock>
+        Block(
+            );
     void
         MakeIr(
             Tk::Sp<Ir::CTypeManager> typeManager,
@@ -40,7 +45,7 @@ private:
     Tk::SpList<const CFunctionParameter>
         m_arguments;
     
-    Tk::Sp<const CBlockPart> 
+    Tk::Sp<CBlock> 
         m_block;
 
 };

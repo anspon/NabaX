@@ -15,6 +15,7 @@ class CIdentifier;
 
 class CWhile : public CBlockPart
 {
+    using BaseClass = CBlockPart;
 public:
     CWhile(
         const CIdentifier* blockName,

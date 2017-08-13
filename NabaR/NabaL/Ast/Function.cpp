@@ -4,6 +4,7 @@
 #include "Identifier.h"
 #include "FunctionParameter.h"
 #include "BlockPart.h"
+#include "Block.h"
 
 #include "NabaIr/FunctionBuilder.h"
 #include "NabaIr/Literal.h"
@@ -19,8 +20,8 @@ CFunction::CFunction(
     const CIdentifier* type, 
     const CIdentifier* id, 
     const Tk::SpList<const CFunctionParameter>* arguments, 
-    const CBlockPart* block
-    )
+    CBlock* block
+    ):BaseClass(bptFunctionDeclaration)
 {
     m_type = Tk::AttachSp(type);
     m_id = Tk::AttachSp(id);
@@ -30,6 +31,12 @@ CFunction::CFunction(
         delete arguments;
     }
     m_block = Tk::AttachSp(block);
+}
+//--------------------------------------------------------------------------------------------------
+Tk::Sp<CBlock> CFunction::Block(
+    )
+{
+    return m_block;
 }
 //--------------------------------------------------------------------------------------------------
 void CFunction::MakeIr(

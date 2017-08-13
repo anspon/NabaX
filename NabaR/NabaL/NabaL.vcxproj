@@ -19,75 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Ast\Assignment.cpp" />
-    <ClCompile Include="Ast\BinaryOperator.cpp" />
-    <ClCompile Include="Ast\Block.cpp" />
-    <ClCompile Include="Ast\BlockPart.cpp" />
-    <ClCompile Include="Ast\Double.cpp" />
-    <ClCompile Include="Ast\Expression.cpp" />
-    <ClCompile Include="Ast\ExpressionStatement.cpp" />
-    <ClCompile Include="Ast\FileScope.cpp" />
-    <ClCompile Include="Ast\For.cpp" />
-    <ClCompile Include="Ast\Function.cpp" />
-    <ClCompile Include="Ast\FunctionParameter.cpp" />
-    <ClCompile Include="Ast\Identifier.cpp" />
-    <ClCompile Include="Ast\Integer32.cpp" />
-    <ClCompile Include="Ast\Integer64.cpp" />
-    <ClCompile Include="Ast\Literal.cpp" />
-    <ClCompile Include="Ast\MethodCall.cpp" />
-    <ClCompile Include="Ast\Module.cpp" />
-    <ClCompile Include="Ast\Node.cpp" />
-    <ClCompile Include="Ast\ParseModule.cpp" />
-    <ClCompile Include="Ast\Scope.cpp" />
-    <ClCompile Include="Ast\Statement.cpp" />
-    <ClCompile Include="Ast\Struct.cpp" />
-    <ClCompile Include="Ast\StructPart.cpp" />
-    <ClCompile Include="Ast\StructVariable.cpp" />
-    <ClCompile Include="Ast\TranslationUnit.cpp" />
-    <ClCompile Include="Ast\VariableDeclaration.cpp" />
-    <ClCompile Include="Ast\While.cpp" />
-    <ClCompile Include="CompileError.cpp" />
-    <ClCompile Include="NabaLPch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Parser\ParserPchWrapper.cpp" />
-    <ClCompile Include="Parser\TokensPchWrapper.cpp" />
-    <ClCompile Include="SourceCodeError.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Ast\Assignment.h" />
-    <ClInclude Include="Ast\BinaryOperator.h" />
-    <ClInclude Include="Ast\Block.h" />
-    <ClInclude Include="Ast\BlockPart.h" />
-    <ClInclude Include="Ast\Double.h" />
-    <ClInclude Include="Ast\Expression.h" />
-    <ClInclude Include="Ast\ExpressionStatement.h" />
-    <ClInclude Include="Ast\FileScope.h" />
-    <ClInclude Include="Ast\For.h" />
-    <ClInclude Include="Ast\Function.h" />
-    <ClInclude Include="Ast\FunctionParameter.h" />
-    <ClInclude Include="Ast\Identifier.h" />
-    <ClInclude Include="Ast\Integer32.h" />
-    <ClInclude Include="Ast\Integer64.h" />
-    <ClInclude Include="Ast\Literal.h" />
-    <ClInclude Include="Ast\MethodCall.h" />
-    <ClInclude Include="Ast\Module.h" />
-    <ClInclude Include="Ast\Node.h" />
-    <ClInclude Include="Ast\ParseModule.h" />
-    <ClInclude Include="Ast\Scope.h" />
-    <ClInclude Include="Ast\Statement.h" />
-    <ClInclude Include="Ast\Struct.h" />
-    <ClInclude Include="Ast\StructPart.h" />
-    <ClInclude Include="Ast\StructVariable.h" />
-    <ClInclude Include="Ast\TranslationUnit.h" />
-    <ClInclude Include="Ast\VariableDeclaration.h" />
-    <ClInclude Include="Ast\While.h" />
-    <ClInclude Include="CompileError.h" />
-    <ClInclude Include="NabaLPch.h" />
-    <ClInclude Include="NabalPchHeaders.h" />
-    <ClInclude Include="SourceCodeError.h" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="Parser\parser.y">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
@@ -105,6 +36,80 @@
     <ProjectReference Include="..\..\Tk\Tk.vcxproj">
       <Project>{bd70c313-fbe0-4d8b-bf5e-e7c2eb037532}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Ast\Assignment.cpp" />
+    <ClCompile Include="Ast\BinaryOperator.cpp" />
+    <ClCompile Include="Ast\Block.cpp" />
+    <ClCompile Include="Ast\BlockPart.cpp" />
+    <ClCompile Include="Ast\Double.cpp" />
+    <ClCompile Include="Ast\Expression.cpp" />
+    <ClCompile Include="Ast\ExpressionStatement.cpp" />
+    <ClCompile Include="Ast\For.cpp" />
+    <ClCompile Include="Ast\Function.cpp" />
+    <ClCompile Include="Ast\FunctionParameter.cpp" />
+    <ClCompile Include="Ast\Identifier.cpp" />
+    <ClCompile Include="Ast\Integer32.cpp" />
+    <ClCompile Include="Ast\Integer64.cpp" />
+    <ClCompile Include="Ast\Literal.cpp" />
+    <ClCompile Include="Ast\MethodCall.cpp" />
+    <ClCompile Include="Ast\Module.cpp" />
+    <ClCompile Include="Ast\Node.cpp" />
+    <ClCompile Include="Ast\ParseModule.cpp" />
+    <ClCompile Include="Ast\Struct.cpp" />
+    <ClCompile Include="Ast\StructPart.cpp" />
+    <ClCompile Include="Ast\StructVariable.cpp" />
+    <ClCompile Include="Ast\TranslationUnit.cpp" />
+    <ClCompile Include="Ast\VariableDeclaration.cpp" />
+    <ClCompile Include="Ast\While.cpp" />
+    <ClCompile Include="CompileError.cpp" />
+    <ClCompile Include="Cst\CompileAstModule.cpp" />
+    <ClCompile Include="Cst\CstModule.cpp" />
+    <ClCompile Include="Cst\CstNode.cpp" />
+    <ClCompile Include="Cst\CstTranslationUnit.cpp" />
+    <ClCompile Include="NabaLPch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Parser\ParserPchWrapper.cpp" />
+    <ClCompile Include="Parser\TokensPchWrapper.cpp" />
+    <ClCompile Include="SourceCodeError.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Ast\Assignment.h" />
+    <ClInclude Include="Ast\BinaryOperator.h" />
+    <ClInclude Include="Ast\Block.h" />
+    <ClInclude Include="Ast\BlockPart.h" />
+    <ClInclude Include="Ast\Double.h" />
+    <ClInclude Include="Ast\Expression.h" />
+    <ClInclude Include="Ast\ExpressionStatement.h" />
+    <ClInclude Include="Ast\For.h" />
+    <ClInclude Include="Ast\Function.h" />
+    <ClInclude Include="Ast\FunctionParameter.h" />
+    <ClInclude Include="Ast\Identifier.h" />
+    <ClInclude Include="Ast\Integer32.h" />
+    <ClInclude Include="Ast\Integer64.h" />
+    <ClInclude Include="Ast\Literal.h" />
+    <ClInclude Include="Ast\MethodCall.h" />
+    <ClInclude Include="Ast\Module.h" />
+    <ClInclude Include="Ast\Node.h" />
+    <ClInclude Include="Ast\ParseModule.h" />
+    <ClInclude Include="Ast\Struct.h" />
+    <ClInclude Include="Ast\StructPart.h" />
+    <ClInclude Include="Ast\StructVariable.h" />
+    <ClInclude Include="Ast\TranslationUnit.h" />
+    <ClInclude Include="Ast\VariableDeclaration.h" />
+    <ClInclude Include="Ast\While.h" />
+    <ClInclude Include="CompileError.h" />
+    <ClInclude Include="Cst\CompileAstModule.h" />
+    <ClInclude Include="Cst\CstModule.h" />
+    <ClInclude Include="Cst\CstNode.h" />
+    <ClInclude Include="Cst\CstTranslationUnit.h" />
+    <ClInclude Include="NabaLPch.h" />
+    <ClInclude Include="NabalPchHeaders.h" />
+    <ClInclude Include="Parser\Parser.hpp" />
+    <ClInclude Include="Parser\Tokens.h" />
+    <ClInclude Include="SourceCodeError.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2D4CD176-EF1B-454B-8CBC-558F120DDDAC}</ProjectGuid>

@@ -21,7 +21,8 @@ CVariableDeclaration::CVariableDeclaration(
     const CIdentifier* type, 
     const CIdentifier* id, 
     const CExpression* assignmentExpr
-    )
+    ):
+    BaseClass(bptVariableDeclaration)
 {
     m_type = Tk::AttachSp(type);
     m_id = Tk::AttachSp(id);

@@ -23,6 +23,7 @@
 #include "Tk/Exception.h"
 #include "Tk/FilePosition.h"
 
+//--------------------------------------------------------------------------------------------------
 static void PrintError(
     Tk::Sp<const Naba::Lng::CCompileError> error
     )
@@ -35,7 +36,9 @@ static void PrintError(
     std::cout << "Error " << (int)error->Code() << ": " << error->Text() << std::endl;
 }
 //--------------------------------------------------------------------------------------------------
-void ErrorCheckModuleThrow(Tk::Sp<const Naba::Lng::Ast::CModule> astModule )
+void ErrorCheckModuleThrow(
+    Tk::Sp<const Naba::Lng::Ast::CModule> astModule 
+    )
 {
     bool hasErrors = false;
     for( Tk::Sp<const Naba::Lng::Ast::CTranslationUnit> translationUnit : astModule->TranslationUnits() )
@@ -62,7 +65,7 @@ void ResolveTypes(
     bool hasErrors = false;
     for( Tk::Sp<const Naba::Lng::Ast::CTranslationUnit> translationUnit : astModule->TranslationUnits() )
     {
-        const Tk::Sp<const Naba::Lng::Ast::CNode> ast = translationUnit->Ast();
+        const Tk::Sp<const Naba::Lng::Ast::CBlock> ast = translationUnit->Ast();
         if( translationUnit->Errors().size() )
         {
             for( Tk::Sp<const Naba::Lng::CCompileError> error : translationUnit->Errors() )

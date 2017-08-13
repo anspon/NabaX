@@ -9,6 +9,7 @@
 #include <map>
 #include <set>
 #include <filesystem>
+#include <functional>
 
 #define filesystem std::experimental::filesystem::v1
 

@@ -17,7 +17,8 @@ CFor::CFor(
     const CIdentifier* loopVariable,
     const CExpression* expression,
     const CBlockPart* block
-    )
+    ):
+    BaseClass(bptFor)
 {
     m_expression = Tk::AttachSp(expression);
     m_block = Tk::AttachSp(block);

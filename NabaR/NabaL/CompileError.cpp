@@ -6,7 +6,7 @@ namespace Naba
 { 
 namespace Lng 
 {
-
+//--------------------------------------------------------------------------------------------------
 CCompileError::CCompileError(
     eCompileError code,
     const std::string& text,

@@ -20,6 +20,7 @@ namespace Ast
 {
 class CExpression : public CBlockPart
 {
+    using BaseClass = CBlockPart;
 public:
         CExpression(
             );

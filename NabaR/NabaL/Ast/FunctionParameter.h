@@ -1,7 +1,7 @@
 #ifndef Naba_Lng_Ast_CFunctionParameter_H
 #define Naba_Lng_Ast_CFunctionParameter_H
 
-#include "Statement.h"
+#include "Node.h"
 
 namespace Naba
 {
@@ -13,14 +13,12 @@ namespace Ast
 class CIdentifier;
 class CExpression;
 
-class CFunctionParameter : public CStatement 
+class CFunctionParameter : public CNode
 {
 public:
-
     CFunctionParameter(
         const CIdentifier* type, 
-        const CIdentifier* id, 
-        const CExpression* assignmentExpr
+        const CIdentifier* id
         );
 
 public:
@@ -29,9 +27,6 @@ public:
     
     Tk::Sp<const CIdentifier> 
         m_id;
-    
-    Tk::Sp<const CExpression> 
-        m_assignmentExpr;
 };
 
 }
