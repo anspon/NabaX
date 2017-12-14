@@ -1,4 +1,4 @@
-Not A Big Agena
+Not A Big Agenda
 	Language
 	Intermediate Language
 	Abstract Syntax Tree
